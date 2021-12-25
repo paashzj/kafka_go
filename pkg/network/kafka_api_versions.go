@@ -21,6 +21,6 @@ func (s *Server) ReactApiVersion(frame []byte, version int16) ([]byte, gnet.Acti
 		return nil, gnet.Close
 	}
 	logrus.Info("api request ", apiRequestV0)
-	apiResponses := codec.NewApiVersionResp(apiRequestV0.CorrelationId)
+	apiResponses := codec.NewApiVersionResp(version, apiRequestV0.CorrelationId)
 	return apiResponses.Bytes(version), gnet.None
 }

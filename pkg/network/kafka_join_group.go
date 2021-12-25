@@ -39,7 +39,7 @@ func (s *Server) ReactJoinGroupVersion(ctx *context.NetworkContext, frame []byte
 		g.ProtocolMetadata = groupProtocol.ProtocolMetadata
 		lowReq.GroupProtocols[i] = g
 	}
-	resp := codec.NewJoinGroupResp(req.CorrelationId)
+	resp := codec.NewJoinGroupResp(version, req.CorrelationId)
 	lowResp, err := s.kafkaImpl.GroupJoin(ctx.Addr, lowReq)
 	if err != nil {
 		return nil, gnet.Close

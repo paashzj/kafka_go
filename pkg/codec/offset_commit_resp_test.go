@@ -12,7 +12,7 @@ func TestCodeOffsetCommitRespV8(t *testing.T) {
 	offsetCommitTopicResp := &OffsetCommitTopicResp{}
 	offsetCommitTopicResp.Topic = "test-5"
 	offsetCommitTopicResp.Partitions = []*OffsetCommitPartitionResp{offsetCommitPartitionResp}
-	offsetCommitResp := NewOffsetCommitResp(11)
+	offsetCommitResp := NewOffsetCommitResp(0, 11)
 	offsetCommitResp.Topics = []*OffsetCommitTopicResp{offsetCommitTopicResp}
 	bytes := offsetCommitResp.Bytes(5)
 	expectBytes := testHex2Bytes(t, "0000000b00000000000207746573742d3502000000000000000000")

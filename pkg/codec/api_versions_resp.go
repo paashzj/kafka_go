@@ -17,7 +17,7 @@ type ApiRespVersion struct {
 	MaxVersion int16
 }
 
-func NewApiVersionResp(corrId int) *ApiResponse {
+func NewApiVersionResp(version int16, corrId int) *ApiResponse {
 	resp := ApiResponse{}
 	resp.CorrelationId = corrId
 	resp.ErrorCode = 0

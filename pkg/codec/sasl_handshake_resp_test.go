@@ -6,7 +6,7 @@ import (
 )
 
 func TestCodeSaslHandshakeRespV1(t *testing.T) {
-	saslHandshakeResp := NewSaslHandshakeResp(2147483641)
+	saslHandshakeResp := NewSaslHandshakeResp(0, 2147483641)
 	plainSaslMechanism := &EnableMechanism{SaslMechanism: "PLAIN"}
 	saslHandshakeResp.EnableMechanisms = []*EnableMechanism{plainSaslMechanism}
 	bytes := saslHandshakeResp.Bytes()

@@ -6,7 +6,7 @@ import (
 )
 
 func TestCodeHeartbeatRespV4(t *testing.T) {
-	heartBeatResp := NewHeartBeatResp(17)
+	heartBeatResp := NewHeartBeatResp(0, 17)
 	bytes := heartBeatResp.Bytes()
 	expectBytes := testHex2Bytes(t, "000000110000000000000000")
 	assert.Equal(t, expectBytes, bytes)

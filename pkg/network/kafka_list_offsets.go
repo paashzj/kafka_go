@@ -45,7 +45,7 @@ func (s *Server) ListOffsetsVersion(ctx *context.NetworkContext, frame []byte, v
 	if err != nil {
 		return nil, gnet.Close
 	}
-	resp := codec.NewListOffsetResp(req.CorrelationId)
+	resp := codec.NewListOffsetResp(version, req.CorrelationId)
 	resp.OffsetTopics = make([]*codec.ListOffsetTopicResp, len(lowOffsetRespList))
 	for i, lowTopicResp := range lowOffsetRespList {
 		f := &codec.ListOffsetTopicResp{}

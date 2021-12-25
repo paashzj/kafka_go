@@ -10,7 +10,7 @@ type EnableMechanism struct {
 	SaslMechanism string
 }
 
-func NewSaslHandshakeResp(corrId int) *SaslHandshakeResp {
+func NewSaslHandshakeResp(version int16, corrId int) *SaslHandshakeResp {
 	saslHandshakeResp := SaslHandshakeResp{}
 	saslHandshakeResp.CorrelationId = corrId
 	return &saslHandshakeResp

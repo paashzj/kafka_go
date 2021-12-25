@@ -20,7 +20,7 @@ type ListOffsetPartitionResp struct {
 	LeaderEpoch int
 }
 
-func NewListOffsetResp(corrId int) *ListOffsetResp {
+func NewListOffsetResp(version int16, corrId int) *ListOffsetResp {
 	resp := ListOffsetResp{}
 	resp.CorrelationId = corrId
 	return &resp

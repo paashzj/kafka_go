@@ -29,7 +29,7 @@ func ErrorJoinGroupResp(corrId int, errorCode int16) *JoinGroupResp {
 	return &joinGroupResp
 }
 
-func NewJoinGroupResp(corrId int) *JoinGroupResp {
+func NewJoinGroupResp(version int16, corrId int) *JoinGroupResp {
 	joinGroupResp := JoinGroupResp{}
 	joinGroupResp.CorrelationId = corrId
 	return &joinGroupResp

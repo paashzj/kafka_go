@@ -21,7 +21,7 @@ func (s *Server) ReactSaslVersion(frame []byte, version int16) ([]byte, gnet.Act
 		return nil, gnet.Close
 	}
 	logrus.Info("sasl handshake request ", req)
-	saslHandshakeResp := codec.NewSaslHandshakeResp(req.CorrelationId)
+	saslHandshakeResp := codec.NewSaslHandshakeResp(version, req.CorrelationId)
 	saslHandshakeResp.EnableMechanisms = make([]*codec.EnableMechanism, 1)
 	saslHandshakeResp.EnableMechanisms[0] = &codec.EnableMechanism{SaslMechanism: "PLAIN"}
 	return saslHandshakeResp.Bytes(), gnet.None

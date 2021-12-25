@@ -20,7 +20,7 @@ type OffsetFetchPartitionResp struct {
 	ErrorCode   int16
 }
 
-func NewOffsetFetchResp(corrId int) *OffsetFetchResp {
+func NewOffsetFetchResp(version int16, corrId int) *OffsetFetchResp {
 	fetchResp := OffsetFetchResp{}
 	fetchResp.CorrelationId = corrId
 	return &fetchResp

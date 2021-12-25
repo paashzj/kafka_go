@@ -6,7 +6,7 @@ type HeartBeatResp struct {
 	ThrottleTime int
 }
 
-func NewHeartBeatResp(corrId int) *HeartBeatResp {
+func NewHeartBeatResp(version int16, corrId int) *HeartBeatResp {
 	beatResp := HeartBeatResp{}
 	beatResp.CorrelationId = corrId
 	return &beatResp

@@ -35,7 +35,7 @@ func (s *Server) ReactLeaveGroupVersion(ctx *context.NetworkContext, frame []byt
 		m.GroupInstanceId = member.GroupInstanceId
 		lowReq.Members[i] = m
 	}
-	resp := codec.NewLeaveGroupResp(req.CorrelationId)
+	resp := codec.NewLeaveGroupResp(version, req.CorrelationId)
 	lowResp, err := s.kafkaImpl.GroupLeave(ctx.Addr, lowReq)
 	if err != nil {
 		return nil, gnet.Close

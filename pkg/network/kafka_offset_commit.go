@@ -46,7 +46,7 @@ func (s *Server) OffsetCommitVersion(ctx *context.NetworkContext, frame []byte, 
 	if err != nil {
 		return nil, gnet.Close
 	}
-	resp := codec.NewOffsetCommitResp(req.CorrelationId)
+	resp := codec.NewOffsetCommitResp(version, req.CorrelationId)
 	resp.Topics = make([]*codec.OffsetCommitTopicResp, len(lowTopicRespList))
 	for i, lowTopicResp := range lowTopicRespList {
 		f := &codec.OffsetCommitTopicResp{}

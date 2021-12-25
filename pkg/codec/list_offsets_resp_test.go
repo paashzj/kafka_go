@@ -15,7 +15,7 @@ func TestCodeListOffsetsRespV5(t *testing.T) {
 	listOffsetTopicResp := &ListOffsetTopicResp{}
 	listOffsetTopicResp.Topic = "test-5"
 	listOffsetTopicResp.ListOffsetPartitions = []*ListOffsetPartitionResp{listOffsetPartitionResp}
-	listOffsetResp := NewListOffsetResp(8)
+	listOffsetResp := NewListOffsetResp(0, 8)
 	listOffsetResp.OffsetTopics = []*ListOffsetTopicResp{listOffsetTopicResp}
 	bytes := listOffsetResp.Bytes(5)
 	expectBytes := testHex2Bytes(t, "0000000800000000000000010006746573742d3500000001000000000000ffffffffffffffff000000000000000000000000")

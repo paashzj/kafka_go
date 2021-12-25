@@ -22,6 +22,6 @@ func (s *Server) ReactMetadataVersion(frame []byte, version int16, config *codec
 	}
 	logrus.Info("metadata req ", metadataTopicReq)
 	topics := metadataTopicReq.Topics
-	metadataResp := codec.NewMetadataResp(metadataTopicReq.CorrelationId, config, topics[0].Topic, 0)
+	metadataResp := codec.NewMetadataResp(version, metadataTopicReq.CorrelationId, config, topics[0].Topic, 0)
 	return metadataResp.Bytes(), gnet.None
 }

@@ -47,7 +47,7 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 	if err != nil {
 		return nil, gnet.Close
 	}
-	resp := codec.NewFetchResp(req.CorrelationId)
+	resp := codec.NewFetchResp(version, req.CorrelationId)
 	resp.TopicResponses = make([]*codec.FetchTopicResp, len(lowTopicRespList))
 	for i, lowTopicResp := range lowTopicRespList {
 		f := &codec.FetchTopicResp{}

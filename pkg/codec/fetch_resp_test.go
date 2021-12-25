@@ -36,7 +36,7 @@ func TestCodeFetchRespV11(t *testing.T) {
 	fetchTopicResp := &FetchTopicResp{}
 	fetchTopicResp.Topic = "test-5"
 	fetchTopicResp.PartitionDataList = []*FetchPartitionResp{fetchPartitionResp}
-	fetchResp := NewFetchResp(10)
+	fetchResp := NewFetchResp(0, 10)
 	fetchResp.ErrorCode = 0
 	fetchResp.SessionId = 997895662
 	fetchResp.TopicResponses = []*FetchTopicResp{fetchTopicResp}

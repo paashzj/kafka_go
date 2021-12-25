@@ -9,7 +9,7 @@ type SyncGroupResp struct {
 	MemberAssignment string
 }
 
-func NewSyncGroupResp(corrId int) *SyncGroupResp {
+func NewSyncGroupResp(version int16, corrId int) *SyncGroupResp {
 	syncGroupResp := SyncGroupResp{}
 	syncGroupResp.CorrelationId = corrId
 	return &syncGroupResp

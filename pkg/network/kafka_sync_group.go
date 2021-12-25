@@ -40,7 +40,7 @@ func (s *Server) ReactSyncGroupVersion(ctx *context.NetworkContext, frame []byte
 		g.MemberId = groupAssignment.MemberId
 		lowReq.GroupAssignments[i] = g
 	}
-	resp := codec.NewSyncGroupResp(req.CorrelationId)
+	resp := codec.NewSyncGroupResp(version, req.CorrelationId)
 	lowResp, err := s.kafkaImpl.GroupSync(ctx.Addr, lowReq)
 	if err != nil {
 		return nil, gnet.Close

@@ -6,7 +6,7 @@ import (
 )
 
 func TestCodeOffsetFetchRespV6(t *testing.T) {
-	offsetFetchResp := NewOffsetFetchResp(7)
+	offsetFetchResp := NewOffsetFetchResp(0, 7)
 	offsetFetchPartitionResp := &OffsetFetchPartitionResp{}
 	offsetFetchPartitionResp.PartitionId = 0
 	offsetFetchPartitionResp.Offset = -1

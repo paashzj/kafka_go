@@ -8,7 +8,7 @@ type LeaveGroupResp struct {
 	MemberErrorCode int16
 }
 
-func NewLeaveGroupResp(corrId int) *LeaveGroupResp {
+func NewLeaveGroupResp(version int16, corrId int) *LeaveGroupResp {
 	leaveGroupResp := LeaveGroupResp{}
 	leaveGroupResp.CorrelationId = corrId
 	return &leaveGroupResp

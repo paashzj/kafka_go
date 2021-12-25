@@ -40,7 +40,7 @@ type Replica struct {
 	ReplicaId int
 }
 
-func NewMetadataResp(corrId int, config *KafkaProtocolConfig, topicName string, errorCode int16) *MetadataResp {
+func NewMetadataResp(version int16, corrId int, config *KafkaProtocolConfig, topicName string, errorCode int16) *MetadataResp {
 	metadataResp := MetadataResp{}
 	metadataResp.CorrelationId = corrId
 	metadataResp.BrokerMetadataList = make([]*BrokerMetadata, 1)

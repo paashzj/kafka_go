@@ -24,7 +24,7 @@ type FetchPartitionResp struct {
 	RecordBatch         *RecordBatch
 }
 
-func NewFetchResp(corrId int) *FetchResp {
+func NewFetchResp(version int16, corrId int) *FetchResp {
 	resp := FetchResp{}
 	resp.CorrelationId = corrId
 	return &resp

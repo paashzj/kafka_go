@@ -10,7 +10,7 @@ type FindCoordinatorResp struct {
 	Port         int
 }
 
-func NewFindCoordinatorResp(corrId int, config *KafkaProtocolConfig) *FindCoordinatorResp {
+func NewFindCoordinatorResp(version int16, corrId int, config *KafkaProtocolConfig) *FindCoordinatorResp {
 	findCoordinatorResp := FindCoordinatorResp{}
 	findCoordinatorResp.CorrelationId = corrId
 	findCoordinatorResp.NodeId = 0

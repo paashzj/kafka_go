@@ -8,7 +8,7 @@ type SaslAuthenticateResp struct {
 	SessionLifetime int64
 }
 
-func NewSaslHandshakeAuthResp(corrId int) *SaslAuthenticateResp {
+func NewSaslHandshakeAuthResp(version int16, corrId int) *SaslAuthenticateResp {
 	handshakeAuthResp := SaslAuthenticateResp{}
 	handshakeAuthResp.CorrelationId = corrId
 	return &handshakeAuthResp

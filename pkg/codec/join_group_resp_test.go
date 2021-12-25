@@ -9,7 +9,7 @@ func TestCodeJoinGroupRespV6(t *testing.T) {
 	member := &Member{}
 	member.MemberId = "consumer-8dd7b96b-6b94-4a9b-b2cc-3cb5898c9cdf-1-433acb6a-e6ec-45aa-b78d-6a249cff07fc"
 	member.Metadata = string(testHex2Bytes(t, "0001000000010006746573742d35ffffffff00000000"))
-	joinGroupResp := NewJoinGroupResp(5)
+	joinGroupResp := NewJoinGroupResp(0, 5)
 	joinGroupResp.GenerationId = 1
 	joinGroupResp.ProtocolName = "range"
 	joinGroupResp.LeaderId = "consumer-8dd7b96b-6b94-4a9b-b2cc-3cb5898c9cdf-1-433acb6a-e6ec-45aa-b78d-6a249cff07fc"

@@ -6,7 +6,7 @@ import (
 )
 
 func TestCodeSyncGroupRespV4(t *testing.T) {
-	syncGroupResp := NewSyncGroupResp(6)
+	syncGroupResp := NewSyncGroupResp(0, 6)
 	syncGroupResp.ProtocolType = ""
 	syncGroupResp.ProtocolName = ""
 	syncGroupResp.MemberAssignment = string(testHex2Bytes(t, "0001000000010006746573742d350000000100000000ffffffff"))

@@ -16,7 +16,7 @@ type OffsetCommitPartitionResp struct {
 	ErrorCode   int16
 }
 
-func NewOffsetCommitResp(corrId int) *OffsetCommitResp {
+func NewOffsetCommitResp(version int16, corrId int) *OffsetCommitResp {
 	CommitResp := OffsetCommitResp{}
 	CommitResp.CorrelationId = corrId
 	return &CommitResp
