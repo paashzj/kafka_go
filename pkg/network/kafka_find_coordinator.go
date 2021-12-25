@@ -23,5 +23,5 @@ func (s *Server) FindCoordinatorVersion(frame []byte, version int16, config *cod
 	logrus.Info("req ", req)
 	resp := codec.NewFindCoordinatorResp(req.CorrelationId, config)
 	logrus.Info("resp ", resp)
-	return resp.Bytes(), gnet.None
+	return resp.Bytes(version), gnet.None
 }

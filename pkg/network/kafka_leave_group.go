@@ -49,5 +49,5 @@ func (s *Server) ReactLeaveGroupVersion(ctx *context.NetworkContext, frame []byt
 		resp.Members[i] = m
 	}
 	resp.MemberErrorCode = int16(lowResp.MemberErrorCode)
-	return resp.Bytes(), gnet.None
+	return resp.Bytes(version), gnet.None
 }

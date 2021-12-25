@@ -21,5 +21,5 @@ func (s *Server) ReactHeartbeatVersion(frame []byte, version int16) ([]byte, gne
 	}
 	klog.Info("heart beat req ", heartbeatReqV4)
 	heartBeatResp := codec.NewHeartBeatResp(heartbeatReqV4.CorrelationId)
-	return heartBeatResp.Bytes(), gnet.None
+	return heartBeatResp.Bytes(version), gnet.None
 }

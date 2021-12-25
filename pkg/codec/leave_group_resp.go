@@ -14,7 +14,7 @@ func NewLeaveGroupResp(corrId int) *LeaveGroupResp {
 	return &leaveGroupResp
 }
 
-func (l *LeaveGroupResp) BytesLength() int {
+func (l *LeaveGroupResp) BytesLength(version int16) int {
 	result := LenCorrId + LenTaggedField + LenThrottleTime + LenErrorCode + varintSize(len(l.Members)+1)
 	for _, val := range l.Members {
 		result += CompactStrLen(val.MemberId)
@@ -24,8 +24,8 @@ func (l *LeaveGroupResp) BytesLength() int {
 	return result + LenErrorCode + LenTaggedField
 }
 
-func (l *LeaveGroupResp) Bytes() []byte {
-	bytes := make([]byte, l.BytesLength())
+func (l *LeaveGroupResp) Bytes(version int16) []byte {
+	bytes := make([]byte, l.BytesLength(version))
 	idx := 0
 	idx = putCorrId(bytes, idx, l.CorrelationId)
 	idx = putTaggedField(bytes, idx)

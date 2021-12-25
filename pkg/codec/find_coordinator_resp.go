@@ -19,14 +19,14 @@ func NewFindCoordinatorResp(corrId int, config *KafkaProtocolConfig) *FindCoordi
 	return &findCoordinatorResp
 }
 
-func (f *FindCoordinatorResp) BytesLength() int {
+func (f *FindCoordinatorResp) BytesLength(version int16) int {
 	result := LenCorrId + LenTaggedField + LenThrottleTime
 	result += LenErrorCode + CompactNullableStrLen(f.ErrorMessage) + LenNodeId
 	return result + CompactStrLen(f.Host) + LenPort + LenTaggedField
 }
 
-func (f *FindCoordinatorResp) Bytes() []byte {
-	bytes := make([]byte, f.BytesLength())
+func (f *FindCoordinatorResp) Bytes(version int16) []byte {
+	bytes := make([]byte, f.BytesLength(version))
 	idx := 0
 	idx = putCorrId(bytes, idx, f.CorrelationId)
 	idx = putTaggedField(bytes, idx)

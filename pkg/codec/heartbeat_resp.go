@@ -12,12 +12,12 @@ func NewHeartBeatResp(corrId int) *HeartBeatResp {
 	return &beatResp
 }
 
-func (h *HeartBeatResp) BytesLength() int {
+func (h *HeartBeatResp) BytesLength(version int16) int {
 	return LenCorrId + LenTaggedField + LenThrottleTime + LenErrorCode + LenTaggedField
 }
 
-func (h *HeartBeatResp) Bytes() []byte {
-	bytes := make([]byte, h.BytesLength())
+func (h *HeartBeatResp) Bytes(version int16) []byte {
+	bytes := make([]byte, h.BytesLength(version))
 	idx := 0
 	idx = putCorrId(bytes, idx, h.CorrelationId)
 	idx = putTaggedField(bytes, idx)

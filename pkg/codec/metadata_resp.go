@@ -61,7 +61,7 @@ func NewMetadataResp(corrId int, config *KafkaProtocolConfig, topicName string, 
 	return &metadataResp
 }
 
-func (m *MetadataResp) BytesLength() int {
+func (m *MetadataResp) BytesLength(version int16) int {
 	// 4字节CorrId + 1字节TaggedField + 4字节 ThrottleTime + 1字节Broker metadata长度
 	result := LenCorrId + LenTaggedField + LenThrottleTime + varintSize(len(m.BrokerMetadataList)+1)
 	for _, val := range m.BrokerMetadataList {
@@ -93,8 +93,8 @@ func (m *MetadataResp) BytesLength() int {
 	return result + LenClusterAuthOperation + LenTaggedField
 }
 
-func (m *MetadataResp) Bytes() []byte {
-	bytes := make([]byte, m.BytesLength())
+func (m *MetadataResp) Bytes(version int16) []byte {
+	bytes := make([]byte, m.BytesLength(version))
 	idx := 0
 	idx = putCorrId(bytes, idx, m.CorrelationId)
 	idx = putTaggedField(bytes, idx)

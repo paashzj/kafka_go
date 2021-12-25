@@ -24,5 +24,5 @@ func (s *Server) ReactSaslVersion(frame []byte, version int16) ([]byte, gnet.Act
 	saslHandshakeResp := codec.NewSaslHandshakeResp(req.CorrelationId)
 	saslHandshakeResp.EnableMechanisms = make([]*codec.EnableMechanism, 1)
 	saslHandshakeResp.EnableMechanisms[0] = &codec.EnableMechanism{SaslMechanism: "PLAIN"}
-	return saslHandshakeResp.Bytes(), gnet.None
+	return saslHandshakeResp.Bytes(version), gnet.None
 }

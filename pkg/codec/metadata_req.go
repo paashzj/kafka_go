@@ -33,13 +33,21 @@ func DecodeMetadataTopicReq(bytes []byte, version int16) (metadataReq *MetadataR
 	if version == 9 {
 		idx = readTaggedField(bytes, idx)
 	}
-	length := int(bytes[idx] - 1)
-	idx++
+	var length int
+	if version == 1 {
+		length, idx = readArrayLen(bytes, idx)
+	} else {
+		length, idx = readCompactArrayLen(bytes, idx)
+	}
 	metadataReq.Topics = make([]*MetadataTopicReq, length)
 	for i := 0; i < length; i++ {
 		metadataTopicReq := MetadataTopicReq{}
-		metadataTopicReq.Topic, idx = readTopic(bytes, idx)
-		readTaggedField(bytes, idx)
+		if version == 1 {
+			metadataTopicReq.Topic, idx = readTopicString(bytes, idx)
+		} else if version == 9 {
+			metadataTopicReq.Topic, idx = readTopic(bytes, idx)
+			readTaggedField(bytes, idx)
+		}
 		metadataReq.Topics[i] = &metadataTopicReq
 	}
 	return metadataReq, nil

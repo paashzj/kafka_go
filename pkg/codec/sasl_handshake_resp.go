@@ -16,7 +16,7 @@ func NewSaslHandshakeResp(corrId int) *SaslHandshakeResp {
 	return &saslHandshakeResp
 }
 
-func (s *SaslHandshakeResp) BytesLength() int {
+func (s *SaslHandshakeResp) BytesLength(version int16) int {
 	length := LenCorrId + LenErrorCode + LenArray
 	for _, val := range s.EnableMechanisms {
 		length += StrLen(val.SaslMechanism)
@@ -25,8 +25,8 @@ func (s *SaslHandshakeResp) BytesLength() int {
 }
 
 // Bytes 转化为字节数组
-func (s *SaslHandshakeResp) Bytes() []byte {
-	bytes := make([]byte, s.BytesLength())
+func (s *SaslHandshakeResp) Bytes(version int16) []byte {
+	bytes := make([]byte, s.BytesLength(version))
 	idx := 0
 	idx = putCorrId(bytes, idx, s.CorrelationId)
 	idx = putErrorCode(bytes, idx, s.ErrorCode)

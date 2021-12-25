@@ -11,7 +11,7 @@ func TestCodeFindCoordinatorRespV3(t *testing.T) {
 	protocolConfig.AdvertiseHost = "localhost"
 	protocolConfig.AdvertisePort = 9092
 	findCoordinatorResp := NewFindCoordinatorResp(0, &protocolConfig)
-	bytes := findCoordinatorResp.Bytes()
+	bytes := findCoordinatorResp.Bytes(3)
 	expectBytes := testHex2Bytes(t, "000000000000000000000000000000000a6c6f63616c686f73740000238400")
 	assert.Equal(t, expectBytes, bytes)
 }
