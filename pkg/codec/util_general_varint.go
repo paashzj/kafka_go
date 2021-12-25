@@ -32,6 +32,7 @@ func readVarint(bytes []byte, idx int) (int, int) {
 	return int(varint), idx + i
 }
 
+//nolint
 func varint64Size(x int64) int {
 	ux := uint64(x) << 1
 	if x < 0 {

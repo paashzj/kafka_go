@@ -2,10 +2,10 @@ package network
 
 import (
 	"github.com/paashzj/kafka_go/pkg/codec"
-	"github.com/paashzj/kafka_go/pkg/log"
 	"github.com/paashzj/kafka_go/pkg/network/context"
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
+	"github.com/sirupsen/logrus"
 	"k8s.io/klog/v2"
 )
 
@@ -25,7 +25,7 @@ func (s *Server) OffsetCommitVersion(ctx *context.NetworkContext, frame []byte, 
 	if !s.checkSasl(ctx) {
 		return nil, gnet.Close
 	}
-	log.Codec().Info("offset commit req ", req)
+	logrus.Info("offset commit req ", req)
 	lowReqList := make([]*service.OffsetCommitTopicReq, len(req.OffsetCommitTopicReqList))
 	for i, topicReq := range req.OffsetCommitTopicReqList {
 		if !s.checkSaslTopic(ctx, topicReq.Topic) {

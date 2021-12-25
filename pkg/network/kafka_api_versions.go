@@ -2,8 +2,8 @@ package network
 
 import (
 	"github.com/paashzj/kafka_go/pkg/codec"
-	"github.com/paashzj/kafka_go/pkg/log"
 	"github.com/panjf2000/gnet"
+	"github.com/sirupsen/logrus"
 	"k8s.io/klog/v2"
 )
 
@@ -20,7 +20,7 @@ func (s *Server) ReactApiVersion(frame []byte, version int16) ([]byte, gnet.Acti
 	if err != nil {
 		return nil, gnet.Close
 	}
-	log.Codec().Info("api request ", apiRequestV0)
+	logrus.Info("api request ", apiRequestV0)
 	apiResponses := codec.NewApiVersionResp(apiRequestV0.CorrelationId)
 	return apiResponses.Bytes(version), gnet.None
 }

@@ -6,8 +6,6 @@ import (
 	"k8s.io/klog/v2"
 )
 
-var logLevel = flag.String("v", "5", "log level")
-
 var listenAddr = flag.String("listen_addr", "0.0.0.0", "kafka listen addr")
 var multiCore = flag.Bool("multi_core", false, "multi core")
 var needSasl = flag.Bool("need_sasl", false, "need sasl")
@@ -20,7 +18,6 @@ var advertiseListenPort = flag.Int("advertise_port", 9092, "kafka advertise port
 func main() {
 	flag.Parse()
 	serverConfig := &kafka.ServerConfig{}
-	serverConfig.LogLevel = *logLevel
 	serverConfig.ListenAddr = *listenAddr
 	serverConfig.MultiCore = *multiCore
 	serverConfig.NeedSasl = *needSasl

@@ -2,10 +2,10 @@ package network
 
 import (
 	"github.com/paashzj/kafka_go/pkg/codec"
-	"github.com/paashzj/kafka_go/pkg/log"
 	"github.com/paashzj/kafka_go/pkg/network/context"
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
+	"github.com/sirupsen/logrus"
 	"k8s.io/klog/v2"
 )
 
@@ -25,7 +25,7 @@ func (s *Server) ReactSyncGroupVersion(ctx *context.NetworkContext, frame []byte
 	if !s.checkSaslGroup(ctx, req.GroupId) {
 		return nil, gnet.Close
 	}
-	log.Codec().Info("sync group req", req)
+	logrus.Info("sync group req", req)
 	lowReq := &service.SyncGroupReq{}
 	lowReq.GroupId = req.GroupId
 	lowReq.GenerationId = req.GenerationId

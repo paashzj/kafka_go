@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"github.com/paashzj/kafka_go/pkg/codec"
 	"github.com/paashzj/kafka_go/pkg/codec/api"
-	"github.com/paashzj/kafka_go/pkg/log"
 	"github.com/paashzj/kafka_go/pkg/network/context"
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
+	"github.com/sirupsen/logrus"
 	"k8s.io/klog/v2"
 	"sync"
 	"sync/atomic"
@@ -63,7 +63,7 @@ func (s *Server) OnInitComplete(server gnet.Server) (action gnet.Action) {
 // React Kafka 协议格式为APIKey和API Version
 // APIKey 样例: 00 12
 func (s *Server) React(frame []byte, c gnet.Conn) ([]byte, gnet.Action) {
-	log.Network().Info("frame len is ", len(frame))
+	logrus.Info("frame len is ", len(frame))
 	if len(frame) < 5 {
 		klog.Error("invalid data packet")
 		return nil, gnet.Close

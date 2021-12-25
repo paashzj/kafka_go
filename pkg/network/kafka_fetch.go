@@ -2,10 +2,10 @@ package network
 
 import (
 	"github.com/paashzj/kafka_go/pkg/codec"
-	"github.com/paashzj/kafka_go/pkg/log"
 	"github.com/paashzj/kafka_go/pkg/network/context"
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
+	"github.com/sirupsen/logrus"
 	"k8s.io/klog/v2"
 )
 
@@ -25,7 +25,7 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 	if !s.checkSasl(ctx) {
 		return nil, gnet.Close
 	}
-	log.Codec().Info("fetch req ", req)
+	logrus.Info("fetch req ", req)
 	lowReq := &service.FetchReq{}
 	lowReq.FetchTopicReqList = make([]*service.FetchTopicReq, len(req.FetchTopics))
 	for i, topicReq := range req.FetchTopics {

@@ -2,10 +2,10 @@ package network
 
 import (
 	"github.com/paashzj/kafka_go/pkg/codec"
-	"github.com/paashzj/kafka_go/pkg/log"
 	"github.com/paashzj/kafka_go/pkg/network/context"
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
+	"github.com/sirupsen/logrus"
 	"k8s.io/klog/v2"
 )
 
@@ -25,7 +25,7 @@ func (s *Server) ReactLeaveGroupVersion(ctx *context.NetworkContext, frame []byt
 	if !s.checkSaslGroup(ctx, req.GroupId) {
 		return nil, gnet.Close
 	}
-	log.Codec().Info("leave group req ", req)
+	logrus.Info("leave group req ", req)
 	lowReq := &service.LeaveGroupReq{}
 	lowReq.GroupId = req.GroupId
 	lowReq.Members = make([]*service.LeaveGroupMember, len(req.Members))

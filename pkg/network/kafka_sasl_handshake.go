@@ -2,8 +2,8 @@ package network
 
 import (
 	"github.com/paashzj/kafka_go/pkg/codec"
-	"github.com/paashzj/kafka_go/pkg/log"
 	"github.com/panjf2000/gnet"
+	"github.com/sirupsen/logrus"
 	"k8s.io/klog/v2"
 )
 
@@ -20,7 +20,7 @@ func (s *Server) ReactSaslVersion(frame []byte, version int16) ([]byte, gnet.Act
 	if err != nil {
 		return nil, gnet.Close
 	}
-	log.Codec().Info("sasl handshake request ", req)
+	logrus.Info("sasl handshake request ", req)
 	saslHandshakeResp := codec.NewSaslHandshakeResp(req.CorrelationId)
 	saslHandshakeResp.EnableMechanisms = make([]*codec.EnableMechanism, 1)
 	saslHandshakeResp.EnableMechanisms[0] = &codec.EnableMechanism{SaslMechanism: "PLAIN"}

@@ -2,8 +2,8 @@ package network
 
 import (
 	"github.com/paashzj/kafka_go/pkg/codec"
-	"github.com/paashzj/kafka_go/pkg/log"
 	"github.com/panjf2000/gnet"
+	"github.com/sirupsen/logrus"
 	"k8s.io/klog/v2"
 )
 
@@ -20,7 +20,7 @@ func (s *Server) ReactMetadataVersion(frame []byte, version int16, config *codec
 	if err != nil {
 		return nil, gnet.Close
 	}
-	log.Codec().Info("metadata req ", metadataTopicReq)
+	logrus.Info("metadata req ", metadataTopicReq)
 	topics := metadataTopicReq.Topics
 	metadataResp := codec.NewMetadataResp(metadataTopicReq.CorrelationId, config, topics[0].Topic, 0)
 	return metadataResp.Bytes(), gnet.None

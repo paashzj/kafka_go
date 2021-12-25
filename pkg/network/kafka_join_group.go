@@ -2,10 +2,10 @@ package network
 
 import (
 	"github.com/paashzj/kafka_go/pkg/codec"
-	"github.com/paashzj/kafka_go/pkg/log"
 	"github.com/paashzj/kafka_go/pkg/network/context"
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
+	"github.com/sirupsen/logrus"
 	"k8s.io/klog/v2"
 )
 
@@ -25,7 +25,7 @@ func (s *Server) ReactJoinGroupVersion(ctx *context.NetworkContext, frame []byte
 	if !s.checkSaslGroup(ctx, req.GroupId) {
 		return nil, gnet.Close
 	}
-	log.Codec().Info("join group req", req)
+	logrus.Info("join group req", req)
 	lowReq := &service.JoinGroupReq{}
 	lowReq.GroupId = req.GroupId
 	lowReq.SessionTimeout = req.SessionTimeout
@@ -44,7 +44,7 @@ func (s *Server) ReactJoinGroupVersion(ctx *context.NetworkContext, frame []byte
 	if err != nil {
 		return nil, gnet.Close
 	}
-	log.Codec().Info("resp ", resp)
+	logrus.Info("resp ", resp)
 	resp.ErrorCode = int16(lowResp.ErrorCode)
 	resp.GenerationId = lowResp.GenerationId
 	resp.ProtocolType = lowResp.ProtocolType

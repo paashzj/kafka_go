@@ -2,8 +2,8 @@ package network
 
 import (
 	"github.com/paashzj/kafka_go/pkg/codec"
-	"github.com/paashzj/kafka_go/pkg/log"
 	"github.com/panjf2000/gnet"
+	"github.com/sirupsen/logrus"
 	"k8s.io/klog/v2"
 )
 
@@ -20,8 +20,8 @@ func (s *Server) FindCoordinatorVersion(frame []byte, version int16, config *cod
 	if err != nil {
 		return nil, gnet.Close
 	}
-	log.Codec().Info("req ", req)
+	logrus.Info("req ", req)
 	resp := codec.NewFindCoordinatorResp(req.CorrelationId, config)
-	log.Codec().Info("resp ", resp)
+	logrus.Info("resp ", resp)
 	return resp.Bytes(), gnet.None
 }

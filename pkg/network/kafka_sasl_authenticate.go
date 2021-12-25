@@ -2,10 +2,10 @@ package network
 
 import (
 	"github.com/paashzj/kafka_go/pkg/codec"
-	"github.com/paashzj/kafka_go/pkg/log"
 	"github.com/paashzj/kafka_go/pkg/network/context"
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
+	"github.com/sirupsen/logrus"
 	"k8s.io/klog/v2"
 )
 
@@ -22,7 +22,7 @@ func (s *Server) ReactSaslHandshakeAuthVersion(frame []byte, version int16, cont
 	if err != nil {
 		return nil, gnet.Close
 	}
-	log.Codec().Info("sasl handshake request ", req)
+	logrus.Info("sasl handshake request ", req)
 	saslHandshakeResp := codec.NewSaslHandshakeAuthResp(req.CorrelationId)
 	saslReq := service.SaslReq{Username: req.Username, Password: req.Password}
 	authResult, errorCode := service.SaslAuth(s.kafkaImpl, saslReq)
