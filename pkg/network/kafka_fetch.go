@@ -6,14 +6,13 @@ import (
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
 	"github.com/sirupsen/logrus"
-	"k8s.io/klog/v2"
 )
 
 func (s *Server) Fetch(ctx *context.NetworkContext, frame []byte, version int16) ([]byte, gnet.Action) {
 	if version == 11 {
 		return s.ReactFetchVersion(ctx, frame, version)
 	}
-	klog.Error("unknown fetch version ", version)
+	logrus.Error("unknown fetch version ", version)
 	return nil, gnet.Close
 }
 

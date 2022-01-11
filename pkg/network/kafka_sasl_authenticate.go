@@ -6,14 +6,13 @@ import (
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
 	"github.com/sirupsen/logrus"
-	"k8s.io/klog/v2"
 )
 
 func (s *Server) SaslAuthenticate(frame []byte, version int16, context *context.NetworkContext) ([]byte, gnet.Action) {
 	if version == 1 || version == 2 {
 		return s.ReactSaslHandshakeAuthVersion(frame, version, context)
 	}
-	klog.Error("unknown handshake auth version ", version)
+	logrus.Error("unknown handshake auth version ", version)
 	return nil, gnet.Close
 }
 

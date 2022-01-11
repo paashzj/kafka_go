@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/paashzj/kafka_go/pkg/service"
-	"k8s.io/klog/v2"
+	"github.com/sirupsen/logrus"
 	"net"
 )
 
@@ -99,17 +99,17 @@ func (e ExampleKafkaImpl) OffsetFetch(addr *net.Addr, topic string, partition in
 }
 
 func (e ExampleKafkaImpl) SaslAuth(req service.SaslReq) (bool, service.ErrorCode) {
-	klog.Info("username ", req.Username, "password ", req.Password)
+	logrus.Info("username ", req.Username, "password ", req.Password)
 	return true, service.NONE
 }
 
 func (e ExampleKafkaImpl) SaslAuthTopic(req service.SaslReq, topic string) (bool, service.ErrorCode) {
-	klog.Info("username ", req.Username, "password ", req.Password, "topic ", topic)
+	logrus.Info("username ", req.Username, "password ", req.Password, "topic ", topic)
 	return true, service.NONE
 }
 
 func (e ExampleKafkaImpl) SaslAuthConsumerGroup(req service.SaslReq, consumerGroup string) (bool, service.ErrorCode) {
-	klog.Info("username ", req.Username, "password ", req.Password, "group ", consumerGroup)
+	logrus.Info("username ", req.Username, "password ", req.Password, "group ", consumerGroup)
 	return true, service.NONE
 }
 

@@ -6,14 +6,13 @@ import (
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
 	"github.com/sirupsen/logrus"
-	"k8s.io/klog/v2"
 )
 
 func (s *Server) ListOffsets(ctx *context.NetworkContext, frame []byte, version int16) ([]byte, gnet.Action) {
 	if version == 5 {
 		return s.ListOffsetsVersion(ctx, frame, version)
 	}
-	klog.Error("unknown offset version ", version)
+	logrus.Error("unknown offset version ", version)
 	return nil, gnet.Close
 }
 

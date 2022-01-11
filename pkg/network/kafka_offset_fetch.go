@@ -6,14 +6,13 @@ import (
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
 	"github.com/sirupsen/logrus"
-	"k8s.io/klog/v2"
 )
 
 func (s *Server) OffsetFetch(ctx *context.NetworkContext, frame []byte, version int16) ([]byte, gnet.Action) {
 	if version == 6 || version == 7 {
 		return s.OffsetFetchVersion(ctx, frame, version)
 	}
-	klog.Error("unknown offset fetch version ", version)
+	logrus.Error("unknown offset fetch version ", version)
 	return nil, gnet.Close
 }
 

@@ -9,7 +9,6 @@ import (
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
 	"github.com/sirupsen/logrus"
-	"k8s.io/klog/v2"
 	"sync"
 	"sync/atomic"
 )
@@ -56,7 +55,7 @@ type Server struct {
 }
 
 func (s *Server) OnInitComplete(server gnet.Server) (action gnet.Action) {
-	klog.Info("Kafka Server started")
+	logrus.Info("Kafka Server started")
 	return
 }
 
@@ -65,7 +64,7 @@ func (s *Server) OnInitComplete(server gnet.Server) (action gnet.Action) {
 func (s *Server) React(frame []byte, c gnet.Conn) ([]byte, gnet.Action) {
 	logrus.Info("frame len is ", len(frame))
 	if len(frame) < 5 {
-		klog.Error("invalid data packet")
+		logrus.Error("invalid data packet")
 		return nil, gnet.Close
 	}
 	connMutex.Lock()
@@ -145,23 +144,23 @@ func (s *Server) React(frame []byte, c gnet.Conn) ([]byte, gnet.Action) {
 		}
 		return s.FindCoordinator(frame[4:], apiVersion, s.kafkaProtocolConfig)
 	}
-	klog.Error("unknown api ", apiKey, apiVersion)
+	logrus.Error("unknown api ", apiKey, apiVersion)
 	return nil, gnet.Close
 }
 
 func (s *Server) OnOpened(c gnet.Conn) (out []byte, action gnet.Action) {
 	if atomic.LoadInt32(&connCount) > s.kafkaProtocolConfig.MaxConn {
-		klog.Error("connection reach max, refused to connect ", c.RemoteAddr())
+		logrus.Error("connection reach max, refused to connect ", c.RemoteAddr())
 		return nil, gnet.Close
 	}
 	connCount := atomic.AddInt32(&connCount, 1)
 	s.ConnMap.Store(c.RemoteAddr(), c)
-	klog.Info("new connection connected ", connCount, " from ", c.RemoteAddr())
+	logrus.Info("new connection connected ", connCount, " from ", c.RemoteAddr())
 	return
 }
 
 func (s *Server) OnClosed(c gnet.Conn, err error) (action gnet.Action) {
-	klog.Info("connection closed from ", c.RemoteAddr())
+	logrus.Info("connection closed from ", c.RemoteAddr())
 	s.ConnMap.Delete(c.RemoteAddr())
 	s.SaslMap.Delete(c.RemoteAddr())
 	atomic.AddInt32(&connCount, -1)

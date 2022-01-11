@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/paashzj/kafka_go/pkg/kafka"
-	"k8s.io/klog/v2"
+	"github.com/sirupsen/logrus"
 )
 
 var listenAddr = flag.String("listen_addr", "0.0.0.0", "kafka listen addr")
@@ -28,6 +28,6 @@ func main() {
 	e := &ExampleKafkaImpl{}
 	_, err := kafka.Run(serverConfig, e)
 	if err != nil {
-		klog.Error(err)
+		logrus.Error(err)
 	}
 }

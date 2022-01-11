@@ -4,14 +4,13 @@ import (
 	"github.com/paashzj/kafka_go/pkg/codec"
 	"github.com/panjf2000/gnet"
 	"github.com/sirupsen/logrus"
-	"k8s.io/klog/v2"
 )
 
 func (s *Server) ApiVersions(frame []byte, version int16) ([]byte, gnet.Action) {
 	if version == 0 || version == 3 {
 		return s.ReactApiVersion(frame, version)
 	}
-	klog.Error("unknown api version ", version)
+	logrus.Error("unknown api version ", version)
 	return nil, gnet.Close
 }
 

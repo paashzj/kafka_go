@@ -4,14 +4,13 @@ import (
 	"github.com/paashzj/kafka_go/pkg/codec"
 	"github.com/panjf2000/gnet"
 	"github.com/sirupsen/logrus"
-	"k8s.io/klog/v2"
 )
 
 func (s *Server) Metadata(frame []byte, version int16, config *codec.KafkaProtocolConfig) ([]byte, gnet.Action) {
 	if version == 9 {
 		return s.ReactMetadataVersion(frame, version, config)
 	}
-	klog.Error("unknown metadata version ", version)
+	logrus.Error("unknown metadata version ", version)
 	return nil, gnet.Close
 }
 

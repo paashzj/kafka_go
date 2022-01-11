@@ -6,14 +6,13 @@ import (
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
 	"github.com/sirupsen/logrus"
-	"k8s.io/klog/v2"
 )
 
 func (s *Server) LeaveGroup(ctx *context.NetworkContext, frame []byte, version int16) ([]byte, gnet.Action) {
 	if version == 4 {
 		return s.ReactLeaveGroupVersion(ctx, frame, version)
 	}
-	klog.Error("unknown leave group version ", version)
+	logrus.Error("unknown leave group version ", version)
 	return nil, gnet.Close
 }
 

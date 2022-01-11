@@ -4,14 +4,13 @@ import (
 	"github.com/paashzj/kafka_go/pkg/codec"
 	"github.com/panjf2000/gnet"
 	"github.com/sirupsen/logrus"
-	"k8s.io/klog/v2"
 )
 
 func (s *Server) FindCoordinator(frame []byte, version int16, config *codec.KafkaProtocolConfig) ([]byte, gnet.Action) {
 	if version == 3 {
 		return s.FindCoordinatorVersion(frame, version, config)
 	}
-	klog.Error("unknown find coordinator version ", version)
+	logrus.Error("unknown find coordinator version ", version)
 	return nil, gnet.Close
 }
 

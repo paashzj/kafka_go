@@ -2,7 +2,7 @@ package codec
 
 import (
 	"errors"
-	"k8s.io/klog/v2"
+	"github.com/sirupsen/logrus"
 	"runtime/debug"
 )
 
@@ -27,7 +27,7 @@ type ListOffsetPartition struct {
 func DecodeListOffsetReq(bytes []byte, version int16) (offsetReq *ListOffsetReq, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			klog.Info("Recovered in f", r, string(debug.Stack()))
+			logrus.Info("Recovered in f", r, string(debug.Stack()))
 			offsetReq = nil
 			err = errors.New("codec failed")
 		}

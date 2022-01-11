@@ -2,7 +2,7 @@ package codec
 
 import (
 	"errors"
-	"k8s.io/klog/v2"
+	"github.com/sirupsen/logrus"
 	"runtime/debug"
 )
 
@@ -21,7 +21,7 @@ type MetadataTopicReq struct {
 func DecodeMetadataTopicReq(bytes []byte, version int16) (metadataReq *MetadataReq, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			klog.Info("Recovered in f", r, string(debug.Stack()))
+			logrus.Info("Recovered in f", r, string(debug.Stack()))
 			metadataReq = nil
 			err = errors.New("codec failed")
 		}

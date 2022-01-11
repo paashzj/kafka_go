@@ -3,7 +3,7 @@ package network
 import (
 	"github.com/paashzj/kafka_go/pkg/network/context"
 	"github.com/panjf2000/gnet"
-	"k8s.io/klog/v2"
+	"github.com/sirupsen/logrus"
 )
 
 func (s *Server) Authed(context *context.NetworkContext) bool {
@@ -14,6 +14,6 @@ func (s *Server) Authed(context *context.NetworkContext) bool {
 }
 
 func (s *Server) AuthFailed() ([]byte, gnet.Action) {
-	klog.Error("auth failed")
+	logrus.Error("auth failed")
 	return nil, gnet.Close
 }

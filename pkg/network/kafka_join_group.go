@@ -6,14 +6,13 @@ import (
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
 	"github.com/sirupsen/logrus"
-	"k8s.io/klog/v2"
 )
 
 func (s *Server) JoinGroup(ctx *context.NetworkContext, frame []byte, version int16) ([]byte, gnet.Action) {
 	if version == 6 || version == 7 {
 		return s.ReactJoinGroupVersion(ctx, frame, version)
 	}
-	klog.Error("unknown join group version ", version)
+	logrus.Error("unknown join group version ", version)
 	return nil, gnet.Close
 }
 
