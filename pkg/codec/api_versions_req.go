@@ -25,7 +25,7 @@ func DecodeApiReq(bytes []byte, version int16) (apiReq *ApiReq, err error) {
 	apiReq.CorrelationId, idx = readCorrId(bytes, idx)
 	apiReq.ClientId, idx = readClientId(bytes, idx)
 	if version == 3 {
-		idx := readTaggedField(bytes, idx)
+		idx = readTaggedField(bytes, idx)
 		apiReq.ClientSoftwareName, idx = readClientSoftwareName(bytes, idx)
 		apiReq.ClientSoftwareVersion, idx = readClientSoftwareVersion(bytes, idx)
 		idx = readTaggedField(bytes, idx)

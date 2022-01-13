@@ -5,6 +5,13 @@ import (
 	"testing"
 )
 
+func TestCodeApiVersionRespV0(t *testing.T) {
+	apiVersionResp := NewApiVersionResp(1)
+	bytes := apiVersionResp.Bytes(0)
+	expectBytes := testHex2Bytes(t, "0000000100000000001400000000000900010000000c00020000000600030000000b000800000008000900000007000a00000003000b00000007000c00000004000d00000004000e00000005000f00000005001000000004001100000001001200000003001300000007001400000006001500000002001700000004002400000002")
+	assert.Equal(t, expectBytes, bytes)
+}
+
 func TestCodeApiVersionRespV3(t *testing.T) {
 	apiVersionResp := NewApiVersionResp(1)
 	bytes := apiVersionResp.Bytes(3)
