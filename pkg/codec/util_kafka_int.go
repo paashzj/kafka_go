@@ -26,6 +26,10 @@ func readBrokerPort(bytes []byte, idx int) (int, int) {
 	return readInt(bytes, idx)
 }
 
+func putTopicAuthorizedOperation(bytes []byte, idx int, x int) int {
+	return putInt(bytes, idx, x)
+}
+
 func putClusterAuthorizedOperation(bytes []byte, idx int, corrId int) int {
 	return putInt(bytes, idx, corrId)
 }

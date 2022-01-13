@@ -22,7 +22,8 @@ const (
 	LenLeaderId             = 4
 	LenLeaderEpoch          = 4
 	LenControllerId         = 4
-	LenIsInternal           = 4
+	LenIsInternalV9         = 4
+	LenIsInternalV1         = 1
 	LenTopicAuthOperation   = 4
 	LenClusterAuthOperation = 4
 	LenRecordAttributes     = 1

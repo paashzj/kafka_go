@@ -54,6 +54,10 @@ func putFindCoordinatorErrorMessage(bytes []byte, idx int, str *string) int {
 	return putCompactStringNullable(bytes, idx, str)
 }
 
+func putHostString(bytes []byte, idx int, str string) int {
+	return putString(bytes, idx, str)
+}
+
 func putHost(bytes []byte, idx int, str string) int {
 	return putCompactString(bytes, idx, str)
 }
