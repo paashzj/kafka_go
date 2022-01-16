@@ -132,6 +132,12 @@ func (s *Server) React(frame []byte, c gnet.Conn) ([]byte, gnet.Action) {
 		}
 		return s.LeaveGroup(networkContext, frame[4:], apiVersion)
 	}
+	if apiKey == api.Produce {
+		if !s.Authed(networkContext) {
+			return s.AuthFailed()
+		}
+		return s.Produce(networkContext, frame[4:], apiVersion, s.kafkaProtocolConfig)
+	}
 	if apiKey == api.Metadata {
 		if !s.Authed(networkContext) {
 			return s.AuthFailed()

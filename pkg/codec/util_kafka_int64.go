@@ -2,6 +2,14 @@ package codec
 
 // This file is for kafka code int64 type. Format method as alpha order.
 
+func putLogStartOffset(bytes []byte, idx int, x int64) int {
+	return putInt64(bytes, idx, x)
+}
+
+func readLogStartOffset(bytes []byte, idx int) (int64, int) {
+	return readInt64(bytes, idx)
+}
+
 func putOffset(bytes []byte, idx int, x int64) int {
 	return putInt64(bytes, idx, x)
 }
@@ -15,6 +23,14 @@ func putProducerId(bytes []byte, idx int, x int64) int {
 }
 
 func readProducerId(bytes []byte, idx int) (int64, int) {
+	return readInt64(bytes, idx)
+}
+
+func putRetentionTime(bytes []byte, idx int, x int64) int {
+	return putInt64(bytes, idx, x)
+}
+
+func readRetentionTime(bytes []byte, idx int) (int64, int) {
 	return readInt64(bytes, idx)
 }
 

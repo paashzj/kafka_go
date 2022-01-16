@@ -7,8 +7,19 @@ import (
 
 func TestDecodeIllegalFindCoordinatorReq(t *testing.T) {
 	bytes := make([]byte, 0)
-	_, err := DecodeFindCoordinatorReq(bytes, 0)
+	_, err := DecodeFindCoordinatorReq(bytes, 1)
 	assert.NotNil(t, err)
+}
+
+func TestDecodeFindCoordinatorReqV0(t *testing.T) {
+	bytes := testHex2Bytes(t, "00000001006d5f5f5f546573744b61666b61436f6e73756d655f696e5f676f5f64656d6f5f64656d6f5f6b61666b612e746573744068657a68616e676a69616e64654d6163426f6f6b2d50726f2e6c6f63616c20286769746875622e636f6d2f7365676d656e74696f2f6b61666b612d676f290005746f706963")
+	findCoordinatorReq, err := DecodeFindCoordinatorReq(bytes, 0)
+	assert.Nil(t, err)
+	assert.Equal(t, 1, findCoordinatorReq.CorrelationId)
+	assert.Equal(t, "___TestKafkaConsume_in_go_demo_demo_kafka.test@hezhangjiandeMacBook-Pro.local (github.com/segmentio/kafka-go)", findCoordinatorReq.ClientId)
+	assert.Equal(t, "topic", findCoordinatorReq.Key)
+	var expectKeyType uint8 = 0
+	assert.Equal(t, expectKeyType, findCoordinatorReq.KeyType)
 }
 
 func TestDecodeFindCoordinatorReqV3(t *testing.T) {

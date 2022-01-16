@@ -11,7 +11,23 @@ func TestDecodeIllegalOffsetFetchReq(t *testing.T) {
 	assert.NotNil(t, err)
 }
 
-func TestDecodeOffsetFetchReq(t *testing.T) {
+func TestDecodeOffsetFetchReqV1(t *testing.T) {
+	bytes := testHex2Bytes(t, "00000004006d5f5f5f546573744b61666b61436f6e73756d655f696e5f676f5f64656d6f5f64656d6f5f6b61666b612e746573744068657a68616e676a69616e64654d6163426f6f6b2d50726f2e6c6f63616c20286769746875622e636f6d2f7365676d656e74696f2f6b61666b612d676f290005746f706963000000010005746f7069630000000100000000")
+	fetchReq, err := DecodeOffsetFetchReq(bytes, 1)
+	assert.Nil(t, err)
+	assert.Equal(t, 4, fetchReq.CorrelationId)
+	assert.Equal(t, "___TestKafkaConsume_in_go_demo_demo_kafka.test@hezhangjiandeMacBook-Pro.local (github.com/segmentio/kafka-go)", fetchReq.ClientId)
+	assert.Equal(t, "topic", fetchReq.GroupId)
+	assert.Len(t, fetchReq.TopicReqList, 1)
+	fetchTopicReq := fetchReq.TopicReqList[0]
+	assert.Equal(t, "topic", fetchTopicReq.Topic)
+	assert.Len(t, fetchTopicReq.PartitionReqList, 1)
+	fetchPartitionReq := fetchTopicReq.PartitionReqList[0]
+	assert.Equal(t, 0, fetchPartitionReq.PartitionId)
+	assert.False(t, fetchReq.RequireStableOffset)
+}
+
+func TestDecodeOffsetFetchReqV6(t *testing.T) {
 	bytes := testHex2Bytes(t, "0000000b002f636f6e73756d65722d61303332616233632d303831382d343937352d626439332d3735613431323030656162342d31002561303332616233632d303831382d343937352d626439332d373561343132303065616234020a746573742d7361736c02000000000000")
 	fetchReq, err := DecodeOffsetFetchReq(bytes, 6)
 	assert.Nil(t, err)

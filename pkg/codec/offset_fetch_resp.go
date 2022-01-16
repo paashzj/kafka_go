@@ -15,7 +15,7 @@ type OffsetFetchTopicResp struct {
 type OffsetFetchPartitionResp struct {
 	PartitionId int
 	Offset      int64
-	LeaderEpoch int
+	LeaderEpoch int32
 	Metadata    *string
 	ErrorCode   int16
 }
@@ -27,45 +27,98 @@ func NewOffsetFetchResp(corrId int) *OffsetFetchResp {
 }
 
 func (o *OffsetFetchResp) BytesLength(version int16) int {
-	// 4字节CorrId + 1字节TaggedField + 4字节 ThrottleTime
-	// 1字节Topics长度 + n个Topic长度
-	// 2 字节ErrorCode
-	result := LenCorrId + LenTaggedField + LenThrottleTime + varintSize(len(o.TopicRespList)+1)
-	for _, val := range o.TopicRespList {
-		// TopicName长度
-		result += CompactStrLen(val.Topic)
-		// 1字节数组长度
-		result += varintSize(len(val.PartitionRespList) + 1)
-		for _, val2 := range val.PartitionRespList {
-			result += LenPartitionId + LenOffset + LenLeaderEpoch
-			result += CompactNullableStrLen(val2.Metadata) + LenErrorCode + LenTaggedField
-		}
-		result += LenTaggedField
+	result := LenCorrId
+	if version == 6 {
+		result += LenTaggedField + LenThrottleTime
 	}
-	return result + LenErrorCode + LenTaggedField
+	if version == 1 {
+		result += LenArray
+	} else if version == 6 {
+		result += varintSize(len(o.TopicRespList) + 1)
+	}
+	for _, val := range o.TopicRespList {
+		if version == 1 {
+			result += StrLen(val.Topic)
+		} else if version == 6 {
+			result += CompactStrLen(val.Topic)
+		}
+		if version == 1 {
+			result += LenArray
+		} else if version == 6 {
+			result += varintSize(len(val.PartitionRespList) + 1)
+		}
+		for _, val2 := range val.PartitionRespList {
+			result += LenPartitionId + LenOffset
+			if version == 6 {
+				result += LenLeaderEpoch
+			}
+			if version == 1 {
+				result += StrLen(*val2.Metadata)
+			} else if version == 6 {
+				result += CompactNullableStrLen(val2.Metadata)
+			}
+			result += LenErrorCode
+			if version == 6 {
+				result += LenTaggedField
+			}
+		}
+		if version == 6 {
+			result += LenTaggedField
+		}
+	}
+	if version == 6 {
+		result += LenErrorCode + LenTaggedField
+	}
+	return result
 }
 
 func (o *OffsetFetchResp) Bytes(version int16) []byte {
 	bytes := make([]byte, o.BytesLength(version))
 	idx := 0
 	idx = putCorrId(bytes, idx, o.CorrelationId)
-	idx = putTaggedField(bytes, idx)
-	idx = putThrottleTime(bytes, idx, o.ThrottleTime)
-	idx = putCompactArrayLen(bytes, idx, len(o.TopicRespList))
+	if version == 6 {
+		idx = putTaggedField(bytes, idx)
+		idx = putThrottleTime(bytes, idx, o.ThrottleTime)
+	}
+	if version == 1 {
+		idx = putArrayLen(bytes, idx, len(o.TopicRespList))
+	} else if version == 6 {
+		idx = putCompactArrayLen(bytes, idx, len(o.TopicRespList))
+	}
 	for _, topic := range o.TopicRespList {
-		idx = putTopic(bytes, idx, topic.Topic)
-		idx = putCompactArrayLen(bytes, idx, len(topic.PartitionRespList))
+		if version == 1 {
+			idx = putTopicString(bytes, idx, topic.Topic)
+		} else if version == 6 {
+			idx = putTopic(bytes, idx, topic.Topic)
+		}
+		if version == 1 {
+			idx = putArrayLen(bytes, idx, len(topic.PartitionRespList))
+		} else if version == 6 {
+			idx = putCompactArrayLen(bytes, idx, len(topic.PartitionRespList))
+		}
 		for _, partition := range topic.PartitionRespList {
 			idx = putPartitionId(bytes, idx, partition.PartitionId)
 			idx = putOffset(bytes, idx, partition.Offset)
-			idx = putLeaderEpoch(bytes, idx, partition.LeaderEpoch)
-			idx = putMetadata(bytes, idx, partition.Metadata)
+			if version == 6 {
+				idx = putLeaderEpoch(bytes, idx, partition.LeaderEpoch)
+			}
+			if version == 1 {
+				idx = putString(bytes, idx, *partition.Metadata)
+			} else if version == 6 {
+				idx = putMetadata(bytes, idx, partition.Metadata)
+			}
 			idx = putErrorCode(bytes, idx, partition.ErrorCode)
+			if version == 6 {
+				idx = putTaggedField(bytes, idx)
+			}
+		}
+		if version == 6 {
 			idx = putTaggedField(bytes, idx)
 		}
+	}
+	if version == 6 {
+		idx = putErrorCode(bytes, idx, o.ErrorCode)
 		idx = putTaggedField(bytes, idx)
 	}
-	idx = putErrorCode(bytes, idx, o.ErrorCode)
-	idx = putTaggedField(bytes, idx)
 	return bytes
 }

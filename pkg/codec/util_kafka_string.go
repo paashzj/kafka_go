@@ -70,6 +70,14 @@ func readGroupId(bytes []byte, idx int) (string, int) {
 	return readCompactString(bytes, idx)
 }
 
+func putGroupIdString(bytes []byte, idx int, str string) int {
+	return putString(bytes, idx, str)
+}
+
+func readGroupIdString(bytes []byte, idx int) (string, int) {
+	return readString(bytes, idx)
+}
+
 func putGroupInstanceId(bytes []byte, idx int, str *string) int {
 	return putCompactStringNullable(bytes, idx, str)
 }
@@ -86,12 +94,28 @@ func readGroupLeaderId(bytes []byte, idx int, version int) (string, int) {
 	return readCompactString(bytes, idx)
 }
 
+func putGroupLeaderIdString(bytes []byte, idx int, str string) int {
+	return putString(bytes, idx, str)
+}
+
+func readGroupLeaderIdString(bytes []byte, idx int, version int) (string, int) {
+	return readString(bytes, idx)
+}
+
 func putMemberId(bytes []byte, idx int, str string) int {
 	return putCompactString(bytes, idx, str)
 }
 
 func readMemberId(bytes []byte, idx int) (string, int) {
 	return readCompactString(bytes, idx)
+}
+
+func putMemberIdString(bytes []byte, idx int, str string) int {
+	return putString(bytes, idx, str)
+}
+
+func readMemberIdString(bytes []byte, idx int) (string, int) {
+	return readString(bytes, idx)
 }
 
 func putMetadata(bytes []byte, idx int, str *string) int {
@@ -118,12 +142,28 @@ func readProtocolName(bytes []byte, idx int) (string, int) {
 	return readCompactString(bytes, idx)
 }
 
+func putProtocolNameString(bytes []byte, idx int, str string) int {
+	return putString(bytes, idx, str)
+}
+
+func readProtocolNameString(bytes []byte, idx int) (string, int) {
+	return readString(bytes, idx)
+}
+
 func putProtocolType(bytes []byte, idx int, str string) int {
 	return putCompactString(bytes, idx, str)
 }
 
 func readProtocolType(bytes []byte, idx int) (string, int) {
 	return readCompactString(bytes, idx)
+}
+
+func putProtocolTypeString(bytes []byte, idx int, str string) int {
+	return putString(bytes, idx, str)
+}
+
+func readProtocolTypeString(bytes []byte, idx int) (string, int) {
+	return readString(bytes, idx)
 }
 
 func readProtocolTypeNullable(bytes []byte, idx int) (*string, int) {

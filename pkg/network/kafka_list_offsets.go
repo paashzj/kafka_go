@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Server) ListOffsets(ctx *context.NetworkContext, frame []byte, version int16) ([]byte, gnet.Action) {
-	if version == 5 {
+	if version == 1 || version == 5 {
 		return s.ListOffsetsVersion(ctx, frame, version)
 	}
 	logrus.Error("unknown offset version ", version)

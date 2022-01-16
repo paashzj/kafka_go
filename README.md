@@ -2,7 +2,9 @@
 [![codecov](https://codecov.io/gh/paashzj/kafka_go/branch/main/graph/badge.svg?token=155QKNN7MQ)](https://codecov.io/gh/paashzj/kafka_go)
 ## 其他语言文档
 - [English Doc](README_en.md)
-
+## 参考文档
+### kafka协议文档
+https://kafka.apache.org/protocol
 # 服务端参数
 ## 通用配置
 ### LogLevel 日志级别

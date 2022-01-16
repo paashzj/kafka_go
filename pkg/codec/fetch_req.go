@@ -8,13 +8,13 @@ import (
 
 type FetchReq struct {
 	BaseReq
-	ReplicaId         int
+	ReplicaId         int32
 	MaxWaitTime       int
 	MinBytes          int
 	MaxBytes          int
 	IsolationLevel    byte
 	FetchSessionId    int
-	FetchSessionEpoch int
+	FetchSessionEpoch int32
 	FetchTopics       []*FetchTopicReq
 }
 
@@ -25,7 +25,7 @@ type FetchTopicReq struct {
 
 type FetchPartitionReq struct {
 	PartitionId        int
-	CurrentLeaderEpoch int
+	CurrentLeaderEpoch int32
 	FetchOffset        int64
 	LastFetchedEpoch   int
 	LogStartOffset     int64
@@ -44,13 +44,13 @@ func DecodeFetchReq(bytes []byte, version int16) (fetchReq *FetchReq, err error)
 	idx := 0
 	fetchReq.CorrelationId, idx = readCorrId(bytes, idx)
 	fetchReq.ClientId, idx = readClientId(bytes, idx)
-	fetchReq.ReplicaId, idx = readInt(bytes, idx)
+	fetchReq.ReplicaId, idx = readReplicaId(bytes, idx)
 	fetchReq.MaxWaitTime, idx = readInt(bytes, idx)
 	fetchReq.MinBytes, idx = readInt(bytes, idx)
 	fetchReq.MaxBytes, idx = readInt(bytes, idx)
 	fetchReq.IsolationLevel, idx = readIsolationLevel(bytes, idx)
 	fetchReq.FetchSessionId, idx = readInt(bytes, idx)
-	fetchReq.FetchSessionEpoch, idx = readInt(bytes, idx)
+	fetchReq.FetchSessionEpoch, idx = readFetchSessionEpoch(bytes, idx)
 	var length int
 	length, idx = readArrayLen(bytes, idx)
 	fetchReq.FetchTopics = make([]*FetchTopicReq, length)
@@ -63,7 +63,7 @@ func DecodeFetchReq(bytes []byte, version int16) (fetchReq *FetchReq, err error)
 		for j := 0; j < pLen; j++ {
 			partition := &FetchPartitionReq{}
 			partition.PartitionId, idx = readInt(bytes, idx)
-			partition.CurrentLeaderEpoch, idx = readInt(bytes, idx)
+			partition.CurrentLeaderEpoch, idx = readLeaderEpoch(bytes, idx)
 			partition.FetchOffset, idx = readInt64(bytes, idx)
 			partition.LogStartOffset, idx = readInt64(bytes, idx)
 			partition.PartitionMaxBytes, idx = readInt(bytes, idx)

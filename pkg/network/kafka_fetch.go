@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Server) Fetch(ctx *context.NetworkContext, frame []byte, version int16) ([]byte, gnet.Action) {
-	if version == 11 {
+	if version == 10 || version == 11 {
 		return s.ReactFetchVersion(ctx, frame, version)
 	}
 	logrus.Error("unknown fetch version ", version)
@@ -59,8 +59,7 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 			partitionResp.HighWatermark = p.HighWatermark
 			partitionResp.LastStableOffset = p.LastStableOffset
 			partitionResp.LogStartOffset = p.LogStartOffset
-			partitionResp.RecordBatch = &codec.RecordBatch{}
-			s.convertRecordBatch(partitionResp.RecordBatch, p.RecordBatch)
+			partitionResp.RecordBatch = s.convertRecordBatchResp(p.RecordBatch)
 			partitionResp.AbortedTransactions = -1
 			partitionResp.ReplicaData = -1
 			f.PartitionDataList[j] = partitionResp
@@ -70,7 +69,8 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 	return resp.Bytes(version), gnet.None
 }
 
-func (s *Server) convertRecordBatch(recordBatch *codec.RecordBatch, lowRecordBatch *service.RecordBatch) {
+func (s *Server) convertRecordBatchResp(lowRecordBatch *service.RecordBatch) *codec.RecordBatch {
+	recordBatch := &codec.RecordBatch{}
 	recordBatch.Offset = lowRecordBatch.Offset
 	recordBatch.MessageSize = lowRecordBatch.MessageSize
 	recordBatch.LeaderEpoch = 0
@@ -93,4 +93,5 @@ func (s *Server) convertRecordBatch(recordBatch *codec.RecordBatch, lowRecordBat
 		record.Headers = r.Headers
 		recordBatch.Records[i] = record
 	}
+	return recordBatch
 }

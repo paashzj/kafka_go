@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Server) JoinGroup(ctx *context.NetworkContext, frame []byte, version int16) ([]byte, gnet.Action) {
-	if version == 6 || version == 7 {
+	if version == 1 || version == 6 || version == 7 {
 		return s.ReactJoinGroupVersion(ctx, frame, version)
 	}
 	logrus.Error("unknown join group version ", version)

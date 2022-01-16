@@ -34,23 +34,55 @@ func DecodeJoinGroupReq(bytes []byte, version int16) (joinGroupReq *JoinGroupReq
 	idx := 0
 	joinGroupReq.CorrelationId, idx = readCorrId(bytes, idx)
 	joinGroupReq.ClientId, idx = readClientId(bytes, idx)
-	idx = readTaggedField(bytes, idx)
-	joinGroupReq.GroupId, idx = readGroupId(bytes, idx)
+	if version == 6 {
+		idx = readTaggedField(bytes, idx)
+	}
+	if version == 1 {
+		joinGroupReq.GroupId, idx = readGroupIdString(bytes, idx)
+	} else if version == 6 {
+		joinGroupReq.GroupId, idx = readGroupId(bytes, idx)
+	}
 	joinGroupReq.SessionTimeout, idx = readInt(bytes, idx)
 	joinGroupReq.RebalanceTimeout, idx = readInt(bytes, idx)
-	joinGroupReq.MemberId, idx = readMemberId(bytes, idx)
-	joinGroupReq.GroupInstanceId, idx = readGroupInstanceId(bytes, idx)
-	joinGroupReq.ProtocolType, idx = readProtocolType(bytes, idx)
+	if version == 1 {
+		joinGroupReq.MemberId, idx = readMemberIdString(bytes, idx)
+	} else if version == 6 {
+		joinGroupReq.MemberId, idx = readMemberId(bytes, idx)
+	}
+	if version == 6 {
+		joinGroupReq.GroupInstanceId, idx = readGroupInstanceId(bytes, idx)
+	}
+	if version == 1 {
+		joinGroupReq.ProtocolType, idx = readProtocolTypeString(bytes, idx)
+	} else if version == 6 {
+		joinGroupReq.ProtocolType, idx = readProtocolType(bytes, idx)
+	}
 	var length int
-	length, idx = readCompactArrayLen(bytes, idx)
+	if version == 1 {
+		length, idx = readArrayLen(bytes, idx)
+	} else if version == 6 {
+		length, idx = readCompactArrayLen(bytes, idx)
+	}
 	joinGroupReq.GroupProtocols = make([]*GroupProtocol, length)
 	for i := 0; i < length; i++ {
 		groupProtocol := GroupProtocol{}
-		groupProtocol.ProtocolName, idx = readProtocolName(bytes, idx)
-		groupProtocol.ProtocolMetadata, idx = readCompactString(bytes, idx)
-		readTaggedField(bytes, idx)
+		if version == 1 {
+			groupProtocol.ProtocolName, idx = readProtocolNameString(bytes, idx)
+		} else if version == 6 {
+			groupProtocol.ProtocolName, idx = readProtocolName(bytes, idx)
+		}
+		if version == 1 {
+			groupProtocol.ProtocolMetadata, idx = readString(bytes, idx)
+		} else if version == 6 {
+			groupProtocol.ProtocolMetadata, idx = readCompactString(bytes, idx)
+		}
+		if version == 6 {
+			readTaggedField(bytes, idx)
+		}
 		joinGroupReq.GroupProtocols[i] = &groupProtocol
 	}
-	readTaggedField(bytes, idx)
+	if version == 6 {
+		readTaggedField(bytes, idx)
+	}
 	return joinGroupReq, nil
 }

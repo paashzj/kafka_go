@@ -9,6 +9,23 @@ type Record struct {
 	Headers           []byte
 }
 
+func DecodeRecord(bytes []byte, version int16) *Record {
+	record := &Record{}
+	idx := 0
+	record.RecordAttributes, idx = readRecordAttributes(bytes, idx)
+	record.RelativeTimestamp, idx = readRelativeTimestamp(bytes, idx)
+	record.RelativeOffset, idx = readRelativeOffset(bytes, idx)
+	keyLength, idx := readVarint(bytes, idx)
+	if keyLength >= 0 {
+		record.Key = bytes[idx : idx+keyLength]
+		idx += keyLength
+	}
+	valueLength, idx := readVarint(bytes, idx)
+	record.Value = string(bytes[idx : idx+valueLength])
+	idx += valueLength
+	return record
+}
+
 func (r *Record) BytesLength() int {
 	result := 0
 	result += LenRecordAttributes
@@ -26,10 +43,9 @@ func (r *Record) BytesLength() int {
 func (r *Record) Bytes() []byte {
 	bytes := make([]byte, r.BytesLength())
 	idx := 0
-	bytes[idx] = 0
-	idx++
-	idx = putVarint64(bytes, idx, r.RelativeTimestamp)
-	idx = putVarint(bytes, idx, r.RelativeOffset)
+	idx = putRecordAttributes(bytes, idx, 0)
+	idx = putRelativeTimestamp(bytes, idx, r.RelativeTimestamp)
+	idx = putRelativeOffset(bytes, idx, r.RelativeOffset)
 	if r.Key == nil {
 		idx = putVarint(bytes, idx, -1)
 	} else {

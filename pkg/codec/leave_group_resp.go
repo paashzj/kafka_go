@@ -15,30 +15,41 @@ func NewLeaveGroupResp(corrId int) *LeaveGroupResp {
 }
 
 func (l *LeaveGroupResp) BytesLength(version int16) int {
-	result := LenCorrId + LenTaggedField + LenThrottleTime + LenErrorCode + varintSize(len(l.Members)+1)
-	for _, val := range l.Members {
-		result += CompactStrLen(val.MemberId)
-		result += CompactNullableStrLen(val.GroupInstanceId)
+	result := LenCorrId
+	if version == 4 {
+		result += LenTaggedField + LenThrottleTime + LenErrorCode + varintSize(len(l.Members)+1)
+		for _, val := range l.Members {
+			result += CompactStrLen(val.MemberId)
+			result += CompactNullableStrLen(val.GroupInstanceId)
+			result += LenTaggedField
+		}
+	}
+	result += LenErrorCode
+	if version == 4 {
 		result += LenTaggedField
 	}
-	return result + LenErrorCode + LenTaggedField
+	return result
 }
 
 func (l *LeaveGroupResp) Bytes(version int16) []byte {
 	bytes := make([]byte, l.BytesLength(version))
 	idx := 0
 	idx = putCorrId(bytes, idx, l.CorrelationId)
-	idx = putTaggedField(bytes, idx)
-	idx = putThrottleTime(bytes, idx, l.ThrottleTime)
-	idx = putErrorCode(bytes, idx, 0)
-	bytes[idx] = byte(len(l.Members) + 1)
-	idx++
-	for _, member := range l.Members {
-		idx = putMemberId(bytes, idx, member.MemberId)
-		idx = putGroupInstanceId(bytes, idx, member.GroupInstanceId)
+	if version == 4 {
 		idx = putTaggedField(bytes, idx)
+		idx = putThrottleTime(bytes, idx, l.ThrottleTime)
+		idx = putErrorCode(bytes, idx, 0)
+		bytes[idx] = byte(len(l.Members) + 1)
+		idx++
+		for _, member := range l.Members {
+			idx = putMemberId(bytes, idx, member.MemberId)
+			idx = putGroupInstanceId(bytes, idx, member.GroupInstanceId)
+			idx = putTaggedField(bytes, idx)
+		}
 	}
 	idx = putErrorCode(bytes, idx, 0)
-	idx = putTaggedField(bytes, idx)
+	if version == 4 {
+		idx = putTaggedField(bytes, idx)
+	}
 	return bytes
 }

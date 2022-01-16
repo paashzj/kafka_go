@@ -5,6 +5,21 @@ import (
 	"testing"
 )
 
+func TestCodeJoinGroupRespV1(t *testing.T) {
+	member := &Member{}
+	member.MemberId = "___TestKafkaConsume_in_go_demo_demo_kafka.test@hezhangjiandeMacBook-Pro.local (github.com/segmentio/kafka-go)-a3f5062b-94bc-478d-8ddb-2a2fee6989c8"
+	member.Metadata = string(testHex2Bytes(t, "0001000000010005746f706963ffffffff"))
+	joinGroupResp := NewJoinGroupResp(1)
+	joinGroupResp.GenerationId = 3
+	joinGroupResp.ProtocolName = "range"
+	joinGroupResp.LeaderId = "___TestKafkaConsume_in_go_demo_demo_kafka.test@hezhangjiandeMacBook-Pro.local (github.com/segmentio/kafka-go)-a3f5062b-94bc-478d-8ddb-2a2fee6989c8"
+	joinGroupResp.MemberId = "___TestKafkaConsume_in_go_demo_demo_kafka.test@hezhangjiandeMacBook-Pro.local (github.com/segmentio/kafka-go)-a3f5062b-94bc-478d-8ddb-2a2fee6989c8"
+	joinGroupResp.Members = []*Member{member}
+	bytes := joinGroupResp.Bytes(1)
+	expectBytes := testHex2Bytes(t, "00000001000000000003000572616e676500925f5f5f546573744b61666b61436f6e73756d655f696e5f676f5f64656d6f5f64656d6f5f6b61666b612e746573744068657a68616e676a69616e64654d6163426f6f6b2d50726f2e6c6f63616c20286769746875622e636f6d2f7365676d656e74696f2f6b61666b612d676f292d61336635303632622d393462632d343738642d386464622d32613266656536393839633800925f5f5f546573744b61666b61436f6e73756d655f696e5f676f5f64656d6f5f64656d6f5f6b61666b612e746573744068657a68616e676a69616e64654d6163426f6f6b2d50726f2e6c6f63616c20286769746875622e636f6d2f7365676d656e74696f2f6b61666b612d676f292d61336635303632622d393462632d343738642d386464622d3261326665653639383963380000000100925f5f5f546573744b61666b61436f6e73756d655f696e5f676f5f64656d6f5f64656d6f5f6b61666b612e746573744068657a68616e676a69616e64654d6163426f6f6b2d50726f2e6c6f63616c20286769746875622e636f6d2f7365676d656e74696f2f6b61666b612d676f292d61336635303632622d393462632d343738642d386464622d326132666565363938396338000000110001000000010005746f706963ffffffff")
+	assert.Equal(t, expectBytes[400:], bytes[400:])
+}
+
 func TestCodeJoinGroupRespV6(t *testing.T) {
 	member := &Member{}
 	member.MemberId = "consumer-8dd7b96b-6b94-4a9b-b2cc-3cb5898c9cdf-1-433acb6a-e6ec-45aa-b78d-6a249cff07fc"

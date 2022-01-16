@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Server) SyncGroup(ctx *context.NetworkContext, frame []byte, version int16) ([]byte, gnet.Action) {
-	if version == 4 || version == 5 {
+	if version == 1 || version == 4 || version == 5 {
 		return s.ReactSyncGroupVersion(ctx, frame, version)
 	}
 	logrus.Error("unknown sync group version ", version)

@@ -98,6 +98,12 @@ func (e ExampleKafkaImpl) OffsetFetch(addr *net.Addr, topic string, partition in
 	return nil, nil
 }
 
+func (e ExampleKafkaImpl) Produce(addr *net.Addr, topic string, partition int, req *service.ProducePartitionReq) (*service.ProducePartitionResp, error) {
+	partitionResp := &service.ProducePartitionResp{}
+	partitionResp.Time = -1
+	return partitionResp, nil
+}
+
 func (e ExampleKafkaImpl) SaslAuth(req service.SaslReq) (bool, service.ErrorCode) {
 	logrus.Info("username ", req.Username, "password ", req.Password)
 	return true, service.NONE

@@ -35,8 +35,14 @@ func (f *FetchResp) BytesLength(version int16) int {
 	for _, t := range f.TopicResponses {
 		result += StrLen(t.Topic) + LenArray
 		for _, p := range t.PartitionDataList {
-			result += LenPartitionId + LenErrorCode + LenOffset + LenLastStableOffset + LenStartOffset
-			result += LenAbortTransactions + LenReplicaId + LenMessageSize + p.RecordBatch.BytesLength()
+			result += LenPartitionId + LenErrorCode
+			result += LenOffset
+			result += LenLastStableOffset + LenStartOffset
+			result += LenAbortTransactions
+			if version == 11 {
+				result += LenReplicaId
+			}
+			result += LenMessageSize + p.RecordBatch.BytesLength()
 		}
 	}
 	return result
@@ -60,7 +66,9 @@ func (f *FetchResp) Bytes(version int16) []byte {
 			idx = putInt64(bytes, idx, p.LastStableOffset)
 			idx = putInt64(bytes, idx, p.LogStartOffset)
 			idx = putInt(bytes, idx, -1)
-			idx = putInt(bytes, idx, -1)
+			if version == 11 {
+				idx = putInt(bytes, idx, -1)
+			}
 			idx = putRecordBatch(bytes, idx, p.RecordBatch.Bytes())
 		}
 	}

@@ -5,6 +5,45 @@ import (
 	"testing"
 )
 
+func TestCodeFetchRespV10(t *testing.T) {
+	record := &Record{}
+	record.RecordAttributes = 0
+	record.RelativeTimestamp = 0
+	record.RelativeOffset = 0
+	record.Value = "msg"
+	recordBatch := &RecordBatch{}
+	recordBatch.Offset = 0
+	recordBatch.MessageSize = 59
+	recordBatch.LeaderEpoch = 0
+	recordBatch.MagicByte = 2
+	recordBatch.Flags = 0
+	recordBatch.LastOffsetDelta = 0
+	recordBatch.FirstTimestamp = 1640435896600
+	recordBatch.LastTimestamp = 1640435896600
+	recordBatch.ProducerId = -1
+	recordBatch.ProducerEpoch = -1
+	recordBatch.BaseSequence = -1
+	recordBatch.Records = []*Record{record}
+	fetchPartitionResp := &FetchPartitionResp{}
+	fetchPartitionResp.PartitionIndex = 0
+	fetchPartitionResp.ErrorCode = 0
+	fetchPartitionResp.HighWatermark = 1
+	fetchPartitionResp.LastStableOffset = 1
+	fetchPartitionResp.LogStartOffset = 0
+	fetchPartitionResp.AbortedTransactions = -1
+	fetchPartitionResp.RecordBatch = recordBatch
+	fetchTopicResp := &FetchTopicResp{}
+	fetchTopicResp.Topic = "topic"
+	fetchTopicResp.PartitionDataList = []*FetchPartitionResp{fetchPartitionResp}
+	fetchResp := NewFetchResp(6)
+	fetchResp.ErrorCode = 0
+	fetchResp.SessionId = 0
+	fetchResp.TopicResponses = []*FetchTopicResp{fetchTopicResp}
+	bytes := fetchResp.Bytes(10)
+	expectBytes := testHex2Bytes(t, "0000000600000000000000000000000000010005746f70696300000001000000000000000000000000000100000000000000010000000000000000ffffffff0000004700000000000000000000003b00000000022c30096c0000000000000000017df19951180000017df1995118ffffffffffffffffffffffffffff000000011200000001066d736700")
+	assert.Equal(t, expectBytes, bytes)
+}
+
 func TestCodeFetchRespV11(t *testing.T) {
 	record := &Record{}
 	record.RecordAttributes = 0

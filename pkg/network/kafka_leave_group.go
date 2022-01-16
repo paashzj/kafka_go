@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Server) LeaveGroup(ctx *context.NetworkContext, frame []byte, version int16) ([]byte, gnet.Action) {
-	if version == 4 {
+	if version == 0 || version == 4 {
 		return s.ReactLeaveGroupVersion(ctx, frame, version)
 	}
 	logrus.Error("unknown leave group version ", version)

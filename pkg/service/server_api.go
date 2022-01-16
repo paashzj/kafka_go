@@ -26,6 +26,9 @@ type KfkServer interface {
 	// OffsetFetch method called this already authed
 	OffsetFetch(addr *net.Addr, topic string, partition int) (*OffsetFetchPartitionResp, error)
 
+	// Produce method called this already authed
+	Produce(addr *net.Addr, topic string, partition int, req *ProducePartitionReq) (*ProducePartitionResp, error)
+
 	SaslAuth(req SaslReq) (bool, ErrorCode)
 
 	SaslAuthTopic(req SaslReq, topic string) (bool, ErrorCode)

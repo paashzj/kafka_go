@@ -11,6 +11,7 @@ type OffsetCommitReq struct {
 	GroupId                  string
 	GenerationId             int
 	MemberId                 string
+	RetentionTime            int64
 	GroupInstanceId          *string
 	OffsetCommitTopicReqList []*OffsetCommitTopicReq
 }
@@ -23,7 +24,7 @@ type OffsetCommitTopicReq struct {
 type OffsetCommitPartitionReq struct {
 	PartitionId int
 	Offset      int64
-	LeaderEpoch int
+	LeaderEpoch int32
 	Metadata    string
 }
 
@@ -39,32 +40,71 @@ func DecodeOffsetCommitReq(bytes []byte, version int16) (offsetReq *OffsetCommit
 	idx := 0
 	offsetReq.CorrelationId, idx = readCorrId(bytes, idx)
 	offsetReq.ClientId, idx = readClientId(bytes, idx)
-	idx = readTaggedField(bytes, idx)
-	offsetReq.GroupId, idx = readGroupId(bytes, idx)
-	offsetReq.GenerationId, idx = readInt(bytes, idx)
-	offsetReq.MemberId, idx = readMemberId(bytes, idx)
-	offsetReq.GroupInstanceId, idx = readGroupInstanceId(bytes, idx)
+	if version == 8 {
+		idx = readTaggedField(bytes, idx)
+	}
+	if version == 2 {
+		offsetReq.GroupId, idx = readGroupIdString(bytes, idx)
+	} else if version == 8 {
+		offsetReq.GroupId, idx = readGroupId(bytes, idx)
+	}
+	offsetReq.GenerationId, idx = readGenerationId(bytes, idx)
+	if version == 2 {
+		offsetReq.MemberId, idx = readMemberIdString(bytes, idx)
+	} else if version == 8 {
+		offsetReq.MemberId, idx = readMemberId(bytes, idx)
+	}
+	if version == 2 {
+		offsetReq.RetentionTime, idx = readRetentionTime(bytes, idx)
+	}
+	if version == 8 {
+		offsetReq.GroupInstanceId, idx = readGroupInstanceId(bytes, idx)
+	}
 	var length int
-	length, idx = readCompactArrayLen(bytes, idx)
+	if version == 2 {
+		length, idx = readArrayLen(bytes, idx)
+	} else if version == 8 {
+		length, idx = readCompactArrayLen(bytes, idx)
+	}
 	offsetReq.OffsetCommitTopicReqList = make([]*OffsetCommitTopicReq, length)
 	for i := 0; i < length; i++ {
 		topic := &OffsetCommitTopicReq{}
-		topic.Topic, idx = readTopic(bytes, idx)
+		if version == 2 {
+			topic.Topic, idx = readTopicString(bytes, idx)
+		} else if version == 8 {
+			topic.Topic, idx = readTopic(bytes, idx)
+		}
 		var partitionLength int
-		partitionLength, idx = readCompactArrayLen(bytes, idx)
+		if version == 2 {
+			partitionLength, idx = readArrayLen(bytes, idx)
+		} else if version == 8 {
+			partitionLength, idx = readCompactArrayLen(bytes, idx)
+		}
 		topic.OffsetPartitions = make([]*OffsetCommitPartitionReq, partitionLength)
 		for j := 0; j < partitionLength; j++ {
 			partition := &OffsetCommitPartitionReq{}
 			partition.PartitionId, idx = readInt(bytes, idx)
 			partition.Offset, idx = readInt64(bytes, idx)
-			partition.LeaderEpoch, idx = readLeaderEpoch(bytes, idx)
-			partition.Metadata, idx = readCompactString(bytes, idx)
-			idx = readTaggedField(bytes, idx)
+			if version == 8 {
+				partition.LeaderEpoch, idx = readLeaderEpoch(bytes, idx)
+			}
+			if version == 2 {
+				partition.Metadata, idx = readString(bytes, idx)
+			} else if version == 8 {
+				partition.Metadata, idx = readCompactString(bytes, idx)
+			}
+			if version == 8 {
+				idx = readTaggedField(bytes, idx)
+			}
 			topic.OffsetPartitions[j] = partition
 		}
-		idx = readTaggedField(bytes, idx)
+		if version == 8 {
+			idx = readTaggedField(bytes, idx)
+		}
 		offsetReq.OffsetCommitTopicReqList[i] = topic
 	}
-	idx = readTaggedField(bytes, idx)
+	if version == 8 {
+		idx = readTaggedField(bytes, idx)
+	}
 	return offsetReq, nil
 }

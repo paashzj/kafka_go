@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Server) OffsetCommit(ctx *context.NetworkContext, frame []byte, version int16) ([]byte, gnet.Action) {
-	if version == 8 {
+	if version == 2 || version == 8 {
 		return s.OffsetCommitVersion(ctx, frame, version)
 	}
 	logrus.Error("unknown fetch version ", version)

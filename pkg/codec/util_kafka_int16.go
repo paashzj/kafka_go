@@ -18,10 +18,14 @@ func putApiMinVersion(bytes []byte, idx int, x int16) int {
 	return putInt16(bytes, idx, x)
 }
 
+func putErrorCode(bytes []byte, idx int, errorCode int16) int {
+	return putInt16(bytes, idx, errorCode)
+}
+
 func putProducerEpoch(bytes []byte, idx int, errorCode int16) int {
 	return putInt16(bytes, idx, errorCode)
 }
 
-func putErrorCode(bytes []byte, idx int, errorCode int16) int {
-	return putInt16(bytes, idx, errorCode)
+func readProducerEpoch(bytes []byte, idx int) (int16, int) {
+	return readInt16(bytes, idx)
 }

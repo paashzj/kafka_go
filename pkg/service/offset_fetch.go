@@ -31,7 +31,7 @@ type OffsetFetchTopicResp struct {
 type OffsetFetchPartitionResp struct {
 	PartitionId int
 	Offset      int64
-	LeaderEpoch int
+	LeaderEpoch int32
 	Metadata    *string
 	ErrorCode   int16
 }

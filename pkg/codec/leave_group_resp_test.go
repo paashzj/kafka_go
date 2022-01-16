@@ -5,6 +5,13 @@ import (
 	"testing"
 )
 
+func TestCodeLeaveGroupRespV0(t *testing.T) {
+	leaveGroupResp := NewLeaveGroupResp(1)
+	bytes := leaveGroupResp.Bytes(0)
+	expectBytes := testHex2Bytes(t, "000000010000")
+	assert.Equal(t, expectBytes, bytes)
+}
+
 func TestCodeLeaveGroupRespV4(t *testing.T) {
 	leaveGroupMember := &LeaveGroupMember{}
 	leaveGroupMember.MemberId = "consumer-8dd7b96b-6b94-4a9b-b2cc-3cb5898c9cdf-1-433acb6a-e6ec-45aa-b78d-6a249cff07fc"

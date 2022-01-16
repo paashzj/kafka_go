@@ -7,7 +7,7 @@ import (
 )
 
 func (s *Server) FindCoordinator(frame []byte, version int16, config *codec.KafkaProtocolConfig) ([]byte, gnet.Action) {
-	if version == 3 {
+	if version == 0 || version == 3 {
 		return s.FindCoordinatorVersion(frame, version, config)
 	}
 	logrus.Error("unknown find coordinator version ", version)

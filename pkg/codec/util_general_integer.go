@@ -61,3 +61,7 @@ func putUInt16(bytes []byte, idx int, x uint16) int {
 	binary.BigEndian.PutUint16(bytes[idx:idx+2], x)
 	return idx + 2
 }
+
+func readUInt16(bytes []byte, idx int) (uint16, int) {
+	return binary.BigEndian.Uint16(bytes[idx:]), idx + 2
+}

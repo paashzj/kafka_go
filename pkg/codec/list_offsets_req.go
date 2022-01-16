@@ -20,7 +20,7 @@ type ListOffsetTopic struct {
 
 type ListOffsetPartition struct {
 	PartitionId int
-	LeaderEpoch int
+	LeaderEpoch int32
 	Time        int64
 }
 
@@ -37,7 +37,9 @@ func DecodeListOffsetReq(bytes []byte, version int16) (offsetReq *ListOffsetReq,
 	offsetReq.CorrelationId, idx = readCorrId(bytes, idx)
 	offsetReq.ClientId, idx = readClientId(bytes, idx)
 	offsetReq.ReplicaId, idx = readReplicaId(bytes, idx)
-	offsetReq.IsolationLevel, idx = readIsolationLevel(bytes, idx)
+	if version == 4 {
+		offsetReq.IsolationLevel, idx = readIsolationLevel(bytes, idx)
+	}
 	var length int
 	length, idx = readInt(bytes, idx)
 	offsetReq.OffsetTopics = make([]*ListOffsetTopic, length)
@@ -50,7 +52,9 @@ func DecodeListOffsetReq(bytes []byte, version int16) (offsetReq *ListOffsetReq,
 		for j := 0; j < partitionLength; j++ {
 			partition := &ListOffsetPartition{}
 			partition.PartitionId, idx = readInt(bytes, idx)
-			partition.LeaderEpoch, idx = readLeaderEpoch(bytes, idx)
+			if version == 4 {
+				partition.LeaderEpoch, idx = readLeaderEpoch(bytes, idx)
+			}
 			partition.Time, idx = readTime(bytes, idx)
 			topic.ListOffsetPartitions[j] = partition
 		}

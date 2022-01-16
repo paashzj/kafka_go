@@ -24,9 +24,21 @@ func DecodeFindCoordinatorReq(bytes []byte, version int16) (findCoordinatorReq *
 	idx := 0
 	findCoordinatorReq.CorrelationId, idx = readCorrId(bytes, idx)
 	findCoordinatorReq.ClientId, idx = readClientId(bytes, idx)
-	idx = readTaggedField(bytes, idx)
-	findCoordinatorReq.Key, idx = readCoordinatorKey(bytes, idx)
-	findCoordinatorReq.KeyType, idx = readCoordinatorType(bytes, idx)
-	idx = readTaggedField(bytes, idx)
+	if version == 3 {
+		idx = readTaggedField(bytes, idx)
+	}
+	if version == 0 {
+		findCoordinatorReq.Key, idx = readString(bytes, idx)
+	} else if version == 3 {
+		findCoordinatorReq.Key, idx = readCoordinatorKey(bytes, idx)
+	}
+	if version == 0 {
+		findCoordinatorReq.KeyType = 0
+	} else if version == 3 {
+		findCoordinatorReq.KeyType, idx = readCoordinatorType(bytes, idx)
+	}
+	if version == 3 {
+		idx = readTaggedField(bytes, idx)
+	}
 	return findCoordinatorReq, nil
 }

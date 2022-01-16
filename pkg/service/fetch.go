@@ -34,24 +34,6 @@ type FetchPartitionResp struct {
 	RecordBatch      *RecordBatch
 }
 
-type RecordBatch struct {
-	Offset          int64
-	MessageSize     int
-	LastOffsetDelta int
-	FirstTimestamp  int64
-	LastTimestamp   int64
-	BaseSequence    int
-	Records         []*Record
-}
-
-type Record struct {
-	RelativeTimestamp int64
-	RelativeOffset    int
-	Key               []byte
-	Value             string
-	Headers           []byte
-}
-
 func Fetch(addr *net.Addr, impl KfkServer, req *FetchReq) ([]*FetchTopicResp, error) {
 	reqList := req.FetchTopicReqList
 	result := make([]*FetchTopicResp, len(reqList))
