@@ -44,8 +44,35 @@ func putString(bytes []byte, idx int, str string) int {
 	return idx + len(strBytes)
 }
 
+func readNullableString(bytes []byte, idx int) (*string, int) {
+	length, idx := readInt16(bytes, idx)
+	if length == -1 {
+		return nil, idx + 2
+	}
+	intLen := int(length)
+	aux := string(bytes[idx : idx+intLen])
+	return &aux, idx + intLen
+}
+
+func putNullableString(bytes []byte, idx int, str *string) int {
+	if str == nil {
+		return putInt16(bytes, idx, -1)
+	}
+	strBytes := []byte(*str)
+	idx = putInt16(bytes, idx, int16(len(strBytes)))
+	copy(bytes[idx:idx+len(strBytes)], strBytes)
+	return idx + len(strBytes)
+}
+
 func StrLen(str string) int {
 	return 2 + len([]byte(str))
+}
+
+func NullableStrLen(str *string) int {
+	if str == nil {
+		return 2
+	}
+	return 2 + len([]byte(*str))
 }
 
 func CompactStrLen(str string) int {

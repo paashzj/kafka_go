@@ -10,6 +10,14 @@ func readBaseSequence(bytes []byte, idx int) (int32, int) {
 	return readInt32(bytes, idx)
 }
 
+func putBatchIndex(bytes []byte, idx int, x int32) int {
+	return putInt32(bytes, idx, x)
+}
+
+func readBatchIndex(bytes []byte, idx int) (int32, int) {
+	return readInt32(bytes, idx)
+}
+
 func putBrokerNodeId(bytes []byte, idx int, x int32) int {
 	return putInt32(bytes, idx, x)
 }

@@ -34,6 +34,7 @@ const (
 	LenProducerEpoch        = 2
 	LenBaseSequence         = 4
 	LenSessionTimeout       = 8
+	LenBatchIndex           = 4
 )
 
 const LenTaggedField = 1

@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Server) Produce(ctx *context.NetworkContext, frame []byte, version int16, config *codec.KafkaProtocolConfig) ([]byte, gnet.Action) {
-	if version == 7 {
+	if version == 7 || version == 8 {
 		return s.ReactProduceVersion(ctx, frame, version, config)
 	}
 	logrus.Error("unknown metadata version ", version)

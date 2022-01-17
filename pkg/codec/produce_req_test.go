@@ -43,3 +43,42 @@ func TestDecodeProduceReqV7(t *testing.T) {
 	assert.Nil(t, record.Key)
 	assert.Equal(t, "msg", record.Value)
 }
+
+func TestDecodeProduceReqV8(t *testing.T) {
+	bytes := testHex2Bytes(t, "00000004002464646162333263392d663632302d343061322d616662382d313862373636393662653064ffff000100007530000000010005746f70696300000001000000000000004c000000000000000000000040ffffffff02635624670000000000000000017e685832d60000017e685832d6ffffffffffffffffffffffffffff000000011c000000066b65790a76616c756500")
+	produceReq, err := DecodeProduceReq(bytes, 8)
+	assert.Nil(t, err)
+	assert.Equal(t, 4, produceReq.CorrelationId)
+	assert.Equal(t, "ddab32c9-f620-40a2-afb8-18b76696be0d", produceReq.ClientId)
+	assert.Equal(t, 30_000, produceReq.Timeout)
+	assert.Len(t, produceReq.TopicReqList, 1)
+	topicReq := produceReq.TopicReqList[0]
+	assert.Equal(t, "topic", topicReq.Topic)
+	assert.Len(t, topicReq.PartitionReqList, 1)
+	partitionReq := topicReq.PartitionReqList[0]
+	assert.Equal(t, 0, partitionReq.PartitionId)
+	recordBatch := partitionReq.RecordBatch
+	var expectedOffset int64 = 0
+	assert.Equal(t, expectedOffset, recordBatch.Offset)
+	assert.Equal(t, 64, recordBatch.MessageSize)
+	var expectedLeaderEpoch int32 = -1
+	assert.Equal(t, expectedLeaderEpoch, recordBatch.LeaderEpoch)
+	var expectedMagicByte byte = 2
+	assert.Equal(t, expectedMagicByte, recordBatch.MagicByte)
+	var expectedFlags uint16 = 0
+	assert.Equal(t, expectedFlags, recordBatch.Flags)
+	assert.Equal(t, 0, recordBatch.LastOffsetDelta)
+	var expectedProducerId int64 = -1
+	assert.Equal(t, expectedProducerId, recordBatch.ProducerId)
+	var expectedBaseSequence int32 = -1
+	assert.Equal(t, expectedBaseSequence, recordBatch.BaseSequence)
+	assert.Len(t, recordBatch.Records, 1)
+	record := recordBatch.Records[0]
+	var expectedRecordAttributes byte = 0
+	assert.Equal(t, expectedRecordAttributes, record.RecordAttributes)
+	var expectedRelativeTimestamp int64 = 0
+	assert.Equal(t, expectedRelativeTimestamp, record.RelativeTimestamp)
+	assert.Equal(t, 0, record.RelativeOffset)
+	assert.Equal(t, []byte("key"), record.Key)
+	assert.Equal(t, "value", record.Value)
+}
