@@ -44,7 +44,11 @@ func Run(config *Config, kfkProtocolConfig *codec.KafkaProtocolConfig, impl serv
 		InitialBytesToStrip: 4,
 	}
 	kfkCodec := gnet.NewLengthFieldBasedFrameCodec(encoderConfig, decoderConfig)
-	return server, gnet.Serve(server, fmt.Sprintf("tcp://%s:%d", config.ListenHost, config.ListenPort), gnet.WithMulticore(config.MultiCore), gnet.WithCodec(kfkCodec))
+	go func() {
+		err := gnet.Serve(server, fmt.Sprintf("tcp://%s:%d", config.ListenHost, config.ListenPort), gnet.WithMulticore(config.MultiCore), gnet.WithCodec(kfkCodec))
+		logrus.Error("kafsar broker started error ", err)
+	}()
+	return server, nil
 }
 
 type Server struct {
