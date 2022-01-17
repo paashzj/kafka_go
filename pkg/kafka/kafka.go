@@ -9,7 +9,8 @@ import (
 
 type ServerConfig struct {
 	// 网络配置
-	ListenAddr string
+	ListenHost string
+	ListenPort int
 	MultiCore  bool
 	NeedSasl   bool
 	MaxConn    int32
@@ -24,7 +25,8 @@ func Run(config *ServerConfig, impl service.KfkServer) (*ServerControl, error) {
 	logrus.Info("This is codec message, you will see the message of codec")
 	logrus.Info("This is network message， you will see the message of network")
 	networkConfig := &network.Config{}
-	networkConfig.ListenAddr = config.ListenAddr
+	networkConfig.ListenHost = config.ListenHost
+	networkConfig.ListenPort = config.ListenPort
 	networkConfig.MultiCore = config.MultiCore
 	kfkProtocolConfig := &codec.KafkaProtocolConfig{}
 	kfkProtocolConfig.ClusterId = config.ClusterId

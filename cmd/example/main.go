@@ -6,7 +6,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var listenAddr = flag.String("listen_addr", "0.0.0.0", "kafka listen addr")
+var listenAddr = flag.String("listen_host", "0.0.0.0", "kafka listen host")
+var listenPort = flag.Int("listen_port", 9092, "kafka listen port")
 var multiCore = flag.Bool("multi_core", false, "multi core")
 var needSasl = flag.Bool("need_sasl", false, "need sasl")
 var maxConn = flag.Int("max_conn", 500, "need sasl")
@@ -18,7 +19,8 @@ var advertiseListenPort = flag.Int("advertise_port", 9092, "kafka advertise port
 func main() {
 	flag.Parse()
 	serverConfig := &kafka.ServerConfig{}
-	serverConfig.ListenAddr = *listenAddr
+	serverConfig.ListenHost = *listenAddr
+	serverConfig.ListenPort = *listenPort
 	serverConfig.MultiCore = *multiCore
 	serverConfig.NeedSasl = *needSasl
 	serverConfig.ClusterId = *clusterId

@@ -19,7 +19,8 @@ var connCount int32
 var connMutex sync.Mutex
 
 type Config struct {
-	ListenAddr string
+	ListenHost string
+	ListenPort int
 	MultiCore  bool
 }
 
@@ -43,7 +44,7 @@ func Run(config *Config, kfkProtocolConfig *codec.KafkaProtocolConfig, impl serv
 		InitialBytesToStrip: 4,
 	}
 	kfkCodec := gnet.NewLengthFieldBasedFrameCodec(encoderConfig, decoderConfig)
-	return server, gnet.Serve(server, fmt.Sprintf("tcp://%s:9092", config.ListenAddr), gnet.WithMulticore(config.MultiCore), gnet.WithCodec(kfkCodec))
+	return server, gnet.Serve(server, fmt.Sprintf("tcp://%s:%d", config.ListenHost, config.ListenPort), gnet.WithMulticore(config.MultiCore), gnet.WithCodec(kfkCodec))
 }
 
 type Server struct {
