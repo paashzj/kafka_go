@@ -43,6 +43,7 @@ func (s *Server) ReactJoinGroupVersion(ctx *context.NetworkContext, frame []byte
 	}
 	logrus.Info("join group req", req)
 	lowReq := &service.JoinGroupReq{}
+	lowReq.ClientId = req.ClientId
 	lowReq.GroupId = req.GroupId
 	lowReq.SessionTimeout = req.SessionTimeout
 	lowReq.MemberId = req.MemberId

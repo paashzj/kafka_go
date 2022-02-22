@@ -18,6 +18,7 @@
 package service
 
 type JoinGroupReq struct {
+	ClientId        string
 	GroupId         string
 	SessionTimeout  int
 	MemberId        string
