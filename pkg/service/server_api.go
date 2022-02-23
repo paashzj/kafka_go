@@ -23,28 +23,28 @@ import (
 
 type KfkServer interface {
 	// FetchPartition method called this already authed
-	FetchPartition(addr *net.Addr, topic string, req *FetchPartitionReq) (*FetchPartitionResp, error)
+	FetchPartition(addr net.Addr, topic string, req *FetchPartitionReq) (*FetchPartitionResp, error)
 
 	// GroupJoin method called this already authed
-	GroupJoin(addr *net.Addr, req *JoinGroupReq) (*JoinGroupResp, error)
+	GroupJoin(addr net.Addr, req *JoinGroupReq) (*JoinGroupResp, error)
 
 	// GroupLeave method called this already authed
-	GroupLeave(addr *net.Addr, req *LeaveGroupReq) (*LeaveGroupResp, error)
+	GroupLeave(addr net.Addr, req *LeaveGroupReq) (*LeaveGroupResp, error)
 
 	// GroupSync method called this already authed
-	GroupSync(addr *net.Addr, req *SyncGroupReq) (*SyncGroupResp, error)
+	GroupSync(addr net.Addr, req *SyncGroupReq) (*SyncGroupResp, error)
 
 	// OffsetListPartition method called this already authed
-	OffsetListPartition(addr *net.Addr, topic string, req *ListOffsetsPartitionReq) (*ListOffsetsPartitionResp, error)
+	OffsetListPartition(addr net.Addr, topic string, req *ListOffsetsPartitionReq) (*ListOffsetsPartitionResp, error)
 
 	// OffsetCommitPartition method called this already authed
-	OffsetCommitPartition(addr *net.Addr, topic string, req *OffsetCommitPartitionReq) (*OffsetCommitPartitionResp, error)
+	OffsetCommitPartition(addr net.Addr, topic string, req *OffsetCommitPartitionReq) (*OffsetCommitPartitionResp, error)
 
 	// OffsetFetch method called this already authed
-	OffsetFetch(addr *net.Addr, topic string, partition int) (*OffsetFetchPartitionResp, error)
+	OffsetFetch(addr net.Addr, topic string, partition int) (*OffsetFetchPartitionResp, error)
 
 	// Produce method called this already authed
-	Produce(addr *net.Addr, topic string, partition int, req *ProducePartitionReq) (*ProducePartitionResp, error)
+	Produce(addr net.Addr, topic string, partition int, req *ProducePartitionReq) (*ProducePartitionResp, error)
 
 	SaslAuth(req SaslReq) (bool, ErrorCode)
 
@@ -52,5 +52,5 @@ type KfkServer interface {
 
 	SaslAuthConsumerGroup(req SaslReq, consumerGroup string) (bool, ErrorCode)
 
-	Disconnect(addr *net.Addr)
+	Disconnect(addr net.Addr)
 }
