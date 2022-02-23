@@ -93,7 +93,7 @@ func (s *Server) React(frame []byte, c gnet.Conn) ([]byte, gnet.Action) {
 	ctx := c.Context()
 	if ctx == nil {
 		addr := c.RemoteAddr()
-		c.SetContext(&context.NetworkContext{Addr: &addr})
+		c.SetContext(&context.NetworkContext{Addr: addr})
 	}
 	connMutex.Unlock()
 	ctx = c.Context()

@@ -41,7 +41,7 @@ type OffsetCommitPartitionResp struct {
 	ErrorCode   ErrorCode
 }
 
-func OffsetCommit(addr *net.Addr, impl KfkServer, reqList []*OffsetCommitTopicReq) ([]*OffsetCommitTopicResp, error) {
+func OffsetCommit(addr net.Addr, impl KfkServer, reqList []*OffsetCommitTopicReq) ([]*OffsetCommitTopicResp, error) {
 	result := make([]*OffsetCommitTopicResp, len(reqList))
 	for i, req := range reqList {
 		f := &OffsetCommitTopicResp{}

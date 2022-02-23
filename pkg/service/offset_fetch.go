@@ -53,7 +53,7 @@ type OffsetFetchPartitionResp struct {
 	ErrorCode   int16
 }
 
-func OffsetFetch(addr *net.Addr, impl KfkServer, req *OffsetFetchReq) (*OffsetFetchResp, error) {
+func OffsetFetch(addr net.Addr, impl KfkServer, req *OffsetFetchReq) (*OffsetFetchResp, error) {
 	reqList := req.TopicReqList
 	result := &OffsetFetchResp{}
 	result.TopicRespList = make([]*OffsetFetchTopicResp, len(reqList))

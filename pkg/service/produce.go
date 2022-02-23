@@ -52,7 +52,7 @@ type ProducePartitionResp struct {
 	LogStartOffset int64
 }
 
-func Produce(addr *net.Addr, impl KfkServer, req *ProduceReq) (*ProduceResp, error) {
+func Produce(addr net.Addr, impl KfkServer, req *ProduceReq) (*ProduceResp, error) {
 	reqList := req.TopicReqList
 	result := &ProduceResp{}
 	result.TopicRespList = make([]*ProduceTopicResp, len(reqList))

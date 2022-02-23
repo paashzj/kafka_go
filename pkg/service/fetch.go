@@ -51,7 +51,7 @@ type FetchPartitionResp struct {
 	RecordBatch      *RecordBatch
 }
 
-func Fetch(addr *net.Addr, impl KfkServer, req *FetchReq) ([]*FetchTopicResp, error) {
+func Fetch(addr net.Addr, impl KfkServer, req *FetchReq) ([]*FetchTopicResp, error) {
 	reqList := req.FetchTopicReqList
 	result := make([]*FetchTopicResp, len(reqList))
 	for i, req := range reqList {

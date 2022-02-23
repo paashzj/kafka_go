@@ -27,7 +27,7 @@ import (
 type NetworkContext struct {
 	ctxMutex sync.RWMutex
 	authed   bool
-	Addr     *net.Addr
+	Addr     net.Addr
 }
 
 func (n *NetworkContext) Authed(authed bool) {
