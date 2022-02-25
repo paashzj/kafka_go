@@ -72,7 +72,7 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 		for j, p := range lowTopicResp.FetchPartitionRespList {
 			partitionResp := &codec.FetchPartitionResp{}
 			partitionResp.PartitionIndex = p.PartitionId
-			partitionResp.ErrorCode = 0
+			partitionResp.ErrorCode = int16(p.ErrorCode)
 			partitionResp.HighWatermark = p.HighWatermark
 			partitionResp.LastStableOffset = p.LastStableOffset
 			partitionResp.LogStartOffset = p.LogStartOffset

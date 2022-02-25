@@ -44,6 +44,7 @@ type FetchPartitionReq struct {
 }
 
 type FetchPartitionResp struct {
+	ErrorCode        ErrorCode
 	PartitionId      int
 	HighWatermark    int64
 	LastStableOffset int64
