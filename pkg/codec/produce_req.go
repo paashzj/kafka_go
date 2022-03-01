@@ -71,7 +71,8 @@ func DecodeProduceReq(bytes []byte, version int16) (produceReq *ProduceReq, err 
 		for j := 0; j < partitionLength; j++ {
 			partition := &ProducePartitionReq{}
 			partition.PartitionId, idx = readInt(bytes, idx)
-			recordBatchLength, idx := readInt(bytes, idx)
+			var recordBatchLength int
+			recordBatchLength, idx = readInt(bytes, idx)
 			partition.RecordBatch = DecodeRecordBatch(bytes[idx:idx+recordBatchLength-1], version)
 			idx += recordBatchLength
 			topic.PartitionReqList[i] = partition

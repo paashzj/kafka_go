@@ -39,6 +39,10 @@ func putErrorCode(bytes []byte, idx int, errorCode int16) int {
 	return putInt16(bytes, idx, errorCode)
 }
 
+func readErrorCode(bytes []byte, idx int) (int16, int) {
+	return readInt16(bytes, idx)
+}
+
 func putProducerEpoch(bytes []byte, idx int, errorCode int16) int {
 	return putInt16(bytes, idx, errorCode)
 }

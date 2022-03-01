@@ -17,6 +17,12 @@
 
 package codec
 
+import (
+	"errors"
+	"github.com/sirupsen/logrus"
+	"runtime/debug"
+)
+
 type FetchResp struct {
 	BaseResp
 	ThrottleTime   int
@@ -37,8 +43,51 @@ type FetchPartitionResp struct {
 	LastStableOffset    int64
 	LogStartOffset      int64
 	AbortedTransactions int64
-	ReplicaData         int64
+	ReplicaId           int32
 	RecordBatch         *RecordBatch
+}
+
+func DecodeFetchResp(bytes []byte, version int16) (fetchResp *FetchResp, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			logrus.Info("Recovered in f", r, string(debug.Stack()))
+			fetchResp = nil
+			err = errors.New("codec failed")
+		}
+	}()
+	fetchResp = &FetchResp{}
+	idx := 0
+	fetchResp.CorrelationId, idx = readCorrId(bytes, idx)
+	fetchResp.ThrottleTime, idx = readThrottleTime(bytes, idx)
+	fetchResp.ErrorCode, idx = readErrorCode(bytes, idx)
+	fetchResp.SessionId, idx = readSessionId(bytes, idx)
+	topicLen, idx := readArrayLen(bytes, idx)
+	fetchResp.TopicResponses = make([]*FetchTopicResp, topicLen)
+	for i := 0; i < topicLen; i++ {
+		topicResp := &FetchTopicResp{}
+		topicResp.Topic, idx = readTopicString(bytes, idx)
+		var partitionLen int
+		partitionLen, idx = readArrayLen(bytes, idx)
+		topicResp.PartitionDataList = make([]*FetchPartitionResp, partitionLen)
+		for j := 0; j < partitionLen; j++ {
+			partitionResp := &FetchPartitionResp{}
+			partitionResp.PartitionIndex, idx = readPartitionId(bytes, idx)
+			partitionResp.ErrorCode, idx = readErrorCode(bytes, idx)
+			partitionResp.HighWatermark, idx = readOffset(bytes, idx)
+			partitionResp.LastStableOffset, idx = readOffset(bytes, idx)
+			partitionResp.LogStartOffset, idx = readOffset(bytes, idx)
+			// todo skip transaction
+			idx += 4
+			partitionResp.ReplicaId, idx = readReplicaId(bytes, idx)
+			var recordBatchLength int
+			recordBatchLength, idx = readInt(bytes, idx)
+			partitionResp.RecordBatch = DecodeRecordBatch(bytes[idx:idx+recordBatchLength-1], version)
+			idx += recordBatchLength
+			topicResp.PartitionDataList[j] = partitionResp
+		}
+		fetchResp.TopicResponses[i] = topicResp
+	}
+	return fetchResp, nil
 }
 
 func NewFetchResp(corrId int) *FetchResp {
@@ -71,7 +120,7 @@ func (f *FetchResp) Bytes(version int16) []byte {
 	idx = putCorrId(bytes, idx, f.CorrelationId)
 	idx = putThrottleTime(bytes, idx, f.ThrottleTime)
 	idx = putErrorCode(bytes, idx, f.ErrorCode)
-	idx = putInt(bytes, idx, f.SessionId)
+	idx = putSessionId(bytes, idx, f.SessionId)
 	idx = putArrayLen(bytes, idx, len(f.TopicResponses))
 	for _, t := range f.TopicResponses {
 		idx = putString(bytes, idx, t.Topic)

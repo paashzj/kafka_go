@@ -71,8 +71,20 @@ func readPartitionId(bytes []byte, idx int) (int, int) {
 	return readInt(bytes, idx)
 }
 
+func putSessionId(bytes []byte, idx int, x int) int {
+	return putInt(bytes, idx, x)
+}
+
+func readSessionId(bytes []byte, idx int) (int, int) {
+	return readInt(bytes, idx)
+}
+
 func putThrottleTime(bytes []byte, idx int, x int) int {
 	return putInt(bytes, idx, x)
+}
+
+func readThrottleTime(bytes []byte, idx int) (int, int) {
+	return readInt(bytes, idx)
 }
 
 func putTopicAuthorizedOperation(bytes []byte, idx int, x int) int {

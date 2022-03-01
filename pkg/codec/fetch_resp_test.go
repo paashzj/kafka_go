@@ -22,6 +22,31 @@ import (
 	"testing"
 )
 
+func TestDecodeFetchRespV11(t *testing.T) {
+	bytes := testHex2Bytes(t, "0000000a00000000000072fb9ef7000000010006746573742d3300000001000000000000000000000000000100000000000000010000000000000000ffffffffffffffff0000004c0000000000000000000000400000000002ab9216c10000000000000000017a92e383dd0000017a92e383ddffffffffffffffffffffffffffff000000011c000000011053686f6f74487a6a00")
+	fetchResp, err := DecodeFetchResp(bytes, 11)
+	assert.Nil(t, err)
+	assert.Equal(t, 10, fetchResp.CorrelationId)
+	assert.Equal(t, 1929092855, fetchResp.SessionId)
+	assert.Len(t, fetchResp.TopicResponses, 1)
+	topicResp := fetchResp.TopicResponses[0]
+	assert.Equal(t, "test-3", topicResp.Topic)
+	assert.Len(t, topicResp.PartitionDataList, 1)
+	partitionResp := topicResp.PartitionDataList[0]
+	assert.Equal(t, 0, partitionResp.PartitionIndex)
+	var expectErrorCode int16 = 0
+	assert.Equal(t, expectErrorCode, partitionResp.ErrorCode)
+	var expectHighWatermark int64 = 1
+	assert.Equal(t, expectHighWatermark, partitionResp.HighWatermark)
+	recordBatch := partitionResp.RecordBatch
+	var expectOffset int64 = 0
+	assert.Equal(t, expectOffset, recordBatch.Offset)
+	assert.Equal(t, 64, recordBatch.MessageSize)
+	assert.Len(t, recordBatch.Records, 1)
+	record := recordBatch.Records[0]
+	assert.Equal(t, "ShootHzj", record.Value)
+}
+
 func TestCodeFetchRespV10(t *testing.T) {
 	record := &Record{}
 	record.RecordAttributes = 0
@@ -87,7 +112,7 @@ func TestCodeFetchRespV11(t *testing.T) {
 	fetchPartitionResp.LastStableOffset = 1
 	fetchPartitionResp.LogStartOffset = 0
 	fetchPartitionResp.AbortedTransactions = -1
-	fetchPartitionResp.ReplicaData = -1
+	fetchPartitionResp.ReplicaId = -1
 	fetchPartitionResp.RecordBatch = recordBatch
 	fetchTopicResp := &FetchTopicResp{}
 	fetchTopicResp.Topic = "test-5"

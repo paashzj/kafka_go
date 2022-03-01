@@ -78,7 +78,7 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 			partitionResp.LogStartOffset = p.LogStartOffset
 			partitionResp.RecordBatch = s.convertRecordBatchResp(p.RecordBatch)
 			partitionResp.AbortedTransactions = -1
-			partitionResp.ReplicaData = -1
+			partitionResp.ReplicaId = -1
 			f.PartitionDataList[j] = partitionResp
 		}
 		resp.TopicResponses[i] = f
