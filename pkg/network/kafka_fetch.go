@@ -89,7 +89,6 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 func (s *Server) convertRecordBatchResp(lowRecordBatch *service.RecordBatch) *codec.RecordBatch {
 	recordBatch := &codec.RecordBatch{}
 	recordBatch.Offset = lowRecordBatch.Offset
-	recordBatch.MessageSize = lowRecordBatch.MessageSize
 	recordBatch.LeaderEpoch = 0
 	recordBatch.MagicByte = 2
 	recordBatch.Flags = 0

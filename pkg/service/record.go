@@ -19,7 +19,6 @@ package service
 
 type RecordBatch struct {
 	Offset          int64
-	MessageSize     int
 	LastOffsetDelta int
 	FirstTimestamp  int64
 	LastTimestamp   int64

@@ -41,7 +41,6 @@ func (e ExampleKafkaImpl) FetchPartition(addr net.Addr, topic string, req *servi
 func exampleRecordBatch() *service.RecordBatch {
 	r := &service.RecordBatch{}
 	r.Offset = 0
-	r.MessageSize = 64
 	r.LastOffsetDelta = 0
 	r.FirstTimestamp = 1625962021853
 	r.LastTimestamp = 1625962021853

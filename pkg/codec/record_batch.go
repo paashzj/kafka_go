@@ -63,7 +63,11 @@ func DecodeRecordBatch(bytes []byte, version int16) *RecordBatch {
 }
 
 func (r *RecordBatch) BytesLength() int {
-	result := LenOffset + LenMessageSize + LenLeaderEpoch + LenMagicByte + LenCrc32
+	return LenOffset + LenMessageSize + r.RecordBatchMessageLength()
+}
+
+func (r *RecordBatch) RecordBatchMessageLength() int {
+	result := LenLeaderEpoch + LenMagicByte + LenCrc32
 	// record batch flags
 	result += 2
 	result += LenOffsetDelta
@@ -86,7 +90,7 @@ func (r *RecordBatch) Bytes() []byte {
 	bytes := make([]byte, r.BytesLength())
 	idx := 0
 	idx = putOffset(bytes, idx, r.Offset)
-	idx = putMessageSize(bytes, idx, r.MessageSize)
+	idx = putMessageSize(bytes, idx, r.RecordBatchMessageLength())
 	idx = putLeaderEpoch(bytes, idx, r.LeaderEpoch)
 	bytes[idx] = r.MagicByte
 	idx++

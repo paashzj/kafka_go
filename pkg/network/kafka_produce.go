@@ -86,7 +86,6 @@ func (s *Server) ReactProduceVersion(ctx *context.NetworkContext, frame []byte, 
 func (s *Server) convertRecordBatchReq(recordBatch *codec.RecordBatch) *service.RecordBatch {
 	lowRecordBatch := &service.RecordBatch{}
 	lowRecordBatch.Offset = recordBatch.Offset
-	lowRecordBatch.MessageSize = recordBatch.MessageSize
 	lowRecordBatch.LastOffsetDelta = recordBatch.LastOffsetDelta
 	lowRecordBatch.FirstTimestamp = recordBatch.FirstTimestamp
 	lowRecordBatch.LastTimestamp = recordBatch.LastTimestamp
