@@ -21,7 +21,6 @@ import (
 	"github.com/paashzj/kafka_go/pkg/codec"
 	"github.com/paashzj/kafka_go/pkg/network"
 	"github.com/paashzj/kafka_go/pkg/service"
-	"github.com/sirupsen/logrus"
 )
 
 type ServerConfig struct {
@@ -39,8 +38,6 @@ type ServerConfig struct {
 }
 
 func Run(config *ServerConfig, impl service.KfkServer) (*ServerControl, error) {
-	logrus.Info("This is codec message, you will see the message of codec")
-	logrus.Info("This is network message， you will see the message of network")
 	networkConfig := &network.Config{}
 	networkConfig.ListenHost = config.ListenHost
 	networkConfig.ListenPort = config.ListenPort
