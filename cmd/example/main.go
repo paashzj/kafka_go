@@ -21,6 +21,8 @@ import (
 	"flag"
 	"github.com/paashzj/kafka_go/pkg/kafka"
 	"github.com/sirupsen/logrus"
+	"os"
+	"os/signal"
 )
 
 var listenAddr = flag.String("listen_host", "0.0.0.0", "kafka listen host")
@@ -48,5 +50,11 @@ func main() {
 	_, err := kafka.Run(serverConfig, e)
 	if err != nil {
 		logrus.Error(err)
+	} else {
+		interrupt := make(chan os.Signal, 1)
+		signal.Notify(interrupt, os.Interrupt)
+		for {
+			<-interrupt
+		}
 	}
 }

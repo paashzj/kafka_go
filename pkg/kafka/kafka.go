@@ -25,14 +25,14 @@ import (
 )
 
 type ServerConfig struct {
-	// 网络配置
+	// network config
 	ListenHost string
 	ListenPort int
 	MultiCore  bool
 	NeedSasl   bool
 	MaxConn    int32
 
-	// Kafka协议配置
+	// Kafka protocol config
 	ClusterId     string
 	AdvertiseHost string
 	AdvertisePort int
