@@ -72,7 +72,7 @@ func (r *Record) Bytes() []byte {
 	}
 	idx = putVarint(bytes, idx, len(r.Value))
 	copy(bytes[idx:], r.Value)
-	idx += len(r.Headers)
+	idx += len(r.Value)
 	idx = putVarint(bytes, idx, len(r.Headers))
 	return bytes
 }
