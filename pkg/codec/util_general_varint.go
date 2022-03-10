@@ -56,8 +56,8 @@ func varint64Size(x int64) int {
 		ux = ^ux
 	}
 	i := 0
-	for x >= 0x80 {
-		x >>= 7
+	for ux >= 0x80 {
+		ux >>= 7
 		i++
 	}
 	return i + 1
@@ -65,4 +65,18 @@ func varint64Size(x int64) int {
 
 func varintSize(x int) int {
 	return varint64Size(int64(x))
+}
+
+//nolint
+func uVarint64Size(x uint64) int {
+	i := 0
+	for x >= 0x80 {
+		x >>= 7
+		i++
+	}
+	return i + 1
+}
+
+func uVarintSize(x uint) int {
+	return uVarint64Size(uint64(x))
 }

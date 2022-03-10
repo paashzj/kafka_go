@@ -48,7 +48,7 @@ func (r *Record) BytesLength() int {
 	result += LenRecordAttributes
 	result += varint64Size(r.RelativeTimestamp)
 	result += varintSize(r.RelativeOffset)
-	result += CompactNullableBytesLen(r.Key)
+	result += CompactBytesLen(r.Key)
 	result += CompactBytesLen(r.Value)
 	result += CompactNullableBytesLen(r.Headers)
 	return result
@@ -60,8 +60,8 @@ func (r *Record) Bytes() []byte {
 	idx = putRecordAttributes(bytes, idx, 0)
 	idx = putRelativeTimestamp(bytes, idx, r.RelativeTimestamp)
 	idx = putRelativeOffset(bytes, idx, r.RelativeOffset)
-	idx = putCompactNullableBytes(bytes, idx, r.Key)
-	idx = putCompactBytes(bytes, idx, r.Value)
+	idx = putCompactBytes(bytes, idx, r.Key)
+	idx = putVCompactBytes(bytes, idx, r.Value)
 	idx = putCompactNullableBytes(bytes, idx, r.Headers)
 	return bytes
 }

@@ -60,12 +60,12 @@ func BytesLen(bytes []byte) int {
 }
 
 func CompactBytesLen(bytes []byte) int {
-	return varintSize(len(bytes)) + len(bytes)
+	return uVarintSize(uint(len(bytes))) + len(bytes)
 }
 
 func CompactNullableBytesLen(bytes []byte) int {
 	if bytes == nil {
 		return 1
 	}
-	return varintSize(len(bytes)) + len(bytes)
+	return uVarintSize(uint(len(bytes))) + len(bytes)
 }
