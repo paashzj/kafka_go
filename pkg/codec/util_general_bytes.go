@@ -23,9 +23,9 @@ func readBytes(bytes []byte, idx int) ([]byte, int) {
 }
 
 func readCompactBytes(bytes []byte, idx int) ([]byte, int) {
-	strLen, _ := readUVarint(bytes, idx)
-	intLen := int(strLen)
-	return bytes[idx+1 : idx+intLen], idx + intLen
+	auxUInt32, offset := readUVarint(bytes, idx)
+	intLen := int(auxUInt32)
+	return bytes[offset : idx+intLen], idx + intLen
 }
 
 func putBytes(bytes []byte, idx int, authBytes []byte) int {

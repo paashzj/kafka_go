@@ -22,6 +22,19 @@ import (
 	"testing"
 )
 
+func TestDecodeRecordCase2(t *testing.T) {
+	bytes := testHex2Bytes(t, "000000011053686f6f74487a6a00")
+	record := DecodeRecord(bytes, 1)
+	var expectedAttr byte = 0
+	assert.Equal(t, expectedAttr, record.RecordAttributes)
+	var expectedTs int64 = 0
+	assert.Equal(t, expectedTs, record.RelativeTimestamp)
+	assert.Equal(t, 0, record.RelativeOffset)
+	assert.Nil(t, record.Key)
+	assert.Equal(t, []byte("ShootHzj"), record.Value)
+	assert.Nil(t, record.Headers)
+}
+
 func TestCodeRecord(t *testing.T) {
 	record := &Record{}
 	record.RecordAttributes = 0

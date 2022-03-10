@@ -22,7 +22,7 @@ import (
 	"testing"
 )
 
-func Test_Marshal(t *testing.T) {
+func TestCodeRecordBatch(t *testing.T) {
 	r := &RecordBatch{}
 	r.Offset = 0
 	r.MessageSize = 64

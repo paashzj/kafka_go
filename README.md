@@ -1,10 +1,9 @@
 # kafka_go
 [![codecov](https://codecov.io/gh/paashzj/kafka_go/branch/main/graph/badge.svg?token=155QKNN7MQ)](https://codecov.io/gh/paashzj/kafka_go)
-## Rerfer Doc
-### kafka protoco doc
-https://kafka.apache.org/protocol
+## Refer Doc
+### [kafka protocol doc](https://kafka.apache.org/protocol)
 # Server Configurations
-## Gerneral Config
+## General Config
 ## Network Config
 ### ListenHost
 Kafka server listen host
