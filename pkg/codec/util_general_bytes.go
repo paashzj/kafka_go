@@ -47,7 +47,7 @@ func putVCompactBytes(bytes []byte, idx int, authBytes []byte) int {
 }
 
 func BytesLen(bytes []byte) int {
-	return 2 + len(bytes)
+	return 4 + len(bytes)
 }
 
 func CompactBytesLen(bytes []byte) int {

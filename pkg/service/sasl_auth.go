@@ -20,6 +20,7 @@ package service
 type SaslReq struct {
 	Username string
 	Password string
+	ClientId string
 }
 
 func SaslAuth(impl KfkServer, req SaslReq) (bool, ErrorCode) {

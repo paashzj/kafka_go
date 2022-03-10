@@ -28,3 +28,10 @@ func TestCodeSaslHandshakeAuthRespV2(t *testing.T) {
 	expectBytes := testHex2Bytes(t, "7ffffffa0000000101000000000000000000")
 	assert.Equal(t, expectBytes, bytes)
 }
+
+func TestCodeSaslHandshakeAuthRespV1(t *testing.T) {
+	saslHandshakeAuthResp := NewSaslHandshakeAuthResp(2147483642)
+	bytes := saslHandshakeAuthResp.Bytes(1)
+	expectBytes := testHex2Bytes(t, "7ffffffa00000000000000000000000000000000")
+	assert.Equal(t, expectBytes, bytes)
+}
