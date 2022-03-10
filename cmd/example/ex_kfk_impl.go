@@ -110,7 +110,7 @@ func (e ExampleKafkaImpl) OffsetCommitPartition(addr net.Addr, topic string, req
 	return partitionResp, nil
 }
 
-func (e ExampleKafkaImpl) OffsetFetch(addr net.Addr, topic string, partition int) (*service.OffsetFetchPartitionResp, error) {
+func (e ExampleKafkaImpl) OffsetFetch(addr net.Addr, topic string, req *service.OffsetFetchPartitionReq) (*service.OffsetFetchPartitionResp, error) {
 	return nil, nil
 }
 

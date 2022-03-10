@@ -30,6 +30,7 @@ type ProduceTopicReq struct {
 }
 
 type ProducePartitionReq struct {
+	ClientId    string
 	PartitionId int
 	RecordBatch *RecordBatch
 }

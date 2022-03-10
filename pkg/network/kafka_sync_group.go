@@ -44,6 +44,7 @@ func (s *Server) ReactSyncGroupVersion(ctx *context.NetworkContext, frame []byte
 	logrus.Info("sync group req", req)
 	lowReq := &service.SyncGroupReq{}
 	lowReq.GroupId = req.GroupId
+	lowReq.ClientId = req.ClientId
 	lowReq.GenerationId = req.GenerationId
 	lowReq.MemberId = req.MemberId
 	lowReq.GroupInstanceId = req.GroupInstanceId

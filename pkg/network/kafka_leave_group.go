@@ -44,6 +44,7 @@ func (s *Server) ReactLeaveGroupVersion(ctx *context.NetworkContext, frame []byt
 	logrus.Info("leave group req ", req)
 	lowReq := &service.LeaveGroupReq{}
 	lowReq.GroupId = req.GroupId
+	lowReq.ClientId = req.ClientId
 	lowReq.Members = make([]*service.LeaveGroupMember, len(req.Members))
 	for i, member := range req.Members {
 		m := &service.LeaveGroupMember{}

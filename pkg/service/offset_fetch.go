@@ -32,6 +32,7 @@ type OffsetFetchTopicReq struct {
 }
 
 type OffsetFetchPartitionReq struct {
+	ClientId    string
 	PartitionId int
 }
 
@@ -62,7 +63,7 @@ func OffsetFetch(addr net.Addr, impl KfkServer, req *OffsetFetchReq) (*OffsetFet
 		f.Topic = topicReq.Topic
 		f.PartitionRespList = make([]*OffsetFetchPartitionResp, 0)
 		for _, partitionReq := range topicReq.PartitionReqList {
-			partition, _ := impl.OffsetFetch(addr, topicReq.Topic, partitionReq.PartitionId)
+			partition, _ := impl.OffsetFetch(addr, topicReq.Topic, partitionReq)
 			if partition != nil {
 				f.PartitionRespList = append(f.PartitionRespList, partition)
 			}

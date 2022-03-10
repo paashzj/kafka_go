@@ -32,6 +32,7 @@ type OffsetCommitTopicResp struct {
 }
 
 type OffsetCommitPartitionReq struct {
+	ClientId           string
 	PartitionId        int
 	OffsetCommitOffset int64
 }

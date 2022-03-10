@@ -19,6 +19,7 @@ package service
 
 type SyncGroupReq struct {
 	GroupId          string
+	ClientId         string
 	GenerationId     int
 	MemberId         string
 	GroupInstanceId  *string

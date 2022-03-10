@@ -41,7 +41,7 @@ type KfkServer interface {
 	OffsetCommitPartition(addr net.Addr, topic string, req *OffsetCommitPartitionReq) (*OffsetCommitPartitionResp, error)
 
 	// OffsetFetch method called this already authed
-	OffsetFetch(addr net.Addr, topic string, partition int) (*OffsetFetchPartitionResp, error)
+	OffsetFetch(addr net.Addr, topic string, req *OffsetFetchPartitionReq) (*OffsetFetchPartitionResp, error)
 
 	// Produce method called this already authed
 	Produce(addr net.Addr, topic string, partition int, req *ProducePartitionReq) (*ProducePartitionResp, error)

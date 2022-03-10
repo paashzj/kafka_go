@@ -18,8 +18,9 @@
 package service
 
 type LeaveGroupReq struct {
-	GroupId string
-	Members []*LeaveGroupMember
+	ClientId string
+	GroupId  string
+	Members  []*LeaveGroupMember
 }
 
 type LeaveGroupMember struct {

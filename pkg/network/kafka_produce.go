@@ -54,6 +54,7 @@ func (s *Server) ReactProduceVersion(ctx *context.NetworkContext, frame []byte, 
 		for j, partitionReq := range topicReq.PartitionReqList {
 			lowPartitionReq := &service.ProducePartitionReq{}
 			lowPartitionReq.PartitionId = partitionReq.PartitionId
+			lowPartitionReq.ClientId = req.ClientId
 			lowPartitionReq.RecordBatch = s.convertRecordBatchReq(partitionReq.RecordBatch)
 			lowTopicReq.PartitionReqList[j] = lowPartitionReq
 		}

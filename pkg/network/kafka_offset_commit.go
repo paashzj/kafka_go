@@ -54,6 +54,7 @@ func (s *Server) OffsetCommitVersion(ctx *context.NetworkContext, frame []byte, 
 			lowPartitionReq := &service.OffsetCommitPartitionReq{}
 			lowPartitionReq.PartitionId = partitionReq.PartitionId
 			lowPartitionReq.OffsetCommitOffset = partitionReq.Offset
+			lowPartitionReq.ClientId = req.ClientId
 			lowTopicReq.OffsetCommitPartitionReqList[j] = lowPartitionReq
 		}
 		lowReqList[i] = lowTopicReq

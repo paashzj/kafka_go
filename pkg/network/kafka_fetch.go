@@ -55,6 +55,7 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 			lowPartitionReq := &service.FetchPartitionReq{}
 			lowPartitionReq.PartitionId = partitionReq.PartitionId
 			lowPartitionReq.FetchOffset = partitionReq.FetchOffset
+			lowPartitionReq.ClientId = req.ClientId
 			lowTopicReq.FetchPartitionReqList[j] = lowPartitionReq
 		}
 		lowReq.FetchTopicReqList[i] = lowTopicReq
