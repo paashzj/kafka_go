@@ -59,7 +59,7 @@ func (s *Server) ReactLeaveGroupVersion(ctx *context.NetworkContext, frame []byt
 	}
 	resp.ErrorCode = int16(lowResp.ErrorCode)
 	resp.Members = make([]*codec.LeaveGroupMember, len(lowResp.Members))
-	for i, member := range resp.Members {
+	for i, member := range lowResp.Members {
 		m := &codec.LeaveGroupMember{}
 		m.MemberId = member.MemberId
 		m.GroupInstanceId = member.GroupInstanceId
