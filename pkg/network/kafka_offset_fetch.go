@@ -55,6 +55,7 @@ func (s *Server) OffsetFetchVersion(ctx *context.NetworkContext, frame []byte, v
 			lowPartitionReq := &service.OffsetFetchPartitionReq{}
 			lowPartitionReq.PartitionId = partitionReq.PartitionId
 			lowPartitionReq.ClientId = req.ClientId
+			lowPartitionReq.GroupId = req.GroupId
 			lowTopicReq.PartitionReqList[j] = lowPartitionReq
 		}
 		lowReq.TopicReqList[i] = lowTopicReq

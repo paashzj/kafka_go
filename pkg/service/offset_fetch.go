@@ -34,6 +34,7 @@ type OffsetFetchTopicReq struct {
 type OffsetFetchPartitionReq struct {
 	ClientId    string
 	PartitionId int
+	GroupId     string
 }
 
 type OffsetFetchResp struct {
