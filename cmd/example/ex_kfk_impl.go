@@ -50,7 +50,7 @@ func exampleRecordBatch() *service.RecordBatch {
 	record.RelativeTimestamp = 0
 	record.RelativeOffset = 0
 	record.Key = nil
-	record.Value = "ShootHzj"
+	record.Value = []byte("ShootHzj")
 	r.Records[0] = record
 	return r
 }
