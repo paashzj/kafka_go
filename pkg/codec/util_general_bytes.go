@@ -40,6 +40,15 @@ func putCompactBytes(bytes []byte, idx int, compactBytes []byte) int {
 	return idx + len(compactBytes)
 }
 
+func putCompactNullableBytes(bytes []byte, idx int, content []byte) int {
+	if content == nil {
+		return putUVarint(bytes, idx, 0)
+	}
+	idx = putUVarint(bytes, idx, uint32(CompactBytesLen(content)))
+	copy(bytes[idx:], content)
+	return idx + len(content)
+}
+
 func putVCompactBytes(bytes []byte, idx int, authBytes []byte) int {
 	idx = putVarint(bytes, idx, len(authBytes))
 	copy(bytes[idx:], authBytes)
@@ -51,5 +60,12 @@ func BytesLen(bytes []byte) int {
 }
 
 func CompactBytesLen(bytes []byte) int {
-	return 1 + len(bytes)
+	return varintSize(len(bytes)) + len(bytes)
+}
+
+func CompactNullableBytesLen(bytes []byte) int {
+	if bytes == nil {
+		return 1
+	}
+	return varintSize(len(bytes)) + len(bytes)
 }

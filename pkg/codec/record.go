@@ -22,7 +22,7 @@ type Record struct {
 	RelativeTimestamp int64
 	RelativeOffset    int
 	Key               []byte
-	Value             string
+	Value             []byte
 	Headers           []byte
 }
 
@@ -38,7 +38,7 @@ func DecodeRecord(bytes []byte, version int16) *Record {
 		idx += keyLength
 	}
 	valueLength, idx := readVarint(bytes, idx)
-	record.Value = string(bytes[idx : idx+valueLength])
+	record.Value = bytes[idx : idx+valueLength]
 	idx += valueLength
 	return record
 }
@@ -47,13 +47,10 @@ func (r *Record) BytesLength() int {
 	result := 0
 	result += LenRecordAttributes
 	result += varint64Size(r.RelativeTimestamp)
-	result += varintSize(len(r.Key))
-	result += len(r.Key)
 	result += varintSize(r.RelativeOffset)
-	result += varintSize(len(r.Value))
-	result += len(r.Value)
-	result += varintSize(len(r.Headers))
-	result += len(r.Headers)
+	result += CompactNullableBytesLen(r.Key)
+	result += CompactBytesLen(r.Value)
+	result += CompactNullableBytesLen(r.Headers)
 	return result
 }
 
@@ -63,16 +60,8 @@ func (r *Record) Bytes() []byte {
 	idx = putRecordAttributes(bytes, idx, 0)
 	idx = putRelativeTimestamp(bytes, idx, r.RelativeTimestamp)
 	idx = putRelativeOffset(bytes, idx, r.RelativeOffset)
-	if r.Key == nil {
-		idx = putVarint(bytes, idx, -1)
-	} else {
-		idx = putVarint(bytes, idx, len(r.Key))
-		copy(bytes[idx:], r.Key)
-		idx += len(r.Key)
-	}
-	idx = putVarint(bytes, idx, len(r.Value))
-	copy(bytes[idx:], r.Value)
-	idx += len(r.Value)
-	idx = putVarint(bytes, idx, len(r.Headers))
+	idx = putCompactNullableBytes(bytes, idx, r.Key)
+	idx = putCompactBytes(bytes, idx, r.Value)
+	idx = putCompactNullableBytes(bytes, idx, r.Headers)
 	return bytes
 }

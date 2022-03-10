@@ -58,7 +58,7 @@ func TestDecodeProduceReqV7(t *testing.T) {
 	assert.Equal(t, expectedRelativeTimestamp, record.RelativeTimestamp)
 	assert.Equal(t, 0, record.RelativeOffset)
 	assert.Nil(t, record.Key)
-	assert.Equal(t, "msg", record.Value)
+	assert.Equal(t, "msg", string(record.Value))
 }
 
 func TestDecodeProduceReqV8(t *testing.T) {
@@ -97,5 +97,5 @@ func TestDecodeProduceReqV8(t *testing.T) {
 	assert.Equal(t, expectedRelativeTimestamp, record.RelativeTimestamp)
 	assert.Equal(t, 0, record.RelativeOffset)
 	assert.Equal(t, []byte("key"), record.Key)
-	assert.Equal(t, "value", record.Value)
+	assert.Equal(t, "value", string(record.Value))
 }

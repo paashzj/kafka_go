@@ -93,12 +93,14 @@ func NullableStrLen(str *string) int {
 }
 
 func CompactStrLen(str string) int {
-	return 1 + len([]byte(str))
+	aux := len([]byte(str))
+	return varintSize(aux) + aux
 }
 
 func CompactNullableStrLen(str *string) int {
 	if str == nil {
 		return 1
 	}
-	return 1 + len([]byte(*str))
+	aux := len([]byte(*str))
+	return varintSize(aux) + aux
 }

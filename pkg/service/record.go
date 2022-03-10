@@ -30,6 +30,6 @@ type Record struct {
 	RelativeTimestamp int64
 	RelativeOffset    int
 	Key               []byte
-	Value             string
+	Value             []byte
 	Headers           []byte
 }
