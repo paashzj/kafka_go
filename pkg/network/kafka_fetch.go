@@ -45,7 +45,7 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 	lowReq := &service.FetchReq{}
 	lowReq.FetchTopicReqList = make([]*service.FetchTopicReq, len(req.FetchTopics))
 	for i, topicReq := range req.FetchTopics {
-		if !s.checkSaslTopic(ctx, topicReq.Topic) {
+		if !s.checkSaslTopic(ctx, topicReq.Topic, CONSUMER_PERMISSION_TYPE) {
 			return nil, gnet.Close
 		}
 		lowTopicReq := &service.FetchTopicReq{}

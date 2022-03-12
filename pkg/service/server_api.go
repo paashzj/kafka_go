@@ -48,7 +48,7 @@ type KfkServer interface {
 
 	SaslAuth(req SaslReq) (bool, ErrorCode)
 
-	SaslAuthTopic(req SaslReq, topic string) (bool, ErrorCode)
+	SaslAuthTopic(req SaslReq, topic, permissionType string) (bool, ErrorCode)
 
 	SaslAuthConsumerGroup(req SaslReq, consumerGroup string) (bool, ErrorCode)
 

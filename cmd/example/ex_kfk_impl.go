@@ -125,7 +125,7 @@ func (e ExampleKafkaImpl) SaslAuth(req service.SaslReq) (bool, service.ErrorCode
 	return true, service.NONE
 }
 
-func (e ExampleKafkaImpl) SaslAuthTopic(req service.SaslReq, topic string) (bool, service.ErrorCode) {
+func (e ExampleKafkaImpl) SaslAuthTopic(req service.SaslReq, topic, permissionType string) (bool, service.ErrorCode) {
 	logrus.Info("username ", req.Username, "password ", req.Password, "topic ", topic)
 	return true, service.NONE
 }

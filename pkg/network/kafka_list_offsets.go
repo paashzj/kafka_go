@@ -44,7 +44,7 @@ func (s *Server) ListOffsetsVersion(ctx *context.NetworkContext, frame []byte, v
 	logrus.Info("list offset req ", req)
 	lowOffsetReqList := make([]*service.ListOffsetsTopicReq, len(req.OffsetTopics))
 	for i, topicReq := range req.OffsetTopics {
-		if !s.checkSaslTopic(ctx, topicReq.Topic) {
+		if !s.checkSaslTopic(ctx, topicReq.Topic, CONSUMER_PERMISSION_TYPE) {
 			return nil, gnet.Close
 		}
 		lowTopicReq := &service.ListOffsetsTopicReq{}

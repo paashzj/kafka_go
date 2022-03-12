@@ -45,7 +45,7 @@ func (s *Server) checkSaslGroup(ctx *context.NetworkContext, groupId string) boo
 	return true
 }
 
-func (s *Server) checkSaslTopic(ctx *context.NetworkContext, topic string) bool {
+func (s *Server) checkSaslTopic(ctx *context.NetworkContext, topic, permissionType string) bool {
 	if !s.kafkaProtocolConfig.NeedSasl {
 		return true
 	}
@@ -53,7 +53,7 @@ func (s *Server) checkSaslTopic(ctx *context.NetworkContext, topic string) bool 
 	if !ok {
 		return false
 	}
-	res, code := s.kafkaImpl.SaslAuthTopic(saslReq.(service.SaslReq), topic)
+	res, code := s.kafkaImpl.SaslAuthTopic(saslReq.(service.SaslReq), topic, permissionType)
 	if code != 0 || !res {
 		return false
 	}

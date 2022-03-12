@@ -45,7 +45,7 @@ func (s *Server) ReactProduceVersion(ctx *context.NetworkContext, frame []byte, 
 	lowReq := &service.ProduceReq{}
 	lowReq.TopicReqList = make([]*service.ProduceTopicReq, len(req.TopicReqList))
 	for i, topicReq := range req.TopicReqList {
-		if !s.checkSaslTopic(ctx, topicReq.Topic) {
+		if !s.checkSaslTopic(ctx, topicReq.Topic, PRODUCER_PERMISSION_TYPE) {
 			return nil, gnet.Close
 		}
 		lowTopicReq := &service.ProduceTopicReq{}

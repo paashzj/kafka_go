@@ -45,7 +45,7 @@ func (s *Server) OffsetFetchVersion(ctx *context.NetworkContext, frame []byte, v
 	lowReq := &service.OffsetFetchReq{}
 	lowReq.TopicReqList = make([]*service.OffsetFetchTopicReq, len(req.TopicReqList))
 	for i, topicReq := range req.TopicReqList {
-		if !s.checkSaslTopic(ctx, topicReq.Topic) {
+		if !s.checkSaslTopic(ctx, topicReq.Topic, CONSUMER_PERMISSION_TYPE) {
 			return nil, gnet.Close
 		}
 		lowTopicReq := &service.OffsetFetchTopicReq{}
