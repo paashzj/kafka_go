@@ -54,6 +54,7 @@ func (s *Server) ListOffsetsVersion(ctx *context.NetworkContext, frame []byte, v
 			lowPartitionReq := &service.ListOffsetsPartitionReq{}
 			lowPartitionReq.PartitionId = partitionReq.PartitionId
 			lowPartitionReq.ClientId = req.ClientId
+			lowPartitionReq.Time = partitionReq.Time
 			lowTopicReq.OffsetPartitionReqList[j] = lowPartitionReq
 		}
 		lowOffsetReqList[i] = lowTopicReq

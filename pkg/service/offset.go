@@ -34,6 +34,7 @@ type ListOffsetsTopicResp struct {
 type ListOffsetsPartitionReq struct {
 	ClientId    string
 	PartitionId int
+	Time        int64
 }
 
 type ListOffsetsPartitionResp struct {
