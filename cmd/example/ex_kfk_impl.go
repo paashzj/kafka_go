@@ -120,17 +120,17 @@ func (e ExampleKafkaImpl) Produce(addr net.Addr, topic string, partition int, re
 	return partitionResp, nil
 }
 
-func (e ExampleKafkaImpl) SaslAuth(req service.SaslReq) (bool, service.ErrorCode) {
+func (e ExampleKafkaImpl) SaslAuth(addr net.Addr, req service.SaslReq) (bool, service.ErrorCode) {
 	logrus.Info("username ", req.Username, "password ", req.Password)
 	return true, service.NONE
 }
 
-func (e ExampleKafkaImpl) SaslAuthTopic(req service.SaslReq, topic, permissionType string) (bool, service.ErrorCode) {
+func (e ExampleKafkaImpl) SaslAuthTopic(addr net.Addr, req service.SaslReq, topic, permissionType string) (bool, service.ErrorCode) {
 	logrus.Info("username ", req.Username, "password ", req.Password, "topic ", topic)
 	return true, service.NONE
 }
 
-func (e ExampleKafkaImpl) SaslAuthConsumerGroup(req service.SaslReq, consumerGroup string) (bool, service.ErrorCode) {
+func (e ExampleKafkaImpl) SaslAuthConsumerGroup(addr net.Addr, req service.SaslReq, consumerGroup string) (bool, service.ErrorCode) {
 	logrus.Info("username ", req.Username, "password ", req.Password, "group ", consumerGroup)
 	return true, service.NONE
 }

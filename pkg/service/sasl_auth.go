@@ -17,12 +17,14 @@
 
 package service
 
+import "net"
+
 type SaslReq struct {
 	Username string
 	Password string
 	ClientId string
 }
 
-func SaslAuth(impl KfkServer, req SaslReq) (bool, ErrorCode) {
-	return impl.SaslAuth(req)
+func SaslAuth(addr net.Addr, impl KfkServer, req SaslReq) (bool, ErrorCode) {
+	return impl.SaslAuth(addr, req)
 }
