@@ -54,7 +54,7 @@ func DecodeListOffsetReq(bytes []byte, version int16) (offsetReq *ListOffsetReq,
 	offsetReq.CorrelationId, idx = readCorrId(bytes, idx)
 	offsetReq.ClientId, idx = readClientId(bytes, idx)
 	offsetReq.ReplicaId, idx = readReplicaId(bytes, idx)
-	if version == 4 {
+	if version == 5 {
 		offsetReq.IsolationLevel, idx = readIsolationLevel(bytes, idx)
 	}
 	var length int
@@ -69,7 +69,7 @@ func DecodeListOffsetReq(bytes []byte, version int16) (offsetReq *ListOffsetReq,
 		for j := 0; j < partitionLength; j++ {
 			partition := &ListOffsetPartition{}
 			partition.PartitionId, idx = readInt(bytes, idx)
-			if version == 4 {
+			if version == 5 {
 				partition.LeaderEpoch, idx = readLeaderEpoch(bytes, idx)
 			}
 			partition.Time, idx = readTime(bytes, idx)
