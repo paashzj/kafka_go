@@ -38,10 +38,10 @@ func TestDecodeListOffsetsReqV1(t *testing.T) {
 	assert.Equal(t, expectedReplicaId, listOffsetReq.ReplicaId)
 	var expectedIsolationLevel uint8 = 0
 	assert.Equal(t, expectedIsolationLevel, listOffsetReq.IsolationLevel)
-	assert.Len(t, listOffsetReq.OffsetTopics, 1)
-	offsetTopic := listOffsetReq.OffsetTopics[0]
+	assert.Len(t, listOffsetReq.TopicReqList, 1)
+	offsetTopic := listOffsetReq.TopicReqList[0]
 	assert.Equal(t, "topic", offsetTopic.Topic)
-	offsetPartition := offsetTopic.ListOffsetPartitions[0]
+	offsetPartition := offsetTopic.PartitionReqList[0]
 	assert.Equal(t, 0, offsetPartition.PartitionId)
 	var expectedLeaderEpoch int32 = 0
 	assert.Equal(t, expectedLeaderEpoch, offsetPartition.LeaderEpoch)
@@ -59,10 +59,10 @@ func TestDecodeListOffsetsReqV5(t *testing.T) {
 	assert.Equal(t, expectedReplicaId, listOffsetReq.ReplicaId)
 	var expectedIsolationLevel uint8 = 0
 	assert.Equal(t, expectedIsolationLevel, listOffsetReq.IsolationLevel)
-	assert.Len(t, listOffsetReq.OffsetTopics, 1)
-	offsetTopic := listOffsetReq.OffsetTopics[0]
+	assert.Len(t, listOffsetReq.TopicReqList, 1)
+	offsetTopic := listOffsetReq.TopicReqList[0]
 	assert.Equal(t, "test-5", offsetTopic.Topic)
-	offsetPartition := offsetTopic.ListOffsetPartitions[0]
+	offsetPartition := offsetTopic.PartitionReqList[0]
 	assert.Equal(t, 0, offsetPartition.PartitionId)
 	var expectedLeaderEpoch int32 = 0
 	assert.Equal(t, expectedLeaderEpoch, offsetPartition.LeaderEpoch)

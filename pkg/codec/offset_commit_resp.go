@@ -19,13 +19,13 @@ package codec
 
 type OffsetCommitResp struct {
 	BaseResp
-	ThrottleTime int
-	Topics       []*OffsetCommitTopicResp
+	ThrottleTime  int
+	TopicRespList []*OffsetCommitTopicResp
 }
 
 type OffsetCommitTopicResp struct {
-	Topic      string
-	Partitions []*OffsetCommitPartitionResp
+	Topic             string
+	PartitionRespList []*OffsetCommitPartitionResp
 }
 
 type OffsetCommitPartitionResp struct {
@@ -47,9 +47,9 @@ func (o *OffsetCommitResp) BytesLength(version int16) int {
 	if version == 2 {
 		result += LenArray
 	} else if version == 8 {
-		result += varintSize(len(o.Topics) + 1)
+		result += varintSize(len(o.TopicRespList) + 1)
 	}
-	for _, val := range o.Topics {
+	for _, val := range o.TopicRespList {
 		if version == 2 {
 			result += StrLen(val.Topic)
 		} else if version == 8 {
@@ -58,9 +58,9 @@ func (o *OffsetCommitResp) BytesLength(version int16) int {
 		if version == 2 {
 			result += LenArray
 		} else if version == 8 {
-			result += varintSize(len(val.Partitions) + 1)
+			result += varintSize(len(val.PartitionRespList) + 1)
 		}
-		for range val.Partitions {
+		for range val.PartitionRespList {
 			result += LenPartitionId + LenErrorCode
 			if version == 8 {
 				result += LenTaggedField
@@ -85,22 +85,22 @@ func (o *OffsetCommitResp) Bytes(version int16) []byte {
 		idx = putThrottleTime(bytes, idx, o.ThrottleTime)
 	}
 	if version == 2 {
-		idx = putArrayLen(bytes, idx, len(o.Topics))
+		idx = putArrayLen(bytes, idx, len(o.TopicRespList))
 	} else if version == 8 {
-		idx = putCompactArrayLen(bytes, idx, len(o.Topics))
+		idx = putCompactArrayLen(bytes, idx, len(o.TopicRespList))
 	}
-	for _, topic := range o.Topics {
+	for _, topic := range o.TopicRespList {
 		if version == 2 {
 			idx = putTopicString(bytes, idx, topic.Topic)
 		} else if version == 8 {
 			idx = putTopic(bytes, idx, topic.Topic)
 		}
 		if version == 2 {
-			idx = putArrayLen(bytes, idx, len(topic.Partitions))
+			idx = putArrayLen(bytes, idx, len(topic.PartitionRespList))
 		} else if version == 8 {
-			idx = putCompactArrayLen(bytes, idx, len(topic.Partitions))
+			idx = putCompactArrayLen(bytes, idx, len(topic.PartitionRespList))
 		}
-		for _, partition := range topic.Partitions {
+		for _, partition := range topic.PartitionRespList {
 			idx = putInt(bytes, idx, partition.PartitionId)
 			idx = putErrorCode(bytes, idx, partition.ErrorCode)
 			if version == 8 {

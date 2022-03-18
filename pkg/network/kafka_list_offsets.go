@@ -42,20 +42,20 @@ func (s *Server) ListOffsetsVersion(ctx *context.NetworkContext, frame []byte, v
 		return nil, gnet.Close
 	}
 	logrus.Debug("list offset req ", req)
-	lowOffsetReqList := make([]*service.ListOffsetsTopicReq, len(req.OffsetTopics))
-	for i, topicReq := range req.OffsetTopics {
+	lowOffsetReqList := make([]*service.ListOffsetsTopicReq, len(req.TopicReqList))
+	for i, topicReq := range req.TopicReqList {
 		if !s.checkSaslTopic(ctx, topicReq.Topic, CONSUMER_PERMISSION_TYPE) {
 			return nil, gnet.Close
 		}
 		lowTopicReq := &service.ListOffsetsTopicReq{}
 		lowTopicReq.Topic = topicReq.Topic
-		lowTopicReq.OffsetPartitionReqList = make([]*service.ListOffsetsPartitionReq, len(topicReq.ListOffsetPartitions))
-		for j, partitionReq := range topicReq.ListOffsetPartitions {
+		lowTopicReq.PartitionReqList = make([]*service.ListOffsetsPartitionReq, len(topicReq.PartitionReqList))
+		for j, partitionReq := range topicReq.PartitionReqList {
 			lowPartitionReq := &service.ListOffsetsPartitionReq{}
 			lowPartitionReq.PartitionId = partitionReq.PartitionId
 			lowPartitionReq.ClientId = req.ClientId
 			lowPartitionReq.Time = partitionReq.Time
-			lowTopicReq.OffsetPartitionReqList[j] = lowPartitionReq
+			lowTopicReq.PartitionReqList[j] = lowPartitionReq
 		}
 		lowOffsetReqList[i] = lowTopicReq
 	}
@@ -64,21 +64,21 @@ func (s *Server) ListOffsetsVersion(ctx *context.NetworkContext, frame []byte, v
 		return nil, gnet.Close
 	}
 	resp := codec.NewListOffsetResp(req.CorrelationId)
-	resp.OffsetTopics = make([]*codec.ListOffsetTopicResp, len(lowOffsetRespList))
+	resp.TopicRespList = make([]*codec.ListOffsetTopicResp, len(lowOffsetRespList))
 	for i, lowTopicResp := range lowOffsetRespList {
 		f := &codec.ListOffsetTopicResp{}
 		f.Topic = lowTopicResp.Topic
-		f.ListOffsetPartitions = make([]*codec.ListOffsetPartitionResp, len(lowTopicResp.OffsetPartitionRespList))
-		for j, p := range lowTopicResp.OffsetPartitionRespList {
+		f.PartitionRespList = make([]*codec.ListOffsetPartitionResp, len(lowTopicResp.PartitionRespList))
+		for j, p := range lowTopicResp.PartitionRespList {
 			partitionResp := &codec.ListOffsetPartitionResp{}
 			partitionResp.PartitionId = p.PartitionId
 			partitionResp.ErrorCode = int16(p.ErrorCode)
 			partitionResp.Timestamp = p.Time
 			partitionResp.Offset = p.Offset
 			partitionResp.LeaderEpoch = 0
-			f.ListOffsetPartitions[j] = partitionResp
+			f.PartitionRespList[j] = partitionResp
 		}
-		resp.OffsetTopics[i] = f
+		resp.TopicRespList[i] = f
 	}
 	return resp.Bytes(version), gnet.None
 }

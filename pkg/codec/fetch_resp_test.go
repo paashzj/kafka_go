@@ -28,11 +28,11 @@ func TestDecodeFetchRespV11(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, 10, fetchResp.CorrelationId)
 	assert.Equal(t, 1929092855, fetchResp.SessionId)
-	assert.Len(t, fetchResp.TopicResponses, 1)
-	topicResp := fetchResp.TopicResponses[0]
+	assert.Len(t, fetchResp.TopicRespList, 1)
+	topicResp := fetchResp.TopicRespList[0]
 	assert.Equal(t, "test-3", topicResp.Topic)
-	assert.Len(t, topicResp.PartitionDataList, 1)
-	partitionResp := topicResp.PartitionDataList[0]
+	assert.Len(t, topicResp.PartitionRespList, 1)
+	partitionResp := topicResp.PartitionRespList[0]
 	assert.Equal(t, 0, partitionResp.PartitionIndex)
 	var expectErrorCode int16 = 0
 	assert.Equal(t, expectErrorCode, partitionResp.ErrorCode)
@@ -76,11 +76,11 @@ func TestCodeFetchRespV10(t *testing.T) {
 	fetchPartitionResp.RecordBatch = recordBatch
 	fetchTopicResp := &FetchTopicResp{}
 	fetchTopicResp.Topic = "topic"
-	fetchTopicResp.PartitionDataList = []*FetchPartitionResp{fetchPartitionResp}
+	fetchTopicResp.PartitionRespList = []*FetchPartitionResp{fetchPartitionResp}
 	fetchResp := NewFetchResp(6)
 	fetchResp.ErrorCode = 0
 	fetchResp.SessionId = 0
-	fetchResp.TopicResponses = []*FetchTopicResp{fetchTopicResp}
+	fetchResp.TopicRespList = []*FetchTopicResp{fetchTopicResp}
 	bytes := fetchResp.Bytes(10)
 	expectBytes := testHex2Bytes(t, "0000000600000000000000000000000000010005746f70696300000001000000000000000000000000000100000000000000010000000000000000ffffffff0000004700000000000000000000003b00000000022c30096c0000000000000000017df19951180000017df1995118ffffffffffffffffffffffffffff000000011200000001066d736700")
 	assert.Equal(t, expectBytes, bytes)
@@ -116,11 +116,11 @@ func TestCodeFetchRespV11(t *testing.T) {
 	fetchPartitionResp.RecordBatch = recordBatch
 	fetchTopicResp := &FetchTopicResp{}
 	fetchTopicResp.Topic = "test-5"
-	fetchTopicResp.PartitionDataList = []*FetchPartitionResp{fetchPartitionResp}
+	fetchTopicResp.PartitionRespList = []*FetchPartitionResp{fetchPartitionResp}
 	fetchResp := NewFetchResp(10)
 	fetchResp.ErrorCode = 0
 	fetchResp.SessionId = 997895662
-	fetchResp.TopicResponses = []*FetchTopicResp{fetchTopicResp}
+	fetchResp.TopicRespList = []*FetchTopicResp{fetchTopicResp}
 	bytes := fetchResp.Bytes(11)
 	expectBytes := testHex2Bytes(t, "0000000a0000000000003b7aadee000000010006746573742d3500000001000000000000000000000000000100000000000000010000000000000000ffffffffffffffff0000004700000000000000000000003b000000000206cbcc440000000000000000017a931dccdf0000017a931dccdfffffffffffffffffffffffffffff00000001120000000106487a6a00")
 	assert.Equal(t, expectBytes, bytes)

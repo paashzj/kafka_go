@@ -25,17 +25,17 @@ import (
 
 type OffsetCommitReq struct {
 	BaseReq
-	GroupId                  string
-	GenerationId             int
-	MemberId                 string
-	RetentionTime            int64
-	GroupInstanceId          *string
-	OffsetCommitTopicReqList []*OffsetCommitTopicReq
+	GroupId         string
+	GenerationId    int
+	MemberId        string
+	RetentionTime   int64
+	GroupInstanceId *string
+	TopicReqList    []*OffsetCommitTopicReq
 }
 
 type OffsetCommitTopicReq struct {
 	Topic            string
-	OffsetPartitions []*OffsetCommitPartitionReq
+	PartitionReqList []*OffsetCommitPartitionReq
 }
 
 type OffsetCommitPartitionReq struct {
@@ -83,7 +83,7 @@ func DecodeOffsetCommitReq(bytes []byte, version int16) (offsetReq *OffsetCommit
 	} else if version == 8 {
 		length, idx = readCompactArrayLen(bytes, idx)
 	}
-	offsetReq.OffsetCommitTopicReqList = make([]*OffsetCommitTopicReq, length)
+	offsetReq.TopicReqList = make([]*OffsetCommitTopicReq, length)
 	for i := 0; i < length; i++ {
 		topic := &OffsetCommitTopicReq{}
 		if version == 2 {
@@ -97,7 +97,7 @@ func DecodeOffsetCommitReq(bytes []byte, version int16) (offsetReq *OffsetCommit
 		} else if version == 8 {
 			partitionLength, idx = readCompactArrayLen(bytes, idx)
 		}
-		topic.OffsetPartitions = make([]*OffsetCommitPartitionReq, partitionLength)
+		topic.PartitionReqList = make([]*OffsetCommitPartitionReq, partitionLength)
 		for j := 0; j < partitionLength; j++ {
 			partition := &OffsetCommitPartitionReq{}
 			partition.PartitionId, idx = readInt(bytes, idx)
@@ -113,12 +113,12 @@ func DecodeOffsetCommitReq(bytes []byte, version int16) (offsetReq *OffsetCommit
 			if version == 8 {
 				idx = readTaggedField(bytes, idx)
 			}
-			topic.OffsetPartitions[j] = partition
+			topic.PartitionReqList[j] = partition
 		}
 		if version == 8 {
 			idx = readTaggedField(bytes, idx)
 		}
-		offsetReq.OffsetCommitTopicReqList[i] = topic
+		offsetReq.TopicReqList[i] = topic
 	}
 	if version == 8 {
 		idx = readTaggedField(bytes, idx)

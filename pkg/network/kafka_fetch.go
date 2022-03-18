@@ -43,15 +43,15 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 	}
 	logrus.Debug("fetch req ", req)
 	lowReq := &service.FetchReq{}
-	lowReq.FetchTopicReqList = make([]*service.FetchTopicReq, len(req.FetchTopics))
-	for i, topicReq := range req.FetchTopics {
+	lowReq.FetchTopicReqList = make([]*service.FetchTopicReq, len(req.TopicReqList))
+	for i, topicReq := range req.TopicReqList {
 		if !s.checkSaslTopic(ctx, topicReq.Topic, CONSUMER_PERMISSION_TYPE) {
 			return nil, gnet.Close
 		}
 		lowTopicReq := &service.FetchTopicReq{}
 		lowTopicReq.Topic = topicReq.Topic
-		lowTopicReq.FetchPartitionReqList = make([]*service.FetchPartitionReq, len(topicReq.FetchPartitions))
-		for j, partitionReq := range topicReq.FetchPartitions {
+		lowTopicReq.FetchPartitionReqList = make([]*service.FetchPartitionReq, len(topicReq.PartitionReqList))
+		for j, partitionReq := range topicReq.PartitionReqList {
 			lowPartitionReq := &service.FetchPartitionReq{}
 			lowPartitionReq.PartitionId = partitionReq.PartitionId
 			lowPartitionReq.FetchOffset = partitionReq.FetchOffset
@@ -65,11 +65,11 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 		return nil, gnet.Close
 	}
 	resp := codec.NewFetchResp(req.CorrelationId)
-	resp.TopicResponses = make([]*codec.FetchTopicResp, len(lowTopicRespList))
+	resp.TopicRespList = make([]*codec.FetchTopicResp, len(lowTopicRespList))
 	for i, lowTopicResp := range lowTopicRespList {
 		f := &codec.FetchTopicResp{}
 		f.Topic = lowTopicResp.Topic
-		f.PartitionDataList = make([]*codec.FetchPartitionResp, len(lowTopicResp.FetchPartitionRespList))
+		f.PartitionRespList = make([]*codec.FetchPartitionResp, len(lowTopicResp.FetchPartitionRespList))
 		for j, p := range lowTopicResp.FetchPartitionRespList {
 			partitionResp := &codec.FetchPartitionResp{}
 			partitionResp.PartitionIndex = p.PartitionId
@@ -80,9 +80,9 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 			partitionResp.RecordBatch = s.convertRecordBatchResp(p.RecordBatch)
 			partitionResp.AbortedTransactions = -1
 			partitionResp.ReplicaId = -1
-			f.PartitionDataList[j] = partitionResp
+			f.PartitionRespList[j] = partitionResp
 		}
-		resp.TopicResponses[i] = f
+		resp.TopicRespList[i] = f
 	}
 	return resp.Bytes(version), gnet.None
 }

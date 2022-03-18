@@ -22,13 +22,13 @@ import (
 )
 
 type OffsetCommitTopicReq struct {
-	Topic                        string
-	OffsetCommitPartitionReqList []*OffsetCommitPartitionReq
+	Topic   string
+	ReqList []*OffsetCommitPartitionReq
 }
 
 type OffsetCommitTopicResp struct {
-	Topic                         string
-	OffsetCommitPartitionRespList []*OffsetCommitPartitionResp
+	Topic             string
+	PartitionRespList []*OffsetCommitPartitionResp
 }
 
 type OffsetCommitPartitionReq struct {
@@ -47,10 +47,10 @@ func OffsetCommit(addr net.Addr, impl KfkServer, reqList []*OffsetCommitTopicReq
 	for i, req := range reqList {
 		f := &OffsetCommitTopicResp{}
 		f.Topic = req.Topic
-		f.OffsetCommitPartitionRespList = make([]*OffsetCommitPartitionResp, len(req.OffsetCommitPartitionReqList))
-		for j, partitionReq := range req.OffsetCommitPartitionReqList {
+		f.PartitionRespList = make([]*OffsetCommitPartitionResp, len(req.ReqList))
+		for j, partitionReq := range req.ReqList {
 			// todo ignore error
-			f.OffsetCommitPartitionRespList[j], _ = impl.OffsetCommitPartition(addr, req.Topic, partitionReq)
+			f.PartitionRespList[j], _ = impl.OffsetCommitPartition(addr, req.Topic, partitionReq)
 		}
 		result[i] = f
 	}

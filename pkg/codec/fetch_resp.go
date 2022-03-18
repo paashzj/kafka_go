@@ -25,15 +25,15 @@ import (
 
 type FetchResp struct {
 	BaseResp
-	ThrottleTime   int
-	ErrorCode      int16
-	SessionId      int
-	TopicResponses []*FetchTopicResp
+	ThrottleTime  int
+	ErrorCode     int16
+	SessionId     int
+	TopicRespList []*FetchTopicResp
 }
 
 type FetchTopicResp struct {
 	Topic             string
-	PartitionDataList []*FetchPartitionResp
+	PartitionRespList []*FetchPartitionResp
 }
 
 type FetchPartitionResp struct {
@@ -62,13 +62,13 @@ func DecodeFetchResp(bytes []byte, version int16) (fetchResp *FetchResp, err err
 	fetchResp.ErrorCode, idx = readErrorCode(bytes, idx)
 	fetchResp.SessionId, idx = readSessionId(bytes, idx)
 	topicLen, idx := readArrayLen(bytes, idx)
-	fetchResp.TopicResponses = make([]*FetchTopicResp, topicLen)
+	fetchResp.TopicRespList = make([]*FetchTopicResp, topicLen)
 	for i := 0; i < topicLen; i++ {
 		topicResp := &FetchTopicResp{}
 		topicResp.Topic, idx = readTopicString(bytes, idx)
 		var partitionLen int
 		partitionLen, idx = readArrayLen(bytes, idx)
-		topicResp.PartitionDataList = make([]*FetchPartitionResp, partitionLen)
+		topicResp.PartitionRespList = make([]*FetchPartitionResp, partitionLen)
 		for j := 0; j < partitionLen; j++ {
 			partitionResp := &FetchPartitionResp{}
 			partitionResp.PartitionIndex, idx = readPartitionId(bytes, idx)
@@ -83,9 +83,9 @@ func DecodeFetchResp(bytes []byte, version int16) (fetchResp *FetchResp, err err
 			recordBatchLength, idx = readInt(bytes, idx)
 			partitionResp.RecordBatch = DecodeRecordBatch(bytes[idx:idx+recordBatchLength-1], version)
 			idx += recordBatchLength
-			topicResp.PartitionDataList[j] = partitionResp
+			topicResp.PartitionRespList[j] = partitionResp
 		}
-		fetchResp.TopicResponses[i] = topicResp
+		fetchResp.TopicRespList[i] = topicResp
 	}
 	return fetchResp, nil
 }
@@ -98,9 +98,9 @@ func NewFetchResp(corrId int) *FetchResp {
 
 func (f *FetchResp) BytesLength(version int16) int {
 	result := LenCorrId + LenThrottleTime + LenErrorCode + LenFetchSessionId + LenArray
-	for _, t := range f.TopicResponses {
+	for _, t := range f.TopicRespList {
 		result += StrLen(t.Topic) + LenArray
-		for _, p := range t.PartitionDataList {
+		for _, p := range t.PartitionRespList {
 			result += LenPartitionId + LenErrorCode
 			result += LenOffset
 			result += LenLastStableOffset + LenStartOffset
@@ -121,11 +121,11 @@ func (f *FetchResp) Bytes(version int16) []byte {
 	idx = putThrottleTime(bytes, idx, f.ThrottleTime)
 	idx = putErrorCode(bytes, idx, f.ErrorCode)
 	idx = putSessionId(bytes, idx, f.SessionId)
-	idx = putArrayLen(bytes, idx, len(f.TopicResponses))
-	for _, t := range f.TopicResponses {
+	idx = putArrayLen(bytes, idx, len(f.TopicRespList))
+	for _, t := range f.TopicRespList {
 		idx = putString(bytes, idx, t.Topic)
-		idx = putArrayLen(bytes, idx, len(t.PartitionDataList))
-		for _, p := range t.PartitionDataList {
+		idx = putArrayLen(bytes, idx, len(t.PartitionRespList))
+		for _, p := range t.PartitionRespList {
 			idx = putInt(bytes, idx, p.PartitionIndex)
 			idx = putErrorCode(bytes, idx, p.ErrorCode)
 			idx = putInt64(bytes, idx, p.HighWatermark)

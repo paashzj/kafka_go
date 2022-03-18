@@ -19,14 +19,14 @@ package codec
 
 type ListOffsetResp struct {
 	BaseResp
-	ErrorCode    int16
-	ThrottleTime int
-	OffsetTopics []*ListOffsetTopicResp
+	ErrorCode     int16
+	ThrottleTime  int
+	TopicRespList []*ListOffsetTopicResp
 }
 
 type ListOffsetTopicResp struct {
-	Topic                string
-	ListOffsetPartitions []*ListOffsetPartitionResp
+	Topic             string
+	PartitionRespList []*ListOffsetPartitionResp
 }
 
 type ListOffsetPartitionResp struct {
@@ -49,9 +49,9 @@ func (o *ListOffsetResp) BytesLength(version int16) int {
 		result += LenThrottleTime
 	}
 	result += LenArray
-	for _, val := range o.OffsetTopics {
+	for _, val := range o.TopicRespList {
 		result += StrLen(val.Topic) + LenArray
-		for range val.ListOffsetPartitions {
+		for range val.PartitionRespList {
 			result += LenPartitionId + LenErrorCode + LenTime + LenOffset
 			if version == 5 {
 				result += LenLeaderEpoch
@@ -68,11 +68,11 @@ func (o *ListOffsetResp) Bytes(version int16) []byte {
 	if version == 5 {
 		idx = putThrottleTime(bytes, idx, o.ThrottleTime)
 	}
-	idx = putArrayLen(bytes, idx, len(o.OffsetTopics))
-	for _, topic := range o.OffsetTopics {
+	idx = putArrayLen(bytes, idx, len(o.TopicRespList))
+	for _, topic := range o.TopicRespList {
 		idx = putTopicString(bytes, idx, topic.Topic)
-		idx = putArrayLen(bytes, idx, len(topic.ListOffsetPartitions))
-		for _, p := range topic.ListOffsetPartitions {
+		idx = putArrayLen(bytes, idx, len(topic.PartitionRespList))
+		for _, p := range topic.PartitionRespList {
 			idx = putInt(bytes, idx, p.PartitionId)
 			idx = putErrorCode(bytes, idx, p.ErrorCode)
 			idx = putInt64(bytes, idx, p.Timestamp)

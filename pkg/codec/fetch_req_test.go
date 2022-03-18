@@ -44,11 +44,11 @@ func TestDecodeFetchReqV10(t *testing.T) {
 	assert.Equal(t, 0, fetchReq.FetchSessionId)
 	var expectedFetchSessionEpoch int32 = -1
 	assert.Equal(t, expectedFetchSessionEpoch, fetchReq.FetchSessionEpoch)
-	assert.Len(t, fetchReq.FetchTopics, 1)
-	fetchTopicReq := fetchReq.FetchTopics[0]
+	assert.Len(t, fetchReq.TopicReqList, 1)
+	fetchTopicReq := fetchReq.TopicReqList[0]
 	assert.Equal(t, "topic", fetchTopicReq.Topic)
-	assert.Len(t, fetchTopicReq.FetchPartitions, 1)
-	fetchPartitionReq := fetchTopicReq.FetchPartitions[0]
+	assert.Len(t, fetchTopicReq.PartitionReqList, 1)
+	fetchPartitionReq := fetchTopicReq.PartitionReqList[0]
 	assert.Equal(t, 0, fetchPartitionReq.PartitionId)
 	var expectedCurrentLeaderEpoch int32 = -1
 	assert.Equal(t, expectedCurrentLeaderEpoch, fetchPartitionReq.CurrentLeaderEpoch)
@@ -73,11 +73,11 @@ func TestDecodeFetchReqV11(t *testing.T) {
 	assert.Equal(t, 0, fetchReq.FetchSessionId)
 	var expectedFetchSessionEpoch int32 = 0
 	assert.Equal(t, expectedFetchSessionEpoch, fetchReq.FetchSessionEpoch)
-	assert.Len(t, fetchReq.FetchTopics, 1)
-	fetchTopicReq := fetchReq.FetchTopics[0]
+	assert.Len(t, fetchReq.TopicReqList, 1)
+	fetchTopicReq := fetchReq.TopicReqList[0]
 	assert.Equal(t, "test-5", fetchTopicReq.Topic)
-	assert.Len(t, fetchTopicReq.FetchPartitions, 1)
-	fetchPartitionReq := fetchTopicReq.FetchPartitions[0]
+	assert.Len(t, fetchTopicReq.PartitionReqList, 1)
+	fetchPartitionReq := fetchTopicReq.PartitionReqList[0]
 	assert.Equal(t, 0, fetchPartitionReq.PartitionId)
 	var expectedCurrentLeaderEpoch int32 = 0
 	assert.Equal(t, expectedCurrentLeaderEpoch, fetchPartitionReq.CurrentLeaderEpoch)

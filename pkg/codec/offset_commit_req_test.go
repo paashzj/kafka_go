@@ -37,10 +37,10 @@ func TestDecodeOffsetCommitReqV2(t *testing.T) {
 	assert.Equal(t, "___TestKafkaConsume_in_go_demo_demo_kafka.test@hezhangjiandeMacBook-Pro.local (github.com/segmentio/kafka-go)", offsetCommitReq.ClientId)
 	assert.Equal(t, "topic", offsetCommitReq.GroupId)
 	assert.Equal(t, "___TestKafkaConsume_in_go_demo_demo_kafka.test@hezhangjiandeMacBook-Pro.local (github.com/segmentio/kafka-go)-a3f5062b-94bc-478d-8ddb-2a2fee6989c8", offsetCommitReq.MemberId)
-	assert.Len(t, offsetCommitReq.OffsetCommitTopicReqList, 1)
-	offsetTopic := offsetCommitReq.OffsetCommitTopicReqList[0]
+	assert.Len(t, offsetCommitReq.TopicReqList, 1)
+	offsetTopic := offsetCommitReq.TopicReqList[0]
 	assert.Equal(t, "topic", offsetTopic.Topic)
-	offsetPartition := offsetTopic.OffsetPartitions[0]
+	offsetPartition := offsetTopic.PartitionReqList[0]
 	assert.Equal(t, 0, offsetPartition.PartitionId)
 	var expectedOffset int64 = 1
 	assert.Equal(t, expectedOffset, offsetPartition.Offset)
@@ -55,10 +55,10 @@ func TestDecodeOffsetCommitReqV8(t *testing.T) {
 	assert.Equal(t, "consumer-8dd7b96b-6b94-4a9b-b2cc-3cb5898c9cdf-1", offsetCommitReq.ClientId)
 	assert.Equal(t, "8dd7b96b-6b94-4a9b-b2cc-3cb5898c9cdf", offsetCommitReq.GroupId)
 	assert.Equal(t, "consumer-8dd7b96b-6b94-4a9b-b2cc-3cb5898c9cdf-1-433acb6a-e6ec-45aa-b78d-6a249cff07fc", offsetCommitReq.MemberId)
-	assert.Len(t, offsetCommitReq.OffsetCommitTopicReqList, 1)
-	offsetTopic := offsetCommitReq.OffsetCommitTopicReqList[0]
+	assert.Len(t, offsetCommitReq.TopicReqList, 1)
+	offsetTopic := offsetCommitReq.TopicReqList[0]
 	assert.Equal(t, "test-5", offsetTopic.Topic)
-	offsetPartition := offsetTopic.OffsetPartitions[0]
+	offsetPartition := offsetTopic.PartitionReqList[0]
 	assert.Equal(t, 0, offsetPartition.PartitionId)
 	var expectedOffset int64 = 1
 	assert.Equal(t, expectedOffset, offsetPartition.Offset)
