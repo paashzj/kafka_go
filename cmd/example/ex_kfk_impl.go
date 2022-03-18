@@ -114,6 +114,15 @@ func (e ExampleKafkaImpl) OffsetFetch(addr net.Addr, topic string, req *service.
 	return nil, nil
 }
 
+func (e ExampleKafkaImpl) OffsetLeaderEpoch(addr net.Addr, topic string, req *service.OffsetLeaderEpochPartitionReq) (*service.OffsetLeaderEpochPartitionResp, error) {
+	partitionResp := &service.OffsetLeaderEpochPartitionResp{}
+	partitionResp.ErrorCode = 0
+	partitionResp.PartitionId = 0
+	partitionResp.LeaderEpoch = 0
+	partitionResp.Offset = 0
+	return partitionResp, nil
+}
+
 func (e ExampleKafkaImpl) Produce(addr net.Addr, topic string, partition int, req *service.ProducePartitionReq) (*service.ProducePartitionResp, error) {
 	partitionResp := &service.ProducePartitionResp{}
 	partitionResp.Time = -1
