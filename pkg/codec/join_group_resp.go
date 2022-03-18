@@ -149,7 +149,6 @@ func (j *JoinGroupResp) Bytes(version int16) []byte {
 			idx = putGroupInstanceId(bytes, idx, val.GroupInstanceId)
 		}
 		if version == 1 {
-			//idx = putString(bytes, idx, val.Metadata)
 			idx = putBytes(bytes, idx, []byte(val.Metadata))
 		} else if version == 6 || version == 7 {
 			idx = putCompactString(bytes, idx, val.Metadata)

@@ -148,6 +148,12 @@ func (s *Server) React(frame []byte, c gnet.Conn) ([]byte, gnet.Action) {
 		}
 		return s.OffsetCommit(networkContext, frame[4:], apiVersion)
 	}
+	if apiKey == api.OffsetForLeaderEpoch {
+		if !s.Authed(networkContext) {
+			return s.AuthFailed()
+		}
+		return s.OffsetForLeaderEpoch(networkContext, frame[4:], apiVersion)
+	}
 	if apiKey == api.LeaveGroup {
 		if !s.Authed(networkContext) {
 			return s.AuthFailed()

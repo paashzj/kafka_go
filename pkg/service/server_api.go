@@ -43,6 +43,9 @@ type KfkServer interface {
 	// OffsetFetch method called this already authed
 	OffsetFetch(addr net.Addr, topic string, req *OffsetFetchPartitionReq) (*OffsetFetchPartitionResp, error)
 
+	// OffsetLeaderEpoch method called this already authed
+	OffsetLeaderEpoch(addr net.Addr, topic string, req *OffsetLeaderEpochPartitionReq) (*OffsetLeaderEpochPartitionResp, error)
+
 	// Produce method called this already authed
 	Produce(addr net.Addr, topic string, partition int, req *ProducePartitionReq) (*ProducePartitionResp, error)
 
