@@ -38,7 +38,7 @@ type MetadataTopicReq struct {
 func DecodeMetadataTopicReq(bytes []byte, version int16) (metadataReq *MetadataReq, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			logrus.Info("Recovered in f", r, string(debug.Stack()))
+			logrus.Warn("Recovered in f", r, string(debug.Stack()))
 			metadataReq = nil
 			err = errors.New("codec failed")
 		}

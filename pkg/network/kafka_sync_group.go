@@ -41,7 +41,7 @@ func (s *Server) ReactSyncGroupVersion(ctx *context.NetworkContext, frame []byte
 	if !s.checkSaslGroup(ctx, req.GroupId) {
 		return nil, gnet.Close
 	}
-	logrus.Info("sync group req", req)
+	logrus.Debug("sync group req", req)
 	lowReq := &service.SyncGroupReq{}
 	lowReq.GroupId = req.GroupId
 	lowReq.ClientId = req.ClientId

@@ -41,7 +41,7 @@ func (s *Server) ReactJoinGroupVersion(ctx *context.NetworkContext, frame []byte
 	if !s.checkSaslGroup(ctx, req.GroupId) {
 		return nil, gnet.Close
 	}
-	logrus.Info("join group req", req)
+	logrus.Debug("join group req", req)
 	lowReq := &service.JoinGroupReq{}
 	lowReq.ClientId = req.ClientId
 	lowReq.GroupId = req.GroupId
@@ -61,7 +61,7 @@ func (s *Server) ReactJoinGroupVersion(ctx *context.NetworkContext, frame []byte
 	if err != nil {
 		return nil, gnet.Close
 	}
-	logrus.Info("resp ", resp)
+	logrus.Debug("resp ", resp)
 	resp.ErrorCode = int16(lowResp.ErrorCode)
 	resp.GenerationId = lowResp.GenerationId
 	resp.ProtocolType = lowResp.ProtocolType

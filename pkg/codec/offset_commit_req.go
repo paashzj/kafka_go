@@ -48,7 +48,7 @@ type OffsetCommitPartitionReq struct {
 func DecodeOffsetCommitReq(bytes []byte, version int16) (offsetReq *OffsetCommitReq, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			logrus.Info("Recovered in f", r, string(debug.Stack()))
+			logrus.Warn("Recovered in f", r, string(debug.Stack()))
 			offsetReq = nil
 			err = errors.New("codec failed")
 		}

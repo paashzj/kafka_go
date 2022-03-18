@@ -32,7 +32,7 @@ type LeaveGroupReq struct {
 func DecodeLeaveGroupReq(bytes []byte, version int16) (leaveGroupReq *LeaveGroupReq, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			logrus.Info("Recovered in f", r, string(debug.Stack()))
+			logrus.Warn("Recovered in f", r, string(debug.Stack()))
 			leaveGroupReq = nil
 			err = errors.New("codec failed")
 		}

@@ -45,7 +45,7 @@ type ProducePartitionReq struct {
 func DecodeProduceReq(bytes []byte, version int16) (produceReq *ProduceReq, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			logrus.Info("Recovered in f", r, string(debug.Stack()))
+			logrus.Warn("Recovered in f", r, string(debug.Stack()))
 			produceReq = nil
 			err = errors.New("codec failed")
 		}

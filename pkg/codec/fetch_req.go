@@ -52,7 +52,7 @@ type FetchPartitionReq struct {
 func DecodeFetchReq(bytes []byte, version int16) (fetchReq *FetchReq, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			logrus.Info("Recovered in f", r, string(debug.Stack()))
+			logrus.Warn("Recovered in f", r, string(debug.Stack()))
 			fetchReq = nil
 			err = errors.New("codec failed")
 		}

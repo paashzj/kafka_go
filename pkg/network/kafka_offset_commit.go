@@ -41,7 +41,7 @@ func (s *Server) OffsetCommitVersion(ctx *context.NetworkContext, frame []byte, 
 	if !s.checkSasl(ctx) {
 		return nil, gnet.Close
 	}
-	logrus.Info("offset commit req ", req)
+	logrus.Debug("offset commit req ", req)
 	lowReqList := make([]*service.OffsetCommitTopicReq, len(req.OffsetCommitTopicReqList))
 	for i, topicReq := range req.OffsetCommitTopicReqList {
 		if !s.checkSaslTopic(ctx, topicReq.Topic, CONSUMER_PERMISSION_TYPE) {

@@ -32,7 +32,7 @@ type FindCoordinatorReq struct {
 func DecodeFindCoordinatorReq(bytes []byte, version int16) (findCoordinatorReq *FindCoordinatorReq, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			logrus.Info("Recovered in f", r, string(debug.Stack()))
+			logrus.Warn("Recovered in f", r, string(debug.Stack()))
 			findCoordinatorReq = nil
 			err = errors.New("codec failed")
 		}

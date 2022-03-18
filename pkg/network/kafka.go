@@ -84,7 +84,7 @@ func (s *Server) OnInitComplete(server gnet.Server) (action gnet.Action) {
 // React Kafka 协议格式为APIKey和API Version
 // APIKey 样例: 00 12
 func (s *Server) React(frame []byte, c gnet.Conn) ([]byte, gnet.Action) {
-	logrus.Info("frame len is ", len(frame))
+	logrus.Debug("frame len is ", len(frame))
 	if len(frame) < 5 {
 		logrus.Error("invalid data packet")
 		return nil, gnet.Close

@@ -41,7 +41,7 @@ func (s *Server) ReactLeaveGroupVersion(ctx *context.NetworkContext, frame []byt
 	if !s.checkSaslGroup(ctx, req.GroupId) {
 		return nil, gnet.Close
 	}
-	logrus.Info("leave group req ", req)
+	logrus.Debug("leave group req ", req)
 	lowReq := &service.LeaveGroupReq{}
 	lowReq.GroupId = req.GroupId
 	lowReq.ClientId = req.ClientId

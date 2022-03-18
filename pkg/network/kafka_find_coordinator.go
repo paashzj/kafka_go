@@ -36,8 +36,8 @@ func (s *Server) FindCoordinatorVersion(frame []byte, version int16, config *cod
 	if err != nil {
 		return nil, gnet.Close
 	}
-	logrus.Info("req ", req)
+	logrus.Debug("req ", req)
 	resp := codec.NewFindCoordinatorResp(req.CorrelationId, config)
-	logrus.Info("resp ", resp)
+	logrus.Debug("resp ", resp)
 	return resp.Bytes(version), gnet.None
 }

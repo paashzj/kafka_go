@@ -42,7 +42,7 @@ type GroupProtocol struct {
 func DecodeJoinGroupReq(bytes []byte, version int16) (joinGroupReq *JoinGroupReq, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			logrus.Info("Recovered in f", r, string(debug.Stack()))
+			logrus.Warn("Recovered in f", r, string(debug.Stack()))
 			joinGroupReq = nil
 			err = errors.New("codec failed")
 		}

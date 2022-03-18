@@ -41,7 +41,7 @@ func (s *Server) ReactProduceVersion(ctx *context.NetworkContext, frame []byte, 
 	if !s.checkSasl(ctx) {
 		return nil, gnet.Close
 	}
-	logrus.Info("produce req ", req)
+	logrus.Debug("produce req ", req)
 	lowReq := &service.ProduceReq{}
 	lowReq.TopicReqList = make([]*service.ProduceTopicReq, len(req.TopicReqList))
 	for i, topicReq := range req.TopicReqList {

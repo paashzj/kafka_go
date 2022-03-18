@@ -34,7 +34,7 @@ type HeartBeatReq struct {
 func DecodeHeartbeatReq(bytes []byte, version int16) (heartBeatReq *HeartBeatReq, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			logrus.Info("Recovered in f", r, string(debug.Stack()))
+			logrus.Warn("Recovered in f", r, string(debug.Stack()))
 			heartBeatReq = nil
 			err = errors.New("codec failed")
 		}

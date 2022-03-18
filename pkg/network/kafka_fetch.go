@@ -41,7 +41,7 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 	if !s.checkSasl(ctx) {
 		return nil, gnet.Close
 	}
-	logrus.Info("fetch req ", req)
+	logrus.Debug("fetch req ", req)
 	lowReq := &service.FetchReq{}
 	lowReq.FetchTopicReqList = make([]*service.FetchTopicReq, len(req.FetchTopics))
 	for i, topicReq := range req.FetchTopics {

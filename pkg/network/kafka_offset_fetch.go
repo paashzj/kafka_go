@@ -41,7 +41,7 @@ func (s *Server) OffsetFetchVersion(ctx *context.NetworkContext, frame []byte, v
 	if !s.checkSasl(ctx) {
 		return nil, gnet.Close
 	}
-	logrus.Info("offset fetch req ", req)
+	logrus.Debug("offset fetch req ", req)
 	lowReq := &service.OffsetFetchReq{}
 	lowReq.TopicReqList = make([]*service.OffsetFetchTopicReq, len(req.TopicReqList))
 	for i, topicReq := range req.TopicReqList {

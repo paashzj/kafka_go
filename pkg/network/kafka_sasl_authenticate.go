@@ -38,7 +38,7 @@ func (s *Server) ReactSaslHandshakeAuthVersion(frame []byte, version int16, cont
 	if err != nil {
 		return nil, gnet.Close
 	}
-	logrus.Info("sasl handshake request ", req)
+	logrus.Debug("sasl handshake request ", req)
 	saslHandshakeResp := codec.NewSaslHandshakeAuthResp(req.CorrelationId)
 	saslReq := service.SaslReq{Username: req.Username, Password: req.Password, ClientId: req.ClientId}
 	authResult, errorCode := service.SaslAuth(context.Addr, s.kafkaImpl, saslReq)

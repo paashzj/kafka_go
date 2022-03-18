@@ -36,7 +36,7 @@ func (s *Server) ReactHeartbeatVersion(frame []byte, version int16) ([]byte, gne
 	if err != nil {
 		return nil, gnet.Close
 	}
-	logrus.Info("heart beat req ", heartbeatReqV4)
+	logrus.Debug("heart beat req ", heartbeatReqV4)
 	heartBeatResp := codec.NewHeartBeatResp(heartbeatReqV4.CorrelationId)
 	return heartBeatResp.Bytes(version), gnet.None
 }

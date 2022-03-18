@@ -43,7 +43,7 @@ type GroupAssignment struct {
 func DecodeSyncGroupReq(bytes []byte, version int16) (groupReq *SyncGroupReq, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			logrus.Info("Recovered in f", r, string(debug.Stack()))
+			logrus.Warn("Recovered in f", r, string(debug.Stack()))
 			groupReq = nil
 			err = errors.New("codec failed")
 		}

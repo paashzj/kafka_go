@@ -36,7 +36,7 @@ func (s *Server) ReactMetadataVersion(frame []byte, version int16, config *codec
 	if err != nil {
 		return nil, gnet.Close
 	}
-	logrus.Info("metadata req ", metadataTopicReq)
+	logrus.Debug("metadata req ", metadataTopicReq)
 	topics := metadataTopicReq.Topics
 	metadataResp := codec.NewMetadataResp(metadataTopicReq.CorrelationId, config, topics[0].Topic, 0)
 	return metadataResp.Bytes(version), gnet.None

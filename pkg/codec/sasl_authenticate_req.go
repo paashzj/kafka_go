@@ -32,7 +32,7 @@ type SaslAuthenticateReq struct {
 func DecodeSaslHandshakeAuthReq(bytes []byte, version int16) (authReq *SaslAuthenticateReq, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			logrus.Info("Recovered in f", r, string(debug.Stack()))
+			logrus.Warn("Recovered in f", r, string(debug.Stack()))
 			authReq = nil
 			err = errors.New("codec failed")
 		}
