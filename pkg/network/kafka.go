@@ -110,7 +110,7 @@ func (s *Server) React(frame []byte, c gnet.Conn) ([]byte, gnet.Action) {
 		return s.SaslAuthenticate(frame[4:], apiVersion, networkContext)
 	}
 	if apiKey == api.Heartbeat {
-		return s.Heartbeat(frame[4:], apiVersion)
+		return s.Heartbeat(frame[4:], apiVersion, networkContext)
 	}
 	if apiKey == api.JoinGroup {
 		if !s.Authed(networkContext) {

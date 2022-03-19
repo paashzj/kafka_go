@@ -19,24 +19,34 @@ package network
 
 import (
 	"github.com/paashzj/kafka_go/pkg/codec"
+	"github.com/paashzj/kafka_go/pkg/network/context"
+	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
 	"github.com/sirupsen/logrus"
 )
 
-func (s *Server) Heartbeat(frame []byte, version int16) ([]byte, gnet.Action) {
+func (s *Server) Heartbeat(frame []byte, version int16, context *context.NetworkContext) ([]byte, gnet.Action) {
 	if version == 4 {
-		return s.ReactHeartbeatVersion(frame, version)
+		return s.ReactHeartbeatVersion(frame, version, context)
 	}
 	logrus.Error("unknown heartbeat version ", version)
 	return nil, gnet.Close
 }
 
-func (s *Server) ReactHeartbeatVersion(frame []byte, version int16) ([]byte, gnet.Action) {
+func (s *Server) ReactHeartbeatVersion(frame []byte, version int16, context *context.NetworkContext) ([]byte, gnet.Action) {
 	heartbeatReqV4, err := codec.DecodeHeartbeatReq(frame, version)
 	if err != nil {
 		return nil, gnet.Close
 	}
 	logrus.Debug("heart beat req ", heartbeatReqV4)
 	heartBeatResp := codec.NewHeartBeatResp(heartbeatReqV4.CorrelationId)
+	req := service.HeartBeatReq{}
+	req.ClientId = heartbeatReqV4.ClientId
+	req.GenerationId = heartbeatReqV4.GenerationId
+	req.GroupInstanceId = heartbeatReqV4.GroupInstanceId
+	req.MemberId = heartbeatReqV4.MemberId
+	req.GroupId = heartbeatReqV4.GroupId
+	beat := s.kafkaImpl.HeartBeat(context.Addr, req)
+	heartBeatResp.ErrorCode = int16(beat.ErrorCode)
 	return heartBeatResp.Bytes(version), gnet.None
 }

@@ -147,3 +147,7 @@ func (e ExampleKafkaImpl) SaslAuthConsumerGroup(addr net.Addr, req service.SaslR
 func (e ExampleKafkaImpl) Disconnect(addr net.Addr) {
 	fmt.Println("do nothing now.")
 }
+
+func (e ExampleKafkaImpl) HeartBeat(addr net.Addr, req service.HeartBeatReq) *service.HeartBeatResp {
+	return &service.HeartBeatResp{}
+}
