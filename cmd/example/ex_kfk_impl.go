@@ -28,14 +28,29 @@ import (
 type ExampleKafkaImpl struct {
 }
 
-func (e ExampleKafkaImpl) FetchPartition(addr net.Addr, topic string, req *service.FetchPartitionReq) (*service.FetchPartitionResp, error) {
+func (e ExampleKafkaImpl) Fetch(addr net.Addr, req *service.FetchReq) ([]*service.FetchTopicResp, error) {
+	reqList := req.FetchTopicReqList
+	result := make([]*service.FetchTopicResp, len(reqList))
+	for i, req := range reqList {
+		f := &service.FetchTopicResp{}
+		f.Topic = req.Topic
+		f.FetchPartitionRespList = make([]*service.FetchPartitionResp, len(req.FetchPartitionReqList))
+		for j, partitionReq := range req.FetchPartitionReqList {
+			f.FetchPartitionRespList[j] = e.fetchPartition(partitionReq)
+		}
+		result[i] = f
+	}
+	return result, nil
+}
+
+func (e ExampleKafkaImpl) fetchPartition(req *service.FetchPartitionReq) *service.FetchPartitionResp {
 	partitionResp := &service.FetchPartitionResp{}
 	partitionResp.PartitionId = req.PartitionId
 	partitionResp.HighWatermark = 1
 	partitionResp.LastStableOffset = 1
 	partitionResp.LogStartOffset = 0
 	partitionResp.RecordBatch = exampleRecordBatch()
-	return partitionResp, nil
+	return partitionResp
 }
 
 func exampleRecordBatch() *service.RecordBatch {

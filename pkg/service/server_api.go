@@ -22,8 +22,9 @@ import (
 )
 
 type KfkServer interface {
-	// FetchPartition method called this already authed
-	FetchPartition(addr net.Addr, topic string, req *FetchPartitionReq) (*FetchPartitionResp, error)
+
+	// Fetch method called this already authed
+	Fetch(addr net.Addr, req *FetchReq) ([]*FetchTopicResp, error)
 
 	// GroupJoin method called this already authed
 	GroupJoin(addr net.Addr, req *JoinGroupReq) (*JoinGroupResp, error)
