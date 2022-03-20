@@ -68,9 +68,9 @@ func NewMetadataResp(corrId int, config *KafkaProtocolConfig, topicName string, 
 	topicMetadata := TopicMetadata{ErrorCode: errorCode, Topic: topicName, IsInternal: false, TopicAuthorizedOperation: -2147483648}
 	topicMetadata.PartitionMetadataList = make([]*PartitionMetadata, partitionNum)
 	for i := 0; i < partitionNum; i++ {
-		partitionMetadata := &PartitionMetadata{ErrorCode: 0, PartitionId: 0, LeaderId: config.NodeId, LeaderEpoch: 0, OfflineReplicas: nil}
+		partitionMetadata := &PartitionMetadata{ErrorCode: 0, PartitionId: i, LeaderId: config.NodeId, LeaderEpoch: 0, OfflineReplicas: nil}
 		replicas := make([]*Replica, 1)
-		replicas[i] = &Replica{ReplicaId: config.NodeId}
+		replicas[0] = &Replica{ReplicaId: config.NodeId}
 		partitionMetadata.Replicas = replicas
 		partitionMetadata.CaughtReplicas = replicas
 		topicMetadata.PartitionMetadataList[0] = partitionMetadata
