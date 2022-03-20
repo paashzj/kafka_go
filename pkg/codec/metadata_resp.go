@@ -57,7 +57,7 @@ type Replica struct {
 	ReplicaId int32
 }
 
-func NewMetadataResp(corrId int, config *KafkaProtocolConfig, topicName string, errorCode int16) *MetadataResp {
+func NewMetadataResp(corrId int, config *KafkaProtocolConfig, topicName string, partitionNum int, errorCode int16) *MetadataResp {
 	metadataResp := MetadataResp{}
 	metadataResp.CorrelationId = corrId
 	metadataResp.BrokerMetadataList = make([]*BrokerMetadata, 1)
@@ -66,15 +66,17 @@ func NewMetadataResp(corrId int, config *KafkaProtocolConfig, topicName string, 
 	metadataResp.ControllerId = config.NodeId
 	metadataResp.TopicMetadataList = make([]*TopicMetadata, 1)
 	topicMetadata := TopicMetadata{ErrorCode: errorCode, Topic: topicName, IsInternal: false, TopicAuthorizedOperation: -2147483648}
-	topicMetadata.PartitionMetadataList = make([]*PartitionMetadata, 1)
-	partitionMetadata := &PartitionMetadata{ErrorCode: 0, PartitionId: 0, LeaderId: config.NodeId, LeaderEpoch: 0, OfflineReplicas: nil}
-	replicas := make([]*Replica, 1)
-	replicas[0] = &Replica{ReplicaId: int32(config.NodeId)}
-	partitionMetadata.Replicas = replicas
-	partitionMetadata.CaughtReplicas = replicas
-	topicMetadata.PartitionMetadataList[0] = partitionMetadata
-	metadataResp.TopicMetadataList[0] = &topicMetadata
-	metadataResp.ClusterAuthorizedOperation = -2147483648
+	topicMetadata.PartitionMetadataList = make([]*PartitionMetadata, partitionNum)
+	for i := 0; i < partitionNum; i++ {
+		partitionMetadata := &PartitionMetadata{ErrorCode: 0, PartitionId: 0, LeaderId: config.NodeId, LeaderEpoch: 0, OfflineReplicas: nil}
+		replicas := make([]*Replica, 1)
+		replicas[i] = &Replica{ReplicaId: config.NodeId}
+		partitionMetadata.Replicas = replicas
+		partitionMetadata.CaughtReplicas = replicas
+		topicMetadata.PartitionMetadataList[0] = partitionMetadata
+		metadataResp.TopicMetadataList[0] = &topicMetadata
+		metadataResp.ClusterAuthorizedOperation = -2147483648
+	}
 	return &metadataResp
 }
 

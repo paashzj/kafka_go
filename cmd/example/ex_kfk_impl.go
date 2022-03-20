@@ -28,6 +28,10 @@ import (
 type ExampleKafkaImpl struct {
 }
 
+func (e ExampleKafkaImpl) PartitionNum(topic string) (int, error) {
+	return 1, nil
+}
+
 func (e ExampleKafkaImpl) Fetch(addr net.Addr, req *service.FetchReq) ([]*service.FetchTopicResp, error) {
 	reqList := req.FetchTopicReqList
 	result := make([]*service.FetchTopicResp, len(reqList))

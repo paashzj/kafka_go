@@ -22,6 +22,7 @@ import (
 )
 
 type KfkServer interface {
+	PartitionNum(topic string) (int, error)
 
 	// Fetch method called this already authed
 	Fetch(addr net.Addr, req *FetchReq) ([]*FetchTopicResp, error)

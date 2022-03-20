@@ -19,6 +19,7 @@ package network
 
 import (
 	"github.com/paashzj/kafka_go/pkg/codec"
+	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
 	"github.com/sirupsen/logrus"
 )
@@ -38,6 +39,17 @@ func (s *Server) ReactMetadataVersion(frame []byte, version int16, config *codec
 	}
 	logrus.Debug("metadata req ", metadataTopicReq)
 	topics := metadataTopicReq.Topics
-	metadataResp := codec.NewMetadataResp(metadataTopicReq.CorrelationId, config, topics[0].Topic, 0)
+	if len(topics) > 1 {
+		logrus.Error("currently, not support more than one topic")
+		return nil, gnet.Close
+	}
+	topic := topics[0].Topic
+	var metadataResp *codec.MetadataResp
+	partitionNum, err := s.kafkaImpl.PartitionNum(topic)
+	if err != nil {
+		metadataResp = codec.NewMetadataResp(metadataTopicReq.CorrelationId, config, topic, 0, int16(service.UNKNOWN_SERVER_ERROR))
+	} else {
+		metadataResp = codec.NewMetadataResp(metadataTopicReq.CorrelationId, config, topic, partitionNum, 0)
+	}
 	return metadataResp.Bytes(version), gnet.None
 }
