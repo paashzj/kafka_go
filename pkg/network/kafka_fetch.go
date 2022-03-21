@@ -77,7 +77,9 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 			partitionResp.HighWatermark = p.HighWatermark
 			partitionResp.LastStableOffset = p.LastStableOffset
 			partitionResp.LogStartOffset = p.LogStartOffset
-			partitionResp.RecordBatch = s.convertRecordBatchResp(p.RecordBatch)
+			if p.RecordBatch != nil {
+				partitionResp.RecordBatch = s.convertRecordBatchResp(p.RecordBatch)
+			}
 			partitionResp.AbortedTransactions = -1
 			partitionResp.ReplicaId = -1
 			f.PartitionRespList[j] = partitionResp

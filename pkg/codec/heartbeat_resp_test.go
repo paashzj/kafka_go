@@ -18,6 +18,7 @@
 package codec
 
 import (
+	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -26,5 +27,12 @@ func TestCodeHeartbeatRespV4(t *testing.T) {
 	heartBeatResp := NewHeartBeatResp(17)
 	bytes := heartBeatResp.Bytes(4)
 	expectBytes := testHex2Bytes(t, "000000110000000000000000")
+	assert.Equal(t, expectBytes, bytes)
+}
+
+func TestCodeHeartbeatRespWithErrV4(t *testing.T) {
+	heartBeatResp := NewHeartBeatRespWithErr(17, service.REBALANCE_IN_PROGRESS)
+	bytes := heartBeatResp.Bytes(4)
+	expectBytes := testHex2Bytes(t, "000000110000000000001b00")
 	assert.Equal(t, expectBytes, bytes)
 }

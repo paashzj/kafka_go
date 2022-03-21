@@ -17,6 +17,8 @@
 
 package codec
 
+import "github.com/paashzj/kafka_go/pkg/service"
+
 type HeartBeatResp struct {
 	BaseResp
 	ErrorCode    int16
@@ -26,6 +28,13 @@ type HeartBeatResp struct {
 func NewHeartBeatResp(corrId int) *HeartBeatResp {
 	beatResp := HeartBeatResp{}
 	beatResp.CorrelationId = corrId
+	return &beatResp
+}
+
+func NewHeartBeatRespWithErr(corrId int, code service.ErrorCode) *HeartBeatResp {
+	beatResp := HeartBeatResp{}
+	beatResp.CorrelationId = corrId
+	beatResp.ErrorCode = int16(code)
 	return &beatResp
 }
 
@@ -39,7 +48,7 @@ func (h *HeartBeatResp) Bytes(version int16) []byte {
 	idx = putCorrId(bytes, idx, h.CorrelationId)
 	idx = putTaggedField(bytes, idx)
 	idx = putThrottleTime(bytes, idx, 0)
-	idx = putErrorCode(bytes, idx, 0)
+	idx = putErrorCode(bytes, idx, h.ErrorCode)
 	idx = putTaggedField(bytes, idx)
 	return bytes
 }

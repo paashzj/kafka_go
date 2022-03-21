@@ -135,7 +135,9 @@ func (f *FetchResp) Bytes(version int16) []byte {
 			if version == 11 {
 				idx = putInt(bytes, idx, -1)
 			}
-			idx = putRecordBatch(bytes, idx, p.RecordBatch.Bytes())
+			if p.RecordBatch != nil {
+				idx = putRecordBatch(bytes, idx, p.RecordBatch.Bytes())
+			}
 		}
 	}
 	return bytes
