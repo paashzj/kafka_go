@@ -39,9 +39,13 @@ type FetchTopicResp struct {
 }
 
 type FetchPartitionReq struct {
-	PartitionId int
-	FetchOffset int64
-	ClientId    string
+	MinBytes        int
+	MaxBytes        int
+	MaxWaitTime     int
+	FetchIdleWaitMs int
+	PartitionId     int
+	FetchOffset     int64
+	ClientId        string
 }
 
 type FetchPartitionResp struct {
