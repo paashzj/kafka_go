@@ -43,6 +43,9 @@ func (s *Server) ReactFetchVersion(ctx *context.NetworkContext, frame []byte, ve
 	}
 	logrus.Debug("fetch req ", req)
 	lowReq := &service.FetchReq{}
+	lowReq.MaxBytes = req.MaxBytes
+	lowReq.MinBytes = req.MinBytes
+	lowReq.MaxWaitTime = req.MaxWaitTime
 	lowReq.FetchTopicReqList = make([]*service.FetchTopicReq, len(req.TopicReqList))
 	for i, topicReq := range req.TopicReqList {
 		if !s.checkSaslTopic(ctx, topicReq.Topic, CONSUMER_PERMISSION_TYPE) {
