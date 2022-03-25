@@ -195,6 +195,15 @@ func (s *Server) OnOpened(c gnet.Conn) (out []byte, action gnet.Action) {
 
 func (s *Server) OnClosed(c gnet.Conn, err error) (action gnet.Action) {
 	logrus.Info("connection closed from ", c.RemoteAddr())
+	ctx := c.Context()
+	if ctx == nil {
+		addr := c.RemoteAddr()
+		c.SetContext(&context.NetworkContext{Addr: addr})
+	}
+	connMutex.Unlock()
+	ctx = c.Context()
+	networkContext := ctx.(*context.NetworkContext)
+	s.kafkaImpl.Disconnect(networkContext.Addr)
 	s.ConnMap.Delete(c.RemoteAddr())
 	s.SaslMap.Delete(c.RemoteAddr())
 	atomic.AddInt32(&connCount, -1)
