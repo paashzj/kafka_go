@@ -1,4 +1,5 @@
 # kafka_go
+![line of code](https://tokei.rs/b1/github/paashzj/kafka_go)
 [![codecov](https://codecov.io/gh/paashzj/kafka_go/branch/main/graph/badge.svg?token=155QKNN7MQ)](https://codecov.io/gh/paashzj/kafka_go)
 ## Refer Doc
 ### [kafka protocol doc](https://kafka.apache.org/protocol)
