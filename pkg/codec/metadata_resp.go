@@ -233,7 +233,7 @@ func (m *MetadataResp) Bytes(version int16) []byte {
 		}
 		idx = putBool(bytes, idx, topicMetadata.IsInternal)
 		if version == 9 {
-			idx = putVarint(bytes, idx, len(topicMetadata.PartitionMetadataList))
+			idx = putCompactArrayLen(bytes, idx, len(topicMetadata.PartitionMetadataList))
 		} else if version == 1 {
 			idx = putInt(bytes, idx, len(topicMetadata.PartitionMetadataList))
 		}
