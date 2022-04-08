@@ -73,10 +73,10 @@ func NewMetadataResp(corrId int, config *KafkaProtocolConfig, topicName string, 
 		replicas[0] = &Replica{ReplicaId: config.NodeId}
 		partitionMetadata.Replicas = replicas
 		partitionMetadata.CaughtReplicas = replicas
-		topicMetadata.PartitionMetadataList[0] = partitionMetadata
-		metadataResp.TopicMetadataList[0] = &topicMetadata
-		metadataResp.ClusterAuthorizedOperation = -2147483648
+		topicMetadata.PartitionMetadataList[i] = partitionMetadata
 	}
+	metadataResp.TopicMetadataList[0] = &topicMetadata
+	metadataResp.ClusterAuthorizedOperation = -2147483648
 	return &metadataResp
 }
 
