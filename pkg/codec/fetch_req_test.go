@@ -88,3 +88,42 @@ func TestDecodeFetchReqV11(t *testing.T) {
 	assert.Equal(t, expectedLogOffset, fetchPartitionReq.LogStartOffset)
 	assert.Equal(t, 1048576, fetchPartitionReq.PartitionMaxBytes)
 }
+
+func TestDecodeFetchReqMultiPartitionV11(t *testing.T) {
+	bytes := testHex2Bytes(t, "0000000a002f636f6e73756d65722d32393561656562302d633564342d343161632d386339302d3237656538363632383066322d31ffffffff000001f40000000103200000000000000000000000000000010004746573740000000200000001000000000000000000000960ffffffffffffffff00100000000000000000000000000000000009c4ffffffffffffffff00100000000000000000")
+	fetchReq, err := DecodeFetchReq(bytes, 11)
+	assert.Nil(t, err)
+	assert.Equal(t, 10, fetchReq.CorrelationId)
+	assert.Equal(t, "consumer-295aeeb0-c5d4-41ac-8c90-27ee866280f2-1", fetchReq.ClientId)
+	assert.Equal(t, 500, fetchReq.MaxWaitTime)
+	assert.Equal(t, 1, fetchReq.MinBytes)
+	assert.Equal(t, 52428800, fetchReq.MaxBytes)
+	var expectedIsolationLevel uint8 = 0
+	assert.Equal(t, expectedIsolationLevel, fetchReq.IsolationLevel)
+	assert.Equal(t, 0, fetchReq.FetchSessionId)
+	var expectedFetchSessionEpoch int32 = 0
+	assert.Equal(t, expectedFetchSessionEpoch, fetchReq.FetchSessionEpoch)
+	assert.Len(t, fetchReq.TopicReqList, 1)
+	fetchTopicReq := fetchReq.TopicReqList[0]
+	assert.Equal(t, "test", fetchTopicReq.Topic)
+	assert.Len(t, fetchTopicReq.PartitionReqList, 2)
+	fetchPartitionReq := fetchTopicReq.PartitionReqList[0]
+	assert.Equal(t, 1, fetchPartitionReq.PartitionId)
+	var expectedCurrentLeaderEpoch int32 = 0
+	assert.Equal(t, expectedCurrentLeaderEpoch, fetchPartitionReq.CurrentLeaderEpoch)
+	var expectedFetchOffset1 int64 = 2400
+	assert.Equal(t, expectedFetchOffset1, fetchPartitionReq.FetchOffset)
+	assert.Equal(t, 0, fetchPartitionReq.LastFetchedEpoch)
+	var expectedLogOffset int64 = -1
+	assert.Equal(t, expectedLogOffset, fetchPartitionReq.LogStartOffset)
+	assert.Equal(t, 1048576, fetchPartitionReq.PartitionMaxBytes)
+
+	fetchPartitionReq2 := fetchTopicReq.PartitionReqList[1]
+	assert.Equal(t, 0, fetchPartitionReq2.PartitionId)
+	assert.Equal(t, expectedCurrentLeaderEpoch, fetchPartitionReq2.CurrentLeaderEpoch)
+	var expectedFetchOffset2 int64 = 2500
+	assert.Equal(t, expectedFetchOffset2, fetchPartitionReq2.FetchOffset)
+	assert.Equal(t, 0, fetchPartitionReq2.LastFetchedEpoch)
+	assert.Equal(t, expectedLogOffset, fetchPartitionReq2.LogStartOffset)
+	assert.Equal(t, 1048576, fetchPartitionReq2.PartitionMaxBytes)
+}

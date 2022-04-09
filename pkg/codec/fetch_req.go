@@ -84,7 +84,7 @@ func DecodeFetchReq(bytes []byte, version int16) (fetchReq *FetchReq, err error)
 			partition.FetchOffset, idx = readInt64(bytes, idx)
 			partition.LogStartOffset, idx = readInt64(bytes, idx)
 			partition.PartitionMaxBytes, idx = readInt(bytes, idx)
-			topicReq.PartitionReqList[i] = partition
+			topicReq.PartitionReqList[j] = partition
 		}
 		fetchReq.TopicReqList[i] = &topicReq
 	}
