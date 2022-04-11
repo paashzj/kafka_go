@@ -177,7 +177,7 @@ func (s *Server) React(frame []byte, c gnet.Conn) (bytes []byte, g gnet.Action) 
 		if !s.Authed(networkContext) {
 			return s.AuthFailed()
 		}
-		return s.Metadata(frame[4:], apiVersion, s.kafkaProtocolConfig)
+		return s.Metadata(networkContext, frame[4:], apiVersion, s.kafkaProtocolConfig)
 	}
 	if apiKey == api.FindCoordinator {
 		if !s.Authed(networkContext) {

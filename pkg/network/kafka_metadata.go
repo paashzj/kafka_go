@@ -19,20 +19,21 @@ package network
 
 import (
 	"github.com/paashzj/kafka_go/pkg/codec"
+	"github.com/paashzj/kafka_go/pkg/network/context"
 	"github.com/paashzj/kafka_go/pkg/service"
 	"github.com/panjf2000/gnet"
 	"github.com/sirupsen/logrus"
 )
 
-func (s *Server) Metadata(frame []byte, version int16, config *codec.KafkaProtocolConfig) ([]byte, gnet.Action) {
+func (s *Server) Metadata(ctx *context.NetworkContext, frame []byte, version int16, config *codec.KafkaProtocolConfig) ([]byte, gnet.Action) {
 	if version == 1 || version == 9 {
-		return s.ReactMetadataVersion(frame, version, config)
+		return s.ReactMetadataVersion(ctx, frame, version, config)
 	}
 	logrus.Error("unknown metadata version ", version)
 	return nil, gnet.Close
 }
 
-func (s *Server) ReactMetadataVersion(frame []byte, version int16, config *codec.KafkaProtocolConfig) ([]byte, gnet.Action) {
+func (s *Server) ReactMetadataVersion(ctx *context.NetworkContext, frame []byte, version int16, config *codec.KafkaProtocolConfig) ([]byte, gnet.Action) {
 	metadataTopicReq, err := codec.DecodeMetadataTopicReq(frame, version)
 	if err != nil {
 		return nil, gnet.Close
@@ -45,7 +46,7 @@ func (s *Server) ReactMetadataVersion(frame []byte, version int16, config *codec
 	}
 	topic := topics[0].Topic
 	var metadataResp *codec.MetadataResp
-	partitionNum, err := s.kafkaImpl.PartitionNum(topic)
+	partitionNum, err := s.kafkaImpl.PartitionNum(ctx.Addr, topic)
 	if err != nil {
 		metadataResp = codec.NewMetadataResp(metadataTopicReq.CorrelationId, config, topic, 0, int16(service.UNKNOWN_SERVER_ERROR))
 	} else {

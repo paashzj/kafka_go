@@ -28,7 +28,7 @@ import (
 type ExampleKafkaImpl struct {
 }
 
-func (e ExampleKafkaImpl) PartitionNum(topic string) (int, error) {
+func (e ExampleKafkaImpl) PartitionNum(addr net.Addr, topic string) (int, error) {
 	return 1, nil
 }
 
