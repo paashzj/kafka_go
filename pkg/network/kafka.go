@@ -37,9 +37,9 @@ var connCount int32
 var connMutex sync.Mutex
 
 type Config struct {
-	ListenHost string
-	ListenPort int
-	MultiCore  bool
+	ListenHost   string
+	ListenPort   int
+	EventLoopNum int
 }
 
 func Run(config *Config, kfkProtocolConfig *codec.KafkaProtocolConfig, impl service.KfkServer) (*Server, error) {
@@ -63,7 +63,7 @@ func Run(config *Config, kfkProtocolConfig *codec.KafkaProtocolConfig, impl serv
 	}
 	kfkCodec := gnet.NewLengthFieldBasedFrameCodec(encoderConfig, decoderConfig)
 	go func() {
-		err := gnet.Serve(server, fmt.Sprintf("tcp://%s:%d", config.ListenHost, config.ListenPort), gnet.WithMulticore(config.MultiCore), gnet.WithCodec(kfkCodec))
+		err := gnet.Serve(server, fmt.Sprintf("tcp://%s:%d", config.ListenHost, config.ListenPort), gnet.WithNumEventLoop(config.EventLoopNum), gnet.WithCodec(kfkCodec))
 		logrus.Error("kafsar broker started error ", err)
 	}()
 	return server, nil

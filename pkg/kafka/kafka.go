@@ -25,11 +25,11 @@ import (
 
 type ServerConfig struct {
 	// network config
-	ListenHost string
-	ListenPort int
-	MultiCore  bool
-	NeedSasl   bool
-	MaxConn    int32
+	ListenHost   string
+	ListenPort   int
+	EventLoopNum int
+	NeedSasl     bool
+	MaxConn      int32
 
 	// Kafka protocol config
 	ClusterId     string
@@ -41,7 +41,7 @@ func Run(config *ServerConfig, impl service.KfkServer) (*ServerControl, error) {
 	networkConfig := &network.Config{}
 	networkConfig.ListenHost = config.ListenHost
 	networkConfig.ListenPort = config.ListenPort
-	networkConfig.MultiCore = config.MultiCore
+	networkConfig.EventLoopNum = config.EventLoopNum
 	kfkProtocolConfig := &codec.KafkaProtocolConfig{}
 	kfkProtocolConfig.ClusterId = config.ClusterId
 	kfkProtocolConfig.AdvertiseHost = config.AdvertiseHost
