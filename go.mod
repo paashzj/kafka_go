@@ -6,7 +6,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/panjf2000/gnet v1.6.5
 	github.com/sirupsen/logrus v1.8.1
-	github.com/stretchr/testify v1.7.5
+	github.com/stretchr/testify v1.8.0
 )
 
 require (
